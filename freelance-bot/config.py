@@ -1,0 +1,32 @@
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+BOT_TOKEN = os.getenv("BOT_TOKEN", "")
+USER_ID = int(os.getenv("USER_ID", "0"))
+
+# Telegram API credentials for reading channels (get at my.telegram.org)
+API_ID = int(os.getenv("API_ID", "0"))
+API_HASH = os.getenv("API_HASH", "")
+
+# Telegram channels to monitor, comma-separated, e.g. @freelance_ru,@toppchallenge
+TG_CHANNELS = [ch.strip() for ch in os.getenv("TG_CHANNELS", "").split(",") if ch.strip()]
+
+# How often to check platforms (seconds)
+CHECK_INTERVAL = int(os.getenv("CHECK_INTERVAL", "300"))
+
+KEYWORDS = [
+    # Сайты и лендинги
+    "лендинг", "landing page", "сайт-визитка", "одностраничный сайт",
+    "html верстка", "верстка по макету", "tilda", "сайт на тильда",
+    "тильда", "сделать сайт",
+    # Интернет-магазины
+    "интернет-магазин", "интернет магазин", "магазин на сайте",
+    "каталог товаров", "корзина", "woocommerce", "сайт для продаж",
+    "онлайн магазин",
+    # Боты и автоматизация
+    "телеграм бот", "telegram bot", "тг бот", "бот для бизнеса",
+    "автоматизация", "парсер", "скрипт python", "python скрипт",
+    "написать бота", "создать бота",
+]
