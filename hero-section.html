@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ВСЕ ТУРЫ — Экскурсии и туры по самым красивым местам</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital@0,1&display=swap" rel="stylesheet">
+    <style>
+
+        /* ─── RESET ─── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        /* ─── DESIGN TOKENS ─── */
+        :root {
+            --navy:        #0D2B55;
+            --navy-mid:    #1B4072;
+            --blue:        #1B4F8A;
+            --blue-hover:  #2460A7;
+            --accent:      #7EC8E3;
+            --white:       #FFFFFF;
+            --muted:       rgba(255,255,255,0.70);
+            --glass:       rgba(255,255,255,0.09);
+            --glass-border:rgba(255,255,255,0.18);
+            --container:   1200px;
+            --gap:         40px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--navy);
+            color: var(--white);
+            overflow-x: hidden;
+        }
+
+        /* ══════════════════════════════════════
+           HEADER
+        ══════════════════════════════════════ */
+        header {
+            position: fixed;
+            inset: 0 0 auto 0;
+            z-index: 200;
+            height: 80px;
+            transition: background 0.35s ease, backdrop-filter 0.35s ease;
+        }
+
+        header.scrolled {
+            background: rgba(13, 43, 85, 0.92);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .header-inner {
+            max-width: var(--container);
+            height: 100%;
+            margin: 0 auto;
+            padding: 0 var(--gap);
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        /* Logo */
+        .logo {
+            text-decoration: none;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            border: 1.5px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icon svg { width: 20px; height: 20px; }
+
+        .logo-text { line-height: 1; }
+
+        .logo-name {
+            display: block;
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--white);
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+        }
+
+        .logo-sub {
+            display: block;
+            font-size: 9.5px;
+            font-weight: 400;
+            color: var(--muted);
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        /* Nav */
+        nav {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        nav a {
+            font-size: 13px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.78);
+            text-decoration: none;
+            letter-spacing: 0.01em;
+            white-space: nowrap;
+            padding: 4px 0;
+            position: relative;
+            transition: color 0.2s;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0; height: 1px;
+            background: var(--accent);
+            transition: width 0.25s;
+        }
+
+        nav a:hover { color: var(--white); }
+        nav a:hover::after { width: 100%; }
+
+        /* Contacts */
+        .header-right {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .msg-btn {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            border: 1px solid var(--glass-border);
+            background: var(--glass);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+            text-decoration: none;
+        }
+
+        .msg-btn:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.45);
+        }
+
+        .msg-btn svg { width: 16px; height: 16px; fill: var(--white); }
+
+        .phone-wrap { text-align: right; margin-left: 6px; }
+
+        .phone-num {
+            display: block;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+            letter-spacing: 0.01em;
+            transition: color 0.2s;
+        }
+
+        .phone-num:hover { color: var(--accent); }
+
+        .phone-hours {
+            display: block;
+            font-size: 10.5px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        /* ══════════════════════════════════════
+           HERO
+        ══════════════════════════════════════ */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Background */
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=85');
+            background-size: cover;
+            background-position: center 35%;
+            background-repeat: no-repeat;
+        }
+
+        /* Overlay: gradient left→right, heavier on left for text readability */
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                108deg,
+                rgba(13, 43, 85, 0.80) 0%,
+                rgba(13, 43, 85, 0.60) 42%,
+                rgba(13, 43, 85, 0.18) 75%,
+                rgba(13, 43, 85, 0.05) 100%
+            );
+        }
+
+        /* Subtle bottom fade into benefits bar */
+        .hero-bottom-fade {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 160px;
+            background: linear-gradient(to top, rgba(255,255,255,0.96), transparent);
+            pointer-events: none;
+        }
+
+        /* Main content */
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            max-width: var(--container);
+            width: 100%;
+            margin: 0 auto;
+            padding: 140px var(--gap) 180px;
+        }
+
+        .hero-text { max-width: 580px; }
+
+        /* Eyebrow */
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.20em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 28px;
+        }
+
+        .eyebrow-line {
+            display: block;
+            width: 30px;
+            height: 1.5px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        /* Heading */
+        h1 {
+            font-size: 64px;
+            font-weight: 800;
+            line-height: 1.10;
+            letter-spacing: -0.025em;
+            color: var(--white);
+            margin-bottom: 28px;
+        }
+
+        h1 em {
+            font-style: italic;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 400;
+            color: var(--accent);
+            font-size: 72px;
+            letter-spacing: -0.01em;
+        }
+
+        /* Subtitle */
+        .hero-sub {
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 1.65;
+            color: var(--muted);
+            margin-bottom: 48px;
+            max-width: 440px;
+        }
+
+        /* Buttons */
+        .btn-row {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            padding: 17px 38px;
+            background: var(--blue);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 10px;
+            border: none;
+            letter-spacing: 0.02em;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.18s, box-shadow 0.2s;
+            box-shadow: 0 8px 32px rgba(27,79,138,0.40);
+        }
+
+        .btn-primary:hover {
+            background: var(--blue-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(27,79,138,0.55);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 17px 30px;
+            background: var(--glass);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            letter-spacing: 0.02em;
+            cursor: pointer;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.16);
+            border-color: rgba(255,255,255,0.42);
+        }
+
+        .play-circle {
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(255,255,255,0.50);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .play-circle::after {
+            content: '';
+            width: 0; height: 0;
+            border-style: solid;
+            border-width: 5px 0 5px 9px;
+            border-color: transparent transparent transparent var(--white);
+            margin-left: 2px;
+        }
+
+        /* ══════════════════════════════════════
+           BENEFITS BAR
+        ══════════════════════════════════════ */
+        .benefits {
+            position: relative;
+            z-index: 3;
+            background: rgba(255,255,255,0.97);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .benefits-inner {
+            max-width: var(--container);
+            margin: 0 auto;
+            padding: 0 var(--gap);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .benefit {
+            padding: 30px 20px 30px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border-right: 1px solid rgba(0,0,0,0.07);
+            transition: background 0.2s;
+        }
+
+        .benefit:last-child { border-right: none; }
+        .benefit:hover { background: rgba(27,79,138,0.04); }
+
+        .ben-icon {
+            width: 46px; height: 46px;
+            border-radius: 12px;
+            background: rgba(27,79,138,0.09);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .ben-icon svg {
+            width: 22px; height: 22px;
+            stroke: var(--blue);
+            fill: none;
+            stroke-width: 1.6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .ben-title {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 3px;
+        }
+
+        .ben-desc {
+            font-size: 12px;
+            color: #6B7A8D;
+            line-height: 1.45;
+        }
+
+        /* ══════════════════════════════════════
+           RESPONSIVE
+        ══════════════════════════════════════ */
+        @media (max-width: 1100px) {
+            nav { gap: 16px; }
+            nav a { font-size: 12px; }
+            h1 { font-size: 52px; }
+            h1 em { font-size: 58px; }
+        }
+
+        @media (max-width: 860px) {
+            nav { display: none; }
+
+            .header-inner { padding: 0 20px; gap: 16px; }
+
+            .hero-content { padding: 110px 20px 160px; }
+
+            h1 { font-size: 40px; }
+            h1 em { font-size: 46px; }
+            .hero-sub { font-size: 16px; }
+
+            .benefits-inner {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 0 20px;
+            }
+
+            .benefit { border-bottom: 1px solid rgba(0,0,0,0.07); }
+            .benefit:nth-child(1),
+            .benefit:nth-child(2) { border-right: none; }
+            .benefit:nth-child(3),
+            .benefit:nth-child(4) { border-right: none; border-bottom: none; }
+        }
+
+        @media (max-width: 520px) {
+            h1 { font-size: 32px; }
+            h1 em { font-size: 36px; }
+            .hero-sub { font-size: 15px; }
+
+            .btn-row { flex-direction: column; }
+            .btn-primary, .btn-secondary { justify-content: center; }
+
+            .benefits-inner { grid-template-columns: 1fr; }
+            .benefit { border-right: none; }
+            .benefit:last-child { border-bottom: none; }
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header id="siteHeader">
+    <div class="header-inner">
+
+        <a href="/" class="logo">
+            <div class="logo-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="1.4" stroke-linecap="round">
+                    <circle cx="12" cy="10" r="3.5"/>
+                    <path d="M20 10c0 7-8 13-8 13S4 17 4 10a8 8 0 0 1 16 0z"/>
+                </svg>
+            </div>
+            <div class="logo-text">
+                <span class="logo-name">ВСЕ ТУРЫ</span>
+                <span class="logo-sub">экскурсии и туры</span>
+            </div>
+        </a>
+
+        <nav>
+            <a href="#individual">Индивидуальные</a>
+            <a href="#group">Групповые</a>
+            <a href="#multiday">Многодневные туры</a>
+            <a href="#calendar">Календарь туров</a>
+            <a href="#about">О нас</a>
+            <a href="#reviews">Отзывы</a>
+            <a href="#contacts">Контакты</a>
+        </nav>
+
+        <div class="header-right">
+            <a href="https://wa.me/79991234567" class="msg-btn" title="WhatsApp" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            </a>
+            <a href="https://t.me/username" class="msg-btn" title="Telegram" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+            </a>
+            <div class="phone-wrap">
+                <a href="tel:+79991234567" class="phone-num">+7 (999) 123-45-67</a>
+                <span class="phone-hours">Ежедневно с 9:00 до 21:00</span>
+            </div>
+        </div>
+
+    </div>
+</header>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-bottom-fade"></div>
+
+    <div class="hero-content">
+        <div class="hero-text">
+
+            <div class="eyebrow">
+                <span class="eyebrow-line"></span>
+                Лучшие маршруты для незабываемых впечатлений
+            </div>
+
+            <h1>
+                Экскурсии и туры<br>
+                по самым <em>красивым</em><br>
+                местам
+            </h1>
+
+            <p class="hero-sub">
+                Индивидуальные и групповые экскурсии,<br>
+                многодневные туры на любой вкус и бюджет
+            </p>
+
+            <div class="btn-row">
+                <a href="#tours" class="btn-primary">Подобрать тур</a>
+                <a href="#video" class="btn-secondary">
+                    <span class="play-circle"></span>
+                    Смотреть видео
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- BENEFITS BAR -->
+    <div class="benefits">
+        <div class="benefits-inner">
+
+            <div class="benefit">
+                <div class="ben-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                        <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="ben-title">Лучшие маршруты</div>
+                    <div class="ben-desc">Проверенные места и программы</div>
+                </div>
+            </div>
+
+            <div class="benefit">
+                <div class="ben-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="ben-title">Опытные гиды</div>
+                    <div class="ben-desc">Профессиональные и дружелюбные</div>
+                </div>
+            </div>
+
+            <div class="benefit">
+                <div class="ben-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="ben-title">Безопасно и комфортно</div>
+                    <div class="ben-desc">Забота о вашем отдыхе на каждом этапе</div>
+                </div>
+            </div>
+
+            <div class="benefit">
+                <div class="ben-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/>
+                        <path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="ben-title">Тысячи довольных клиентов</div>
+                    <div class="ben-desc">Отличные отзывы и рекомендации</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script>
+    const hdr = document.getElementById('siteHeader');
+    window.addEventListener('scroll', () => {
+        hdr.classList.toggle('scrolled', window.scrollY > 50);
+    }, { passive: true });
+</script>
+
+</body>
+</html>
