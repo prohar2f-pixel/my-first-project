@@ -1,0 +1,906 @@
+<div class="hp-hero2">
+    <style>
+        .hp-hero2,
+        .hp-hero2 * { box-sizing: border-box; }
+        .hp-hero2 input,
+        .hp-hero2 textarea,
+        .hp-hero2 select { font: inherit; }
+
+        .hp-hero2 {
+            --navy:      #0D2B55;
+            --blue:      #1B4F8A;
+            --blue-hov:  #2460A7;
+            --dark:      #0D2B55;
+            --text:      #3E4F63;
+            --muted:     #6B7A8D;
+            --light:     #8D9BAD;
+            --icon-bg:   #E8F0F8;
+            --white:     #FFFFFF;
+            --ben-desc:  #5F6E80;
+            --accent:    #7EC8E3;
+            --shadow:    0 2px 20px rgba(13,43,85,0.10);
+
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            color: var(--dark);
+            background: var(--white);
+        }
+
+        /* ═══════════════════════════════════
+           HEADER
+        ═══════════════════════════════════ */
+        .hp-hero2__header {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            z-index: 20;
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(13,43,85,0.06);
+        }
+
+        .hp-hero2__header-in {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .hp-hero2__header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0 12px;
+        }
+
+        /* Logo */
+        .hp-hero2__logo {
+            text-decoration: none;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hp-hero2__logo-ico {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--navy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .hp-hero2__logo-ico svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--white);
+        }
+
+        .hp-hero2__logo-name {
+            display: block;
+            font-family: var(--t-headline-font);
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--dark);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            line-height: 1.1;
+        }
+
+        .hp-hero2__logo-sub {
+            display: block;
+            font-family: var(--t-text-font);
+            font-size: 10px;
+            font-weight: 400;
+            color: var(--muted);
+            letter-spacing: 0.06em;
+            line-height: 1;
+            margin-top: 2px;
+        }
+
+        /* Header right */
+        .hp-hero2__hdr-right {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hp-hero2__msg-btn {
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(13,43,85,0.12);
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .hp-hero2__msg-btn:hover {
+            background: var(--icon-bg);
+            border-color: var(--blue);
+        }
+
+        /* FIX: иконки мессенджеров через SVG, не img */
+        .hp-hero2__msg-btn svg {
+            width: 17px; height: 17px;
+            fill: var(--dark);
+            flex-shrink: 0;
+        }
+
+        .hp-hero2__phone {
+            text-align: right;
+            margin-left: 6px;
+        }
+
+        .hp-hero2__phone-num {
+            display: block;
+            font-family: var(--t-text-font);
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--dark);
+            text-decoration: none;
+            line-height: 1.2;
+            transition: color 0.2s;
+        }
+
+        .hp-hero2__phone-num:hover { color: var(--blue); }
+
+        .hp-hero2__phone-hours {
+            display: block;
+            font-family: var(--t-text-font);
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 1px;
+        }
+
+        /* Nav */
+        .hp-hero2__nav-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 0 12px;
+        }
+
+        .hp-hero2__nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex: 1;
+        }
+
+        .hp-hero2__nav a {
+            font-family: var(--t-text-font);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text);
+            text-decoration: none;
+            white-space: nowrap;
+            padding: 6px 2px;
+            border-bottom: 2px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .hp-hero2__nav a:hover {
+            color: var(--blue);
+            border-bottom-color: var(--blue);
+        }
+
+        /* Burger */
+        .hp-hero2__burger {
+            display: none;
+            width: 42px; height: 42px;
+            border-radius: 8px;
+            border: 1.5px solid rgba(13,43,85,0.12);
+            background: var(--white);
+            cursor: pointer;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 11px;
+            flex-shrink: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .hp-hero2__burger-line {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: var(--dark);
+            border-radius: 2px;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        .hp-hero2__burger--active .hp-hero2__burger-line:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+        .hp-hero2__burger--active .hp-hero2__burger-line:nth-child(2) {
+            opacity: 0;
+        }
+        .hp-hero2__burger--active .hp-hero2__burger-line:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        /* Mobile menu */
+        .hp-hero2__mobile-menu {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 300;
+            background: var(--white);
+            padding: 80px 24px 32px;
+            flex-direction: column;
+            overflow-y: auto;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .hp-hero2__mobile-menu--open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .hp-hero2__mobile-menu a {
+            font-family: var(--t-text-font);
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--dark);
+            text-decoration: none;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(13,43,85,0.06);
+        }
+
+        .hp-hero2__mobile-menu-contacts {
+            margin-top: auto;
+            padding-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .hp-hero2__mobile-menu-phone {
+            font-family: var(--t-text-font);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--dark);
+            text-decoration: none;
+        }
+
+        .hp-hero2__mobile-menu-hours {
+            font-family: var(--t-text-font);
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .hp-hero2__mobile-menu-msgs {
+            display: flex;
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+        .hp-hero2__mobile-menu-close {
+            position: absolute;
+            top: 18px; right: 20px;
+            width: 42px; height: 42px;
+            border-radius: 8px;
+            border: 1.5px solid rgba(13,43,85,0.12);
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .hp-hero2__mobile-menu-close::before,
+        .hp-hero2__mobile-menu-close::after {
+            content: '';
+            position: absolute;
+            width: 16px; height: 2px;
+            background: var(--dark);
+            border-radius: 2px;
+        }
+
+        .hp-hero2__mobile-menu-close::before { transform: rotate(45deg); }
+        .hp-hero2__mobile-menu-close::after  { transform: rotate(-45deg); }
+
+        /* ═══════════════════════════════════
+           HERO BODY
+        ═══════════════════════════════════ */
+        .hp-hero2__body {
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 560px;
+        }
+
+        /* Left — solid dark panel */
+        .hp-hero2__left {
+            background: var(--navy);
+            padding: 120px 48px 80px 48px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hp-hero2__text { max-width: 520px; }
+
+        /* Eyebrow */
+        .hp-hero2__eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--t-text-font);
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--icon-bg);
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            margin-bottom: 20px;
+        }
+
+        .hp-hero2__eyebrow-line {
+            display: block;
+            width: 28px;
+            height: 2px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        /* Title */
+        .hp-hero2__title {
+            font-family: var(--t-headline-font);
+            font-size: 54px;
+            font-weight: 800;
+            line-height: 1.08;
+            letter-spacing: -0.03em;
+            color: var(--white);
+            margin-bottom: 20px;
+        }
+
+        .hp-hero2__title em {
+            font-style: italic;
+            font-family: var(--t-headline-font);
+            font-weight: 400;
+            color: var(--accent);
+            font-size: 60px;
+        }
+
+        /* Subtitle */
+        .hp-hero2__sub {
+            font-family: var(--t-text-font);
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.65;
+            color: rgba(255,255,255,0.65);
+            margin-bottom: 40px;
+            max-width: 400px;
+        }
+
+        /* Buttons */
+        .hp-hero2__btns {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .hp-hero2__btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 36px;
+            background: var(--accent);
+            color: var(--navy);
+            font-family: var(--t-text-font);
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+            box-shadow: 0 4px 16px rgba(126,200,227,0.35);
+        }
+
+        .hp-hero2__btn-primary:hover {
+            background: #95D4EC;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 24px rgba(126,200,227,0.45);
+        }
+
+        .hp-hero2__btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 28px;
+            background: rgba(255,255,255,0.10);
+            color: var(--white);
+            font-family: var(--t-text-font);
+            font-size: 15px;
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 8px;
+            border: 1.5px solid rgba(255,255,255,0.25);
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .hp-hero2__btn-secondary:hover {
+            background: rgba(255,255,255,0.18);
+            border-color: rgba(255,255,255,0.50);
+        }
+
+        .hp-hero2__play {
+            width: 26px; height: 26px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(255,255,255,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .hp-hero2__play::after {
+            content: '';
+            width: 0; height: 0;
+            border-style: solid;
+            border-width: 4px 0 4px 7px;
+            border-color: transparent transparent transparent var(--white);
+            margin-left: 2px;
+        }
+
+        /* Right — image */
+        .hp-hero2__right {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hp-hero2__right-img {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center 70%;
+            background-repeat: no-repeat;
+        }
+
+        /*
+         * Градиент: односторонний fade navy → transparent.
+         * 0–44%   : прозрачный (над navy-панелью — невидим, это и есть
+         *           "старт от края заголовка" без резкой линии).
+         * 44–50%  : нарастает до #0D2B55 — всё ещё над navy-фоном,
+         *           поэтому визуально не заметно.
+         * 50–92%  : плавный ease-out fade по всей ширине фото.
+         */
+        .hp-hero2__body::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to right,
+                transparent              0%,
+                transparent             34%,
+                rgba(13,43,85,0.04)     37%,
+                rgba(13,43,85,0.22)     40%,
+                rgba(13,43,85,0.58)     42%,
+                #0D2B55                 44%,
+                rgba(13,43,85,0.86)     47%,
+                rgba(13,43,85,0.66)     51%,
+                rgba(13,43,85,0.46)     57%,
+                rgba(13,43,85,0.26)     65%,
+                rgba(13,43,85,0.10)     74%,
+                rgba(13,43,85,0.02)     83%,
+                transparent             91%
+            );
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        /* На мобиле панели стакаются вертикально — градиент убираем */
+        @media (max-width: 860px) {
+            .hp-hero2__body::after { display: none; }
+        }
+
+        /* ═══════════════════════════════════
+           BENEFITS
+        ═══════════════════════════════════ */
+        .hp-hero2__benefits {
+            background: var(--white);
+            border-top: 1px solid rgba(13,43,85,0.06);
+        }
+
+        .hp-hero2__benefits-in {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 28px 40px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .hp-hero2__ben {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px;
+            border-radius: 12px;
+            transition: background 0.2s;
+        }
+
+        .hp-hero2__ben:hover { background: rgba(13,43,85,0.03); }
+
+        .hp-hero2__ben-ico {
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            background: var(--icon-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .hp-hero2__ben-ico img {
+            width: 22px; height: 22px;
+        }
+
+        .hp-hero2__ben-title {
+            font-family: var(--t-text-font);
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--dark);
+            line-height: 1.3;
+            margin-bottom: 1px;
+        }
+
+        .hp-hero2__ben-desc {
+            font-family: var(--t-text-font);
+            font-size: 12px;
+            color: var(--ben-desc);
+            line-height: 1.4;
+        }
+
+        /* ═══════════════════════════════════
+           RESPONSIVE — TABLET
+        ═══════════════════════════════════ */
+        @media (max-width: 1024px) {
+            .hp-hero2__left { padding: 100px 36px 60px 36px; }
+            .hp-hero2__title { font-size: 44px; }
+            .hp-hero2__title em { font-size: 50px; }
+        }
+
+        /* ═══════════════════════════════════
+           RESPONSIVE — MOBILE LANDSCAPE
+        ═══════════════════════════════════ */
+        @media (max-width: 860px) {
+            .hp-hero2__nav-row { display: none; }
+            .hp-hero2__burger { display: flex; }
+            .hp-hero2__mobile-menu { display: flex; }
+
+            .hp-hero2__header-top { padding: 10px 0 8px; }
+            .hp-hero2__header-in { padding: 0 16px; }
+            .hp-hero2__phone { display: none; }
+
+            .hp-hero2__logo { gap: 8px; }
+            .hp-hero2__logo-ico { width: 36px; height: 36px; }
+            .hp-hero2__logo-ico svg { width: 17px; height: 17px; }
+            .hp-hero2__logo-name { font-size: 14px; }
+            .hp-hero2__logo-sub { font-size: 9px; }
+
+            .hp-hero2__msg-btn { width: 34px; height: 34px; }
+            .hp-hero2__msg-btn svg { width: 15px; height: 15px; }
+            .hp-hero2__hdr-right { gap: 6px; }
+            .hp-hero2__burger { width: 38px; height: 38px; padding: 10px; }
+
+            .hp-hero2__body {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+
+            .hp-hero2__right { order: 0; height: 420px; }
+            .hp-hero2__left  { order: 1; padding: 36px 24px 44px; }
+
+            .hp-hero2__title { font-size: 36px; }
+            .hp-hero2__title em { font-size: 40px; }
+            .hp-hero2__sub { font-size: 15px; }
+
+            .hp-hero2__benefits-in {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 20px;
+                gap: 16px;
+            }
+        }
+
+        /* ═══════════════════════════════════
+           RESPONSIVE — MOBILE
+        ═══════════════════════════════════ */
+        @media (max-width: 520px) {
+            .hp-hero2__header-in { padding: 0 12px; }
+            .hp-hero2__header-top { padding: 8px 0 6px; }
+
+            .hp-hero2__logo { gap: 6px; }
+            .hp-hero2__logo-ico { width: 32px; height: 32px; }
+            .hp-hero2__logo-ico svg { width: 15px; height: 15px; }
+            .hp-hero2__logo-name { font-size: 13px; }
+            .hp-hero2__logo-sub { font-size: 8px; }
+
+            .hp-hero2__msg-btn { width: 30px; height: 30px; }
+            .hp-hero2__msg-btn svg { width: 14px; height: 14px; }
+            .hp-hero2__hdr-right { gap: 5px; }
+            .hp-hero2__burger { width: 34px; height: 34px; padding: 9px; }
+
+            .hp-hero2__right { height: 380px; }
+            .hp-hero2__left { padding: 28px 16px 36px; }
+
+            .hp-hero2__eyebrow { font-size: 10px; margin-bottom: 14px; }
+            .hp-hero2__title { font-size: 28px; }
+            .hp-hero2__title em { font-size: 32px; }
+            .hp-hero2__sub { font-size: 14px; margin-bottom: 32px; }
+
+            .hp-hero2__btns { flex-direction: column; align-items: stretch; }
+            .hp-hero2__btn-primary,
+            .hp-hero2__btn-secondary {
+                width: 100%;
+                justify-content: center;
+                padding: 14px 20px;
+                font-size: 14px;
+            }
+
+            .hp-hero2__benefits-in {
+                grid-template-columns: 1fr;
+                padding: 16px;
+                gap: 8px;
+            }
+
+            .hp-hero2__ben { padding: 8px; }
+        }
+
+        /* ═══════════════════════════════════
+           RESPONSIVE — VERY SMALL
+        ═══════════════════════════════════ */
+        @media (max-width: 375px) {
+            .hp-hero2__header-top { padding: 6px 0 5px; }
+            .hp-hero2__logo-ico { width: 28px; height: 28px; }
+            .hp-hero2__logo-ico svg { width: 13px; height: 13px; }
+            .hp-hero2__logo-name { font-size: 12px; }
+            .hp-hero2__logo-sub { font-size: 7.5px; }
+            .hp-hero2__msg-btn { width: 28px; height: 28px; }
+            .hp-hero2__msg-btn svg { width: 12px; height: 12px; }
+            .hp-hero2__burger { width: 30px; height: 30px; padding: 8px; }
+            .hp-hero2__hdr-right { gap: 4px; }
+
+            .hp-hero2__right { height: 340px; }
+            .hp-hero2__left { padding: 24px 12px 32px; }
+            .hp-hero2__title { font-size: 24px; }
+            .hp-hero2__title em { font-size: 28px; }
+        }
+    </style>
+
+    <!-- ═══ HEADER ═══ -->
+    <header class="hp-hero2__header">
+        <div class="hp-hero2__header-in">
+
+            <div class="hp-hero2__header-top">
+                <a href="/" class="hp-hero2__logo">
+                    <div class="hp-hero2__logo-ico">
+                        <!-- Иконка самолёта/геолокации -->
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="10" r="3.2" stroke="white" stroke-width="1.6"/>
+                            <path d="M20 10c0 7.5-8 13.5-8 13.5S4 17.5 4 10a8 8 0 0 1 16 0z" stroke="white" stroke-width="1.6" fill="none"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <span class="hp-hero2__logo-name">ВСЕ ТУРЫ</span>
+                        <span class="hp-hero2__logo-sub">экскурсии и туры</span>
+                    </div>
+                </a>
+
+                <div class="hp-hero2__hdr-right">
+                    <!-- FIX: WhatsApp — настоящая SVG-иконка -->
+                    <a href="https://wa.me/79991234567" class="hp-hero2__msg-btn" title="WhatsApp" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                        </svg>
+                    </a>
+                    <!-- FIX: Telegram — настоящая SVG-иконка -->
+                    <a href="https://t.me/username" class="hp-hero2__msg-btn" title="Telegram" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                        </svg>
+                    </a>
+                    <div class="hp-hero2__phone">
+                        <a href="tel:+79991234567" class="hp-hero2__phone-num">+7 (999) 123-45-67</a>
+                        <span class="hp-hero2__phone-hours">Ежедневно с 9:00 до 21:00</span>
+                    </div>
+
+                    <button class="hp-hero2__burger" data-hp2-burger="" aria-label="Меню">
+                        <span class="hp-hero2__burger-line"></span>
+                        <span class="hp-hero2__burger-line"></span>
+                        <span class="hp-hero2__burger-line"></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="hp-hero2__nav-row">
+                <nav class="hp-hero2__nav">
+                    <a href="#individual">Индивидуальные</a>
+                    <a href="#group">Групповые</a>
+                    <a href="#multiday">Многодневные</a>
+                    <a href="#calendar">Календарь туров</a>
+                    <a href="#about">О нас</a>
+                    <a href="#reviews">Отзывы</a>
+                    <a href="#certificate">Сертификат</a>
+                    <a href="#blog">Блог</a>
+                    <a href="#contacts">Контакты</a>
+                </nav>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- ═══ MOBILE MENU ═══ -->
+    <div class="hp-hero2__mobile-menu" data-hp2-mobile-menu="">
+        <button class="hp-hero2__mobile-menu-close" data-hp2-menu-close="" aria-label="Закрыть"></button>
+        <a href="#individual">Индивидуальные экскурсии</a>
+        <a href="#group">Групповые экскурсии</a>
+        <a href="#multiday">Многодневные туры</a>
+        <a href="#calendar">Календарь туров</a>
+        <a href="#about">О нас</a>
+        <a href="#reviews">Отзывы</a>
+        <a href="#certificate">Сертификат</a>
+        <a href="#blog">Блог</a>
+        <a href="#contacts">Контакты</a>
+        <div class="hp-hero2__mobile-menu-contacts">
+            <a href="tel:+79991234567" class="hp-hero2__mobile-menu-phone">+7 (999) 123-45-67</a>
+            <span class="hp-hero2__mobile-menu-hours">Ежедневно с 9:00 до 21:00</span>
+            <div class="hp-hero2__mobile-menu-msgs">
+                <a href="https://wa.me/79991234567" class="hp-hero2__msg-btn" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                    </svg>
+                </a>
+                <a href="https://t.me/username" class="hp-hero2__msg-btn" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ HERO BODY ═══ -->
+    <section class="hp-hero2__body">
+        <div class="hp-hero2__left">
+            <div class="hp-hero2__text">
+
+                <div class="hp-hero2__eyebrow">
+                    <span class="hp-hero2__eyebrow-line"></span>
+                    Лучшие маршруты для незабываемых впечатлений
+                </div>
+
+                <h1 class="hp-hero2__title">
+                    Экскурсии и туры<br>
+                    по самым <em>красивым</em><br>
+                    местам
+                </h1>
+
+                <p class="hp-hero2__sub">
+                    Индивидуальные и групповые экскурсии,<br>
+                    многодневные туры на любой вкус и бюджет
+                </p>
+
+                <div class="hp-hero2__btns">
+                    <a href="#tours" class="hp-hero2__btn-primary">Подобрать тур</a>
+                    <a href="#video" class="hp-hero2__btn-secondary">
+                        <span class="hp-hero2__play"></span>
+                        Смотреть видео
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="hp-hero2__right">
+            <div class="hp-hero2__right-img" style="background-image: url('https://static.tildacdn.pub/tild6239-6337-4738-b564-353433643837/noroot.png');"></div>
+        </div>
+    </section>
+
+    <!-- ═══ BENEFITS ═══ -->
+    <div class="hp-hero2__benefits">
+        <div class="hp-hero2__benefits-in">
+
+            <div class="hp-hero2__ben">
+                <div class="hp-hero2__ben-ico">
+                    <img src="https://static.tildacdn.pub/lib/icons/tilda/map_way_mark_where_adress.svg" alt="">
+                </div>
+                <div>
+                    <div class="hp-hero2__ben-title">Лучшие маршруты</div>
+                    <div class="hp-hero2__ben-desc">Проверенные места и программы</div>
+                </div>
+            </div>
+
+            <div class="hp-hero2__ben">
+                <div class="hp-hero2__ben-ico">
+                    <img src="https://static.tildacdn.pub/lib/icons/tilda/man_character_guide.svg" alt="">
+                </div>
+                <div>
+                    <div class="hp-hero2__ben-title">Опытные гиды</div>
+                    <div class="hp-hero2__ben-desc">Профессиональные и дружелюбные</div>
+                </div>
+            </div>
+
+            <div class="hp-hero2__ben">
+                <div class="hp-hero2__ben-ico">
+                    <img src="https://static.tildacdn.pub/lib/icons/tilda/medicina_insuramce.svg" alt="">
+                </div>
+                <div>
+                    <div class="hp-hero2__ben-title">Безопасно и комфортно</div>
+                    <div class="hp-hero2__ben-desc">Забота о вашем отдыхе</div>
+                </div>
+            </div>
+
+            <div class="hp-hero2__ben">
+                <div class="hp-hero2__ben-ico">
+                    <img src="https://static.tildacdn.pub/lib/icons/tilda/group_team_people.svg" alt="">
+                </div>
+                <div>
+                    <div class="hp-hero2__ben-title">Тысячи путешественников</div>
+                    <div class="hp-hero2__ben-desc">и отличные отзывы</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ═══ JS ═══ -->
+    <script>
+    (function(){
+        /* FIX: ищем элементы только внутри блока, не по всему document */
+        var root     = document.querySelector('.hp-hero2');
+        var burger   = root.querySelector('[data-hp2-burger]');
+        var menu     = root.querySelector('[data-hp2-mobile-menu]');
+        var closeBtn = root.querySelector('[data-hp2-menu-close]');
+        var links    = menu ? menu.querySelectorAll('a') : [];
+
+        function openMenu() {
+            burger.classList.add('hp-hero2__burger--active');
+            menu.classList.add('hp-hero2__mobile-menu--open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenu() {
+            burger.classList.remove('hp-hero2__burger--active');
+            menu.classList.remove('hp-hero2__mobile-menu--open');
+            document.body.style.overflow = '';
+        }
+
+        if (burger && menu) {
+            burger.addEventListener('click', function() {
+                menu.classList.contains('hp-hero2__mobile-menu--open')
+                    ? closeMenu()
+                    : openMenu();
+            });
+
+            if (closeBtn) closeBtn.addEventListener('click', closeMenu);
+
+            for (var i = 0; i < links.length; i++) {
+                links[i].addEventListener('click', closeMenu);
+            }
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closeMenu();
+            });
+        }
+    })();
+    </script>
+</div>
