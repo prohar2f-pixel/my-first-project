@@ -349,6 +349,7 @@ h2.sec-h span{color:var(--p)}
   position:relative;height:520px;overflow:hidden;
   display:flex;align-items:flex-end;justify-content:center;
 }
+.cta-photo-mobile{display:none}
 .cta-photo{
   position:absolute;bottom:0;right:-60px;
   width:115%;height:100%;
@@ -419,8 +420,10 @@ footer{padding:52px 0 36px;text-align:center}
   .cta-feats{grid-template-columns:repeat(2,1fr);margin:0 -20px;padding:20px}
   .cta-box{padding:40px 20px 0}
   #contact{padding:40px 16px 60px}
-  .cta-photo{
-    position:relative;display:block;
+  .cta-photo{display:none}
+  .cta-photo-mobile{
+    display:block;
+    position:relative;
     width:100%;height:auto;
     bottom:auto;right:auto;
     object-fit:fill;
@@ -848,6 +851,7 @@ footer{padding:52px 0 36px;text-align:center}
       <!-- RIGHT: photo -->
       <div class="cta-photo-wrap fi">
         <img src="photo_cta.png" alt="Александр Прошкин" class="cta-photo">
+        <img src="photo_cta_mobile.png" alt="Александр Прошкин" class="cta-photo cta-photo-mobile">
       </div>
     </div>
 
