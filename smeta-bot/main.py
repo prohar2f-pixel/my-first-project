@@ -220,6 +220,21 @@ async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> N
     logger.error("Exception while handling update:", exc_info=context.error)
 
 
+async def test_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    await update.message.reply_text("🔄 Проверяю соединение с Claude API...")
+    try:
+        result = await asyncio.to_thread(
+            lambda: claude.messages.create(
+                model="claude-haiku-4-5-20251001",
+                max_tokens=10,
+                messages=[{"role": "user", "content": "ping"}]
+            )
+        )
+        await update.message.reply_text("✅ Claude API работает!")
+    except Exception as e:
+        await update.message.reply_text(f"❌ Ошибка Claude API: {str(e)[:300]}")
+
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text(
         "Привет! Я помогу найти поставщиков строительных материалов.\n\n"
@@ -310,6 +325,7 @@ async def process_materials(update: Update, materials: list[str]) -> None:
 def main() -> None:
     app = Application.builder().token(TELEGRAM_TOKEN).build()
     app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("test", test_cmd))
     app.add_handler(MessageHandler(filters.Document.PDF, handle_pdf))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text))
     app.add_error_handler(error_handler)
