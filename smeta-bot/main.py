@@ -52,14 +52,19 @@ def search_suppliers(material: str) -> list[dict]:
 
 
 def extract_materials_from_pdf(pdf_bytes: bytes) -> list[str]:
+    logger.info(f"PDF size: {len(pdf_bytes)} bytes")
     text = ""
     with pdfplumber.open(io.BytesIO(pdf_bytes)) as pdf:
-        for page in pdf.pages:
+        logger.info(f"PDF opened: {len(pdf.pages)} pages")
+        for i, page in enumerate(pdf.pages):
             text += (page.extract_text() or "") + "\n"
+            logger.info(f"Page {i + 1}/{len(pdf.pages)} extracted")
 
+    logger.info(f"Total text: {len(text)} chars")
     if not text.strip():
         return []
 
+    logger.info("Calling Claude API for material extraction...")
     response = claude.messages.create(
         model="claude-haiku-4-5-20251001",
         max_tokens=2000,
@@ -72,6 +77,7 @@ def extract_materials_from_pdf(pdf_bytes: bytes) -> list[str]:
 {text[:8000]}"""
         }]
     )
+    logger.info("Claude API responded successfully")
 
     raw = response.content[0].text.strip()
     try:
