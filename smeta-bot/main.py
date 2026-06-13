@@ -22,6 +22,8 @@ SERPER_API_KEY = os.environ["SERPER_API_KEY"]
 
 claude = anthropic.Anthropic(api_key=CLAUDE_API_KEY)
 
+cancelled_chats: set[int] = set()
+
 
 def search_suppliers(material: str) -> list[dict]:
     queries = [
@@ -220,6 +222,12 @@ async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> N
     logger.error("Exception while handling update:", exc_info=context.error)
 
 
+async def cancel_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    chat_id = update.effective_chat.id
+    cancelled_chats.add(chat_id)
+    await update.message.reply_text("🛑 Отмена запрошена. Обработка остановится после текущего шага.")
+
+
 async def test_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text("🔄 Проверяю соединение с Claude API...")
     try:
@@ -296,11 +304,17 @@ async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
 
 
 async def process_materials(update: Update, materials: list[str]) -> None:
+    chat_id = update.effective_chat.id
+    cancelled_chats.discard(chat_id)
     materials_data = []
 
-    await update.message.reply_text(f"4️⃣ Отправляю агентов в интернет на поиск поставщиков...\n({len(materials)} материалов)")
+    await update.message.reply_text(f"4️⃣ Отправляю агентов в интернет на поиск поставщиков...\n({len(materials)} материалов)\n\n⛔ Для отмены напиши /cancel")
 
     for i, material in enumerate(materials, 1):
+        if chat_id in cancelled_chats:
+            cancelled_chats.discard(chat_id)
+            await update.message.reply_text(f"🛑 Обработка отменена на материале {i}/{len(materials)}.")
+            return
         await update.message.reply_text(f"🔍 [{i}/{len(materials)}] {material}")
         search_results = await asyncio.to_thread(search_suppliers, material)
         analysis = await asyncio.to_thread(analyze_suppliers, material, search_results)
@@ -325,6 +339,7 @@ async def process_materials(update: Update, materials: list[str]) -> None:
 def main() -> None:
     app = Application.builder().token(TELEGRAM_TOKEN).build()
     app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("cancel", cancel_cmd))
     app.add_handler(CommandHandler("test", test_cmd))
     app.add_handler(MessageHandler(filters.Document.PDF, handle_pdf))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text))
