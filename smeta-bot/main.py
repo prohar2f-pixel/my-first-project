@@ -216,6 +216,10 @@ def create_excel(materials_data: list[dict]) -> bytes:
     return buf.read()
 
 
+async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
+    logger.error("Exception while handling update:", exc_info=context.error)
+
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text(
         "Привет! Я помогу найти поставщиков строительных материалов.\n\n"
@@ -251,7 +255,10 @@ async def handle_pdf(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
 
     except Exception as e:
         logger.error(f"handle_pdf error: {e}", exc_info=True)
-        await update.message.reply_text(f"❌ Ошибка при обработке PDF: {str(e)[:300]}")
+        try:
+            await update.message.reply_text(f"❌ Ошибка при обработке PDF: {str(e)[:300]}")
+        except Exception:
+            pass
 
 
 async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -267,7 +274,10 @@ async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
 
     except Exception as e:
         logger.error(f"handle_text error: {e}", exc_info=True)
-        await update.message.reply_text(f"❌ Ошибка: {str(e)[:300]}")
+        try:
+            await update.message.reply_text(f"❌ Ошибка: {str(e)[:300]}")
+        except Exception:
+            pass
 
 
 async def process_materials(update: Update, materials: list[str]) -> None:
@@ -302,7 +312,8 @@ def main() -> None:
     app.add_handler(CommandHandler("start", start))
     app.add_handler(MessageHandler(filters.Document.PDF, handle_pdf))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text))
-    app.run_polling(allowed_updates=Update.ALL_TYPES)
+    app.add_error_handler(error_handler)
+    app.run_polling(allowed_updates=Update.ALL_TYPES, drop_pending_updates=True)
 
 
 if __name__ == "__main__":
