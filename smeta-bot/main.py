@@ -1,6 +1,7 @@
 import os
 import io
 import json
+import asyncio
 import logging
 import httpx
 import pdfplumber
@@ -23,7 +24,6 @@ claude = anthropic.Anthropic(api_key=CLAUDE_API_KEY)
 
 
 def search_suppliers(material: str) -> list[dict]:
-    """Поиск поставщиков материала через Serper API."""
     queries = [
         f"купить {material} цена поставщик Москва",
         f"{material} оптом производитель Россия цена",
@@ -50,7 +50,6 @@ def search_suppliers(material: str) -> list[dict]:
 
 
 def extract_materials_from_pdf(pdf_bytes: bytes) -> list[str]:
-    """Извлечь текст из PDF и попросить Claude выделить материалы."""
     text = ""
     with pdfplumber.open(io.BytesIO(pdf_bytes)) as pdf:
         for page in pdf.pages:
@@ -82,7 +81,6 @@ def extract_materials_from_pdf(pdf_bytes: bytes) -> list[str]:
 
 
 def analyze_suppliers(material: str, search_results: list[dict]) -> dict:
-    """Попросить Claude проанализировать результаты поиска и дать рекомендацию."""
     if not search_results:
         return {
             "suppliers": [],
@@ -138,7 +136,6 @@ def analyze_suppliers(material: str, search_results: list[dict]) -> dict:
 
 
 def create_excel(materials_data: list[dict]) -> bytes:
-    """Создать Excel-таблицу с результатами анализа."""
     wb = openpyxl.Workbook()
     ws = wb.active
     ws.title = "Анализ поставщиков"
@@ -231,36 +228,46 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 
 async def handle_pdf(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    await update.message.reply_text("1️⃣ Читаю PDF...")
+    try:
+        await update.message.reply_text("1️⃣ Читаю PDF...")
 
-    file = await update.message.document.get_file()
-    pdf_bytes = await file.download_as_bytearray()
+        file = await update.message.document.get_file()
+        pdf_bytes = await file.download_as_bytearray()
 
-    await update.message.reply_text("2️⃣ Извлекаю наименования материалов...")
-    materials = extract_materials_from_pdf(bytes(pdf_bytes))
+        await update.message.reply_text("2️⃣ Извлекаю наименования материалов...")
+        materials = await asyncio.to_thread(extract_materials_from_pdf, bytes(pdf_bytes))
 
-    if not materials:
-        await update.message.reply_text("❌ Не удалось извлечь материалы из PDF. Попробуй отправить список текстом.")
-        return
+        if not materials:
+            await update.message.reply_text("❌ Не удалось извлечь материалы из PDF. Попробуй отправить список текстом.")
+            return
 
-    await update.message.reply_text(
-        f"✅ Найдено {len(materials)} материалов:\n" +
-        "\n".join(f"• {m}" for m in materials[:20]) +
-        ("\n..." if len(materials) > 20 else "")
-    )
+        await update.message.reply_text(
+            f"✅ Найдено {len(materials)} материалов:\n" +
+            "\n".join(f"• {m}" for m in materials[:20]) +
+            ("\n..." if len(materials) > 20 else "")
+        )
 
-    await process_materials(update, materials)
+        await process_materials(update, materials)
+
+    except Exception as e:
+        logger.error(f"handle_pdf error: {e}", exc_info=True)
+        await update.message.reply_text(f"❌ Ошибка при обработке PDF: {str(e)[:300]}")
 
 
 async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    text = update.message.text.strip()
-    materials = [line.strip() for line in text.split("\n") if line.strip()]
+    try:
+        text = update.message.text.strip()
+        materials = [line.strip() for line in text.split("\n") if line.strip()]
 
-    if not materials:
-        await update.message.reply_text("Пришли список материалов — по одному на строку.")
-        return
+        if not materials:
+            await update.message.reply_text("Пришли список материалов — по одному на строку.")
+            return
 
-    await process_materials(update, materials)
+        await process_materials(update, materials)
+
+    except Exception as e:
+        logger.error(f"handle_text error: {e}", exc_info=True)
+        await update.message.reply_text(f"❌ Ошибка: {str(e)[:300]}")
 
 
 async def process_materials(update: Update, materials: list[str]) -> None:
@@ -270,8 +277,8 @@ async def process_materials(update: Update, materials: list[str]) -> None:
 
     for i, material in enumerate(materials, 1):
         await update.message.reply_text(f"🔍 [{i}/{len(materials)}] {material}")
-        search_results = search_suppliers(material)
-        analysis = analyze_suppliers(material, search_results)
+        search_results = await asyncio.to_thread(search_suppliers, material)
+        analysis = await asyncio.to_thread(analyze_suppliers, material, search_results)
         materials_data.append({"material": material, "analysis": analysis})
 
     await update.message.reply_text("5️⃣ Сравниваю предложения по цене, качеству и надёжности...")
@@ -279,7 +286,7 @@ async def process_materials(update: Update, materials: list[str]) -> None:
     await update.message.reply_text("7️⃣ Сортирую поставщиков по регионам (Москва и МО — первые)...")
     await update.message.reply_text("3️⃣ Формирую таблицу Excel...")
 
-    excel_bytes = create_excel(materials_data)
+    excel_bytes = await asyncio.to_thread(create_excel, materials_data)
     date_str = datetime.now().strftime("%Y-%m-%d")
     filename = f"Поставщики_{date_str}.xlsx"
 
