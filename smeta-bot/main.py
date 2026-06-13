@@ -231,11 +231,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 
 async def handle_pdf(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    await update.message.reply_text("⏳ Читаю PDF и извлекаю материалы...")
+    await update.message.reply_text("1️⃣ Читаю PDF...")
 
     file = await update.message.document.get_file()
     pdf_bytes = await file.download_as_bytearray()
 
+    await update.message.reply_text("2️⃣ Извлекаю наименования материалов...")
     materials = extract_materials_from_pdf(bytes(pdf_bytes))
 
     if not materials:
@@ -243,10 +244,9 @@ async def handle_pdf(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
         return
 
     await update.message.reply_text(
-        f"✅ Извлечено {len(materials)} материалов:\n" +
+        f"✅ Найдено {len(materials)} материалов:\n" +
         "\n".join(f"• {m}" for m in materials[:20]) +
-        ("\n..." if len(materials) > 20 else "") +
-        f"\n\n⏳ Ищу поставщиков..."
+        ("\n..." if len(materials) > 20 else "")
     )
 
     await process_materials(update, materials)
@@ -260,18 +260,24 @@ async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
         await update.message.reply_text("Пришли список материалов — по одному на строку.")
         return
 
-    await update.message.reply_text(f"⏳ Ищу поставщиков для {len(materials)} материалов...")
     await process_materials(update, materials)
 
 
 async def process_materials(update: Update, materials: list[str]) -> None:
     materials_data = []
 
+    await update.message.reply_text(f"4️⃣ Отправляю агентов в интернет на поиск поставщиков...\n({len(materials)} материалов)")
+
     for i, material in enumerate(materials, 1):
         await update.message.reply_text(f"🔍 [{i}/{len(materials)}] {material}")
         search_results = search_suppliers(material)
         analysis = analyze_suppliers(material, search_results)
         materials_data.append({"material": material, "analysis": analysis})
+
+    await update.message.reply_text("5️⃣ Сравниваю предложения по цене, качеству и надёжности...")
+    await update.message.reply_text("6️⃣ Пишу рекомендации по каждому материалу...")
+    await update.message.reply_text("7️⃣ Сортирую поставщиков по регионам (Москва и МО — первые)...")
+    await update.message.reply_text("3️⃣ Формирую таблицу Excel...")
 
     excel_bytes = create_excel(materials_data)
     date_str = datetime.now().strftime("%Y-%m-%d")
@@ -280,11 +286,7 @@ async def process_materials(update: Update, materials: list[str]) -> None:
     await update.message.reply_document(
         document=io.BytesIO(excel_bytes),
         filename=filename,
-        caption=(
-            f"✅ Готово! Найдено поставщиков для {len(materials)} материалов.\n"
-            f"🟢 Зелёным выделены рекомендуемые поставщики.\n"
-            f"📍 Москва и МО идут первыми."
-        )
+        caption="8️⃣ Excel-таблица готова! 🟢 Зелёным выделены рекомендуемые поставщики. 📍 Москва и МО идут первыми."
     )
 
 
