@@ -9,7 +9,7 @@ import openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from datetime import datetime
 
-from telegram import Update
+from telegram import Update, BotCommand
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 import anthropic
 
@@ -336,8 +336,16 @@ async def process_materials(update: Update, materials: list[str]) -> None:
     )
 
 
+async def post_init(app: Application) -> None:
+    await app.bot.set_my_commands([
+        BotCommand("start", "Начать работу с ботом"),
+        BotCommand("cancel", "Отменить текущую обработку"),
+        BotCommand("test", "Проверить соединение с Claude API"),
+    ])
+
+
 def main() -> None:
-    app = Application.builder().token(TELEGRAM_TOKEN).build()
+    app = Application.builder().token(TELEGRAM_TOKEN).post_init(post_init).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("cancel", cancel_cmd))
     app.add_handler(CommandHandler("test", test_cmd))
