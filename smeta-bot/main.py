@@ -53,13 +53,19 @@ def search_suppliers(material: str) -> list[dict]:
 
 def extract_materials_from_pdf(pdf_bytes: bytes) -> list[str]:
     logger.info(f"PDF size: {len(pdf_bytes)} bytes")
-    text = ""
+    pages_text = []
     with pdfplumber.open(io.BytesIO(pdf_bytes)) as pdf:
-        logger.info(f"PDF opened: {len(pdf.pages)} pages")
-        for i, page in enumerate(pdf.pages):
-            text += (page.extract_text() or "") + "\n"
-            logger.info(f"Page {i + 1}/{len(pdf.pages)} extracted")
+        total = len(pdf.pages)
+        max_pages = min(total, 30)
+        logger.info(f"PDF opened: {total} pages, processing first {max_pages}")
+        for i in range(max_pages):
+            page = pdf.pages[i]
+            page_text = page.extract_text() or ""
+            pages_text.append(page_text)
+            page.flush_cache()
+            logger.info(f"Page {i + 1}/{max_pages} extracted ({len(page_text)} chars)")
 
+    text = "\n".join(pages_text)
     logger.info(f"Total text: {len(text)} chars")
     if not text.strip():
         return []
