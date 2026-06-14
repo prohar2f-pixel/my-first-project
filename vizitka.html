@@ -383,21 +383,29 @@ footer{padding:52px 0 36px;text-align:center}
 
 /* ── RESPONSIVE ─────────────────────────── */
 /* ── PRICING ─────────────────────────────── */
-.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px}
+.price-section-header{display:flex;align-items:flex-start;justify-content:space-between}
+.price-section-left{flex:1;min-width:0}
+.price-big-title{font-size:clamp(2.4rem,5vw,4.2rem);font-weight:900;line-height:1.05;text-transform:uppercase;margin:0 0 16px}
+.price-big-title .w{color:#fff;display:block}
+.price-big-title .p{color:var(--p);display:block}
+.price-sub{font-size:.9rem;color:rgba(255,255,255,.55);line-height:1.7;max-width:520px}
+.price-sub a{color:var(--p);text-decoration:underline;text-underline-offset:3px}
+.price-gear{flex-shrink:0;font-size:8rem;line-height:1;text-align:right;filter:drop-shadow(0 0 40px rgba(168,85,247,.9)) drop-shadow(0 0 80px rgba(120,0,255,.5));margin-top:-20px;user-select:none}
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px;padding-top:16px}
 .price-card{position:relative;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px 28px;display:flex;flex-direction:column;transition:border-color .3s,transform .3s}
 .price-card:hover{border-color:rgba(168,85,247,.4);transform:translateY(-4px)}
 .price-card.featured{border-color:rgba(168,85,247,.5);background:rgba(168,85,247,.06)}
 .price-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--p);color:#fff;font-size:.68rem;font-weight:700;letter-spacing:.1em;padding:4px 14px;border-radius:20px;white-space:nowrap}
-.price-icon{font-size:2rem;margin-bottom:16px}
+.price-icon{width:52px;height:52px;border-radius:12px;border:1px solid rgba(168,85,247,.35);background:rgba(168,85,247,.08);display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:16px}
 .price-name{font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:6px}
 .price-desc{font-size:.8rem;color:var(--muted);margin-bottom:20px;line-height:1.5}
 .price-amount{font-size:1.8rem;font-weight:700;color:var(--p);margin-bottom:4px}
-.price-amount span{font-size:.9rem;font-weight:400;color:var(--muted)}
+.price-amount span{font-size:1rem;font-weight:600;color:var(--p)}
 .price-time{font-size:.75rem;color:var(--muted);margin-bottom:20px}
 .price-line{height:1px;background:var(--border);margin-bottom:20px}
 .price-feats{list-style:none;display:flex;flex-direction:column;gap:9px;margin:0;padding:0}
-.price-feats li{font-size:.8rem;color:rgba(255,255,255,.65);padding-left:18px;position:relative}
-.price-feats li::before{content:'✓';position:absolute;left:0;color:var(--p);font-weight:700}
+.price-feats li{font-size:.8rem;color:rgba(255,255,255,.65);padding-left:28px;position:relative;line-height:1.4}
+.price-feats li::before{content:'✓';position:absolute;left:0;top:0;width:18px;height:18px;border-radius:50%;background:rgba(168,85,247,.15);border:1px solid rgba(168,85,247,.4);color:var(--p);font-size:.6rem;font-weight:700;line-height:18px;text-align:center}
 
 .tzbot-layout{display:flex;align-items:center;gap:64px}
 .tzbot-img{flex:0 0 44%;max-width:44%}
@@ -446,6 +454,8 @@ footer{padding:52px 0 36px;text-align:center}
   .hn1,.hn2{font-size:clamp(2.8rem,10vw,4.2rem)}
   .hero-content{padding:0 20px}
   .srv-grid,.res-grid,.price-grid{grid-template-columns:1fr}
+  .price-gear{display:none}
+  .price-big-title{font-size:clamp(2rem,8vw,3rem)}
   .tzbot-layout{flex-direction:column;gap:40px}
   .tzbot-img{max-width:420px;width:100%}
   .tzbot-text .sec-h,.tzbot-text .sec-label,.tzbot-text .sec-sub{text-align:center}
@@ -921,15 +931,21 @@ footer{padding:52px 0 36px;text-align:center}
 
 <!-- ═══════════════════════════════════ PRICING -->
 <section id="pricing" style="position:relative;overflow:hidden">
-  <div style="position:absolute;left:50%;top:0;transform:translateX(-50%);width:900px;height:100%;pointer-events:none;z-index:1">
-    <div style="position:absolute;left:50%;top:20%;transform:translateX(-50%);width:700px;height:500px;
-      background:radial-gradient(ellipse at 50% 40%,rgba(120,0,255,.14) 0%,rgba(168,85,247,.06) 40%,transparent 70%);
-      filter:blur(48px)"></div>
-  </div>
+  <!-- Side glows -->
+  <div style="position:absolute;left:-200px;top:50%;transform:translateY(-50%);width:500px;height:700px;background:radial-gradient(ellipse,rgba(168,85,247,.2) 0%,transparent 70%);filter:blur(70px);pointer-events:none;z-index:0"></div>
+  <div style="position:absolute;right:-200px;top:50%;transform:translateY(-50%);width:500px;height:700px;background:radial-gradient(ellipse,rgba(168,85,247,.2) 0%,transparent 70%);filter:blur(70px);pointer-events:none;z-index:0"></div>
   <div class="wrap" style="position:relative;z-index:2">
-    <div class="sec-label fi">Прозрачные цены</div>
-    <h2 class="sec-h fi">Стоимость<br><span>моих услуг</span></h2>
-    <p class="sec-sub fi">Фиксированные цены, никаких скрытых платежей.<br>По мере роста портфолио цены будут обновляться.</p>
+
+    <div class="price-section-header">
+      <div class="price-section-left">
+        <h2 class="price-big-title fi">
+          <span class="w">Стоимость</span>
+          <span class="p">моих услуг</span>
+        </h2>
+        <p class="price-sub fi">Фиксированные цены, никаких скрытых платежей.<br>По мере роста портфолио цены <a href="#">будут обновляться</a>.</p>
+      </div>
+      <div class="price-gear fi">⚙️</div>
+    </div>
 
     <div class="price-grid">
 
@@ -999,7 +1015,7 @@ footer{padding:52px 0 36px;text-align:center}
       </div>
 
       <div class="card price-card fi">
-        <div class="price-icon">🤖</div>
+        <div class="price-icon">✈️</div>
         <div class="price-name">Telegram-бот</div>
         <div class="price-desc">Автоматизация продаж, поддержки или сбора заявок</div>
         <div class="price-amount">от 25 000 <span>₽</span></div>
@@ -1015,7 +1031,7 @@ footer{padding:52px 0 36px;text-align:center}
       </div>
 
       <div class="card price-card fi">
-        <div class="price-icon">✨</div>
+        <div class="price-icon">🧠</div>
         <div class="price-name">ИИ-интеграция</div>
         <div class="price-desc">Нейросети в ваш сайт или бизнес-процесс</div>
         <div class="price-amount">от 20 000 <span>₽</span></div>
