@@ -382,6 +382,23 @@ footer{padding:52px 0 36px;text-align:center}
 .f-copy{color:rgba(107,107,107,.28);font-size:.72rem}
 
 /* ── RESPONSIVE ─────────────────────────── */
+/* ── PRICING ─────────────────────────────── */
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px}
+.price-card{position:relative;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px 28px;display:flex;flex-direction:column;transition:border-color .3s,transform .3s}
+.price-card:hover{border-color:rgba(168,85,247,.4);transform:translateY(-4px)}
+.price-card.featured{border-color:rgba(168,85,247,.5);background:rgba(168,85,247,.06)}
+.price-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--p);color:#fff;font-size:.68rem;font-weight:700;letter-spacing:.1em;padding:4px 14px;border-radius:20px;white-space:nowrap}
+.price-icon{font-size:2rem;margin-bottom:16px}
+.price-name{font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:6px}
+.price-desc{font-size:.8rem;color:var(--muted);margin-bottom:20px;line-height:1.5}
+.price-amount{font-size:1.8rem;font-weight:700;color:var(--p);margin-bottom:4px}
+.price-amount span{font-size:.9rem;font-weight:400;color:var(--muted)}
+.price-time{font-size:.75rem;color:var(--muted);margin-bottom:20px}
+.price-line{height:1px;background:var(--border);margin-bottom:20px}
+.price-feats{list-style:none;display:flex;flex-direction:column;gap:9px;margin:0;padding:0}
+.price-feats li{font-size:.8rem;color:rgba(255,255,255,.65);padding-left:18px;position:relative}
+.price-feats li::before{content:'✓';position:absolute;left:0;color:var(--p);font-weight:700}
+
 .tzbot-layout{display:flex;align-items:center;gap:64px}
 .tzbot-img{flex:0 0 44%;max-width:44%}
 .tzbot-img img{width:100%;height:auto;display:block}
@@ -396,6 +413,7 @@ footer{padding:52px 0 36px;text-align:center}
 .tzbot-step-body p{font-size:.82rem;color:rgba(255,255,255,.5);margin:0}
 @media(max-width:1024px){
   .trust-grid{grid-template-columns:repeat(2,1fr)}
+  .price-grid{grid-template-columns:repeat(2,1fr)}
   .cta-inner{grid-template-columns:1fr}
   .cta-photo-wrap{height:auto;overflow:visible;display:block;order:-1}
   .cta-feats{grid-template-columns:repeat(2,1fr);margin:0 -20px;padding:24px 20px}
@@ -427,7 +445,7 @@ footer{padding:52px 0 36px;text-align:center}
   .hero-photo::after{background:linear-gradient(to bottom,transparent 60%,var(--bg) 100%)}
   .hn1,.hn2{font-size:clamp(2.8rem,10vw,4.2rem)}
   .hero-content{padding:0 20px}
-  .srv-grid,.res-grid{grid-template-columns:1fr}
+  .srv-grid,.res-grid,.price-grid{grid-template-columns:1fr}
   .tzbot-layout{flex-direction:column;gap:40px}
   .tzbot-img{max-width:420px;width:100%}
   .tzbot-text .sec-h,.tzbot-text .sec-label,.tzbot-text .sec-sub{text-align:center}
@@ -471,6 +489,7 @@ footer{padding:52px 0 36px;text-align:center}
     <a href="#trust">Преимущества</a>
     <a href="#results">Результат</a>
     <a href="#tzbot">ТЗ-бот</a>
+    <a href="#pricing">Цены</a>
     <a href="#contact">Контакты</a>
   </nav>
   <button class="nav-toggle" id="navToggle" aria-label="Меню">
@@ -894,6 +913,123 @@ footer{padding:52px 0 36px;text-align:center}
         <p style="margin-top:12px;font-size:.78rem;color:rgba(255,255,255,.35)">Занимает 5–10 минут · Бесплатно · Файл сразу в Telegram</p>
 
       </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════ PRICING -->
+<section id="pricing" style="position:relative;overflow:hidden">
+  <div style="position:absolute;left:50%;top:0;transform:translateX(-50%);width:900px;height:100%;pointer-events:none;z-index:1">
+    <div style="position:absolute;left:50%;top:20%;transform:translateX(-50%);width:700px;height:500px;
+      background:radial-gradient(ellipse at 50% 40%,rgba(120,0,255,.14) 0%,rgba(168,85,247,.06) 40%,transparent 70%);
+      filter:blur(48px)"></div>
+  </div>
+  <div class="wrap" style="position:relative;z-index:2">
+    <div class="sec-label fi">Прозрачные цены</div>
+    <h2 class="sec-h fi">Стоимость<br><span>моих услуг</span></h2>
+    <p class="sec-sub fi">Фиксированные цены, никаких скрытых платежей.<br>По мере роста портфолио цены будут обновляться.</p>
+
+    <div class="price-grid">
+
+      <div class="card price-card fi">
+        <div class="price-icon">💼</div>
+        <div class="price-name">Сайт-визитка</div>
+        <div class="price-desc">Для специалистов, самозанятых и небольших компаний</div>
+        <div class="price-amount">30 000 <span>₽</span></div>
+        <div class="price-time">⏱ Срок: 5–7 дней</div>
+        <div class="price-line"></div>
+        <ul class="price-feats">
+          <li>1–3 страницы</li>
+          <li>Уникальный дизайн</li>
+          <li>Адаптив под мобильные</li>
+          <li>Форма обратной связи</li>
+          <li>Базовое SEO</li>
+        </ul>
+      </div>
+
+      <div class="card price-card featured fi">
+        <div class="price-badge">ПОПУЛЯРНОЕ</div>
+        <div class="price-icon">🎯</div>
+        <div class="price-name">Лендинг</div>
+        <div class="price-desc">Продающая страница с акцентом на конверсию и заявки</div>
+        <div class="price-amount">50 000 <span>₽</span></div>
+        <div class="price-time">⏱ Срок: 7–14 дней</div>
+        <div class="price-line"></div>
+        <ul class="price-feats">
+          <li>Одностраничный сайт</li>
+          <li>Продающая структура</li>
+          <li>Анимации и эффекты</li>
+          <li>Форма заявки / WhatsApp</li>
+          <li>Подключение аналитики</li>
+        </ul>
+      </div>
+
+      <div class="card price-card fi">
+        <div class="price-icon">🏢</div>
+        <div class="price-name">Корпоративный сайт</div>
+        <div class="price-desc">Полноценный сайт для бизнеса с несколькими разделами</div>
+        <div class="price-amount">90 000 <span>₽</span></div>
+        <div class="price-time">⏱ Срок: 14–30 дней</div>
+        <div class="price-line"></div>
+        <ul class="price-feats">
+          <li>5–10 страниц</li>
+          <li>Каталог услуг / товаров</li>
+          <li>Интеграции (CRM, карта)</li>
+          <li>Блог или новости</li>
+          <li>SEO-оптимизация</li>
+        </ul>
+      </div>
+
+      <div class="card price-card fi">
+        <div class="price-icon">🛒</div>
+        <div class="price-name">Интернет-магазин</div>
+        <div class="price-desc">Полноценный магазин с каталогом, корзиной и оплатой</div>
+        <div class="price-amount">от 150 000 <span>₽</span></div>
+        <div class="price-time">⏱ Срок: от 30 дней</div>
+        <div class="price-line"></div>
+        <ul class="price-feats">
+          <li>Каталог с фильтрами</li>
+          <li>Корзина и оформление</li>
+          <li>Онлайн-оплата</li>
+          <li>Личный кабинет</li>
+          <li>Управление товарами</li>
+        </ul>
+      </div>
+
+      <div class="card price-card fi">
+        <div class="price-icon">🤖</div>
+        <div class="price-name">Telegram-бот</div>
+        <div class="price-desc">Автоматизация продаж, поддержки или сбора заявок</div>
+        <div class="price-amount">от 25 000 <span>₽</span></div>
+        <div class="price-time">⏱ Срок: 5–10 дней</div>
+        <div class="price-line"></div>
+        <ul class="price-feats">
+          <li>Сбор заявок и контактов</li>
+          <li>Автоответы и меню</li>
+          <li>Интеграция с сайтом</li>
+          <li>Уведомления владельцу</li>
+          <li>ИИ по запросу</li>
+        </ul>
+      </div>
+
+      <div class="card price-card fi">
+        <div class="price-icon">✨</div>
+        <div class="price-name">ИИ-интеграция</div>
+        <div class="price-desc">Нейросети в ваш сайт или бизнес-процесс</div>
+        <div class="price-amount">от 20 000 <span>₽</span></div>
+        <div class="price-time">⏱ Срок: индивидуально</div>
+        <div class="price-line"></div>
+        <ul class="price-feats">
+          <li>ИИ-чат на сайте</li>
+          <li>Автогенерация контента</li>
+          <li>Анализ данных</li>
+          <li>Автоматизация задач</li>
+          <li>Консультация бесплатно</li>
+        </ul>
+      </div>
+
     </div>
   </div>
 </section>
