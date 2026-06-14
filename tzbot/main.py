@@ -20,25 +20,35 @@ import anthropic
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-TELEGRAM_TOKEN = os.environ["TELEGRAM_TOKEN"]
-CLAUDE_API_KEY = os.environ["CLAUDE_API_KEY"]
+TELEGRAM_TOKEN    = os.environ["TELEGRAM_TOKEN"]
+CLAUDE_API_KEY    = os.environ["CLAUDE_API_KEY"]
 ALEXANDER_CHAT_ID = int(os.environ["ALEXANDER_CHAT_ID"])
 
 claude = anthropic.Anthropic(api_key=CLAUDE_API_KEY)
 
-URL_RE = re.compile(r'https?://[^\s]+')
+URL_RE   = re.compile(r'https?://[^\s]+')
+TOPIC_RE = re.compile(r'\[ТЕМА:(\d+)\]')
+
+TOPIC_NAMES = {
+    1: "О бизнесе",
+    2: "Дизайн и стиль",
+    3: "Структура сайта",
+    4: "Контент",
+    5: "Интеграции",
+    6: "Данные клиентов",
+    7: "Воронки",
+    8: "Ваш контакт",
+}
 
 _pool: psycopg2.pool.ThreadedConnectionPool | None = None
 
 
 # ─── DATABASE ─────────────────────────────────────────────────────────────────
 
-def _get_pool() -> psycopg2.pool.ThreadedConnectionPool:
+def _get_pool():
     global _pool
     if _pool is None:
-        _pool = psycopg2.pool.ThreadedConnectionPool(
-            1, 10, os.environ["DATABASE_URL"]
-        )
+        _pool = psycopg2.pool.ThreadedConnectionPool(1, 10, os.environ["DATABASE_URL"])
     return _pool
 
 
@@ -66,38 +76,46 @@ def db_init():
             first_msg  TEXT DEFAULT '',
             steps      TEXT DEFAULT '[]',
             cur_q      TEXT DEFAULT '',
+            pending_tz TEXT DEFAULT '',
             updated_at BIGINT DEFAULT extract(epoch from now())::BIGINT
         )
     """)
+    try:
+        _exec("ALTER TABLE sessions ADD COLUMN IF NOT EXISTS pending_tz TEXT DEFAULT ''")
+    except Exception:
+        pass
 
 
 def db_get(chat_id: int) -> dict | None:
     row = _exec(
-        "SELECT site_type, first_msg, steps, cur_q FROM sessions WHERE chat_id=%s",
+        "SELECT site_type, first_msg, steps, cur_q, pending_tz FROM sessions WHERE chat_id=%s",
         (chat_id,), fetch=True
     )
     if not row:
         return None
     return {
-        "site_type": row[0],
-        "first_msg": row[1],
-        "steps": json.loads(row[2]),
-        "cur_q": row[3],
+        "site_type":  row[0],
+        "first_msg":  row[1],
+        "steps":      json.loads(row[2]),
+        "cur_q":      row[3],
+        "pending_tz": row[4] or "",
     }
 
 
-def db_save(chat_id: int, *, site_type: str, first_msg: str, steps: list, cur_q: str):
+def db_save(chat_id: int, *, site_type: str, first_msg: str,
+            steps: list, cur_q: str, pending_tz: str = ""):
     _exec("""
-        INSERT INTO sessions (chat_id, site_type, first_msg, steps, cur_q)
-        VALUES (%s, %s, %s, %s, %s)
+        INSERT INTO sessions (chat_id, site_type, first_msg, steps, cur_q, pending_tz)
+        VALUES (%s, %s, %s, %s, %s, %s)
         ON CONFLICT (chat_id) DO UPDATE SET
             site_type  = EXCLUDED.site_type,
             first_msg  = EXCLUDED.first_msg,
             steps      = EXCLUDED.steps,
             cur_q      = EXCLUDED.cur_q,
+            pending_tz = EXCLUDED.pending_tz,
             updated_at = extract(epoch from now())::BIGINT
     """, (chat_id, site_type, first_msg,
-          json.dumps(steps, ensure_ascii=False), cur_q))
+          json.dumps(steps, ensure_ascii=False), cur_q, pending_tz))
 
 
 def db_delete(chat_id: int):
@@ -130,17 +148,30 @@ BASE_SYSTEM = f"""Ты — ИИ-помощник для сбора технич�
 5. Интеграции — форма заявки, оплата, CRM, чат, аналитика, карта
 6. Данные о клиентах — что собирать (имя, телефон, email и т.д.)
 7. Воронки — pop-up, кнопки призыва к действию, автоответы на заявки
+8. Контакт — спроси как к клиенту обращаться и как с ним связаться (телефон или email)
 
 ## ПРАВИЛА
-- Начни с тёплого приветствия (упомяни выбранный тип сайта) и первого вопроса о бизнесе
+- НАЧИНАЙ каждый свой ответ с маркера текущей темы: [ТЕМА:N] — например [ТЕМА:2]
+- Начни с тёплого приветствия и первого вопроса о бизнесе
 - Один вопрос за раз — не засыпай клиента списком
-- Если пользователь прислал изображение — проанализируй стиль и визуальные элементы, упомяни что увидел, продолжи интервью
+- Если пользователь прислал изображение — проанализируй стиль, упомяни что увидел, продолжи интервью
 - Если пользователь прислал ссылку — прокомментируй что узнал о сайте, продолжи интервью
 - Если ответ расплывчатый — уточни конкретнее
-- Когда все 7 тем закрыты — напиши маркер ТЗ_ГОТОВО на отдельной строке, затем выдай полное ТЗ
 
-## ШАБЛОН ТЗ (писать только после закрытия всех тем):
+## ЗАВЕРШЕНИЕ (после всех 8 тем):
+Напиши строго в таком формате — сначала проверку, потом ТЗ:
 
+[ТЕМА:8]
+ТЗ_ПРОВЕРКА
+Вот что я узнал о вашем проекте:
+• Бизнес: [коротко]
+• Аудитория: [коротко]
+• Дизайн: [коротко]
+• Структура: [коротко]
+• Контент: [коротко]
+• Интеграции: [коротко]
+• Воронки: [коротко]
+• Контакт клиента: [имя и контакт]
 ТЗ_ГОТОВО
 # Техническое задание на разработку сайта
 Дата: {date.today().strftime('%d.%m.%Y')}
@@ -173,7 +204,10 @@ BASE_SYSTEM = f"""Ты — ИИ-помощник для сбора технич�
 [кнопки, pop-up, автоответы]
 
 ## 10. Дополнительные пожелания
-[всё остальное]"""
+[всё остальное]
+
+## 11. Контактные данные клиента
+[имя и способ связи]"""
 
 SITE_TYPE_HINTS = {
     "landing":   "Клиент выбрал: Лендинг. Фокусируй вопросы на целевом действии, оффере и воронке продаж.",
@@ -190,6 +224,13 @@ def build_system(site_type: str) -> str:
     return f"{BASE_SYSTEM}\n\n## ТИП САЙТА\n{hint}"
 
 
+def progress_text(n: int) -> str:
+    name = TOPIC_NAMES.get(n, "")
+    done = "●" * n
+    todo = "○" * (8 - n)
+    return f"📍 Тема {n}/8 — {name}\n{done}{todo}"
+
+
 # ─── KEYBOARDS ────────────────────────────────────────────────────────────────
 
 def start_keyboard() -> InlineKeyboardMarkup:
@@ -203,12 +244,40 @@ def start_keyboard() -> InlineKeyboardMarkup:
     ])
 
 
-def nav_keyboard(has_prev: bool) -> InlineKeyboardMarkup | None:
-    if not has_prev:
-        return None
-    return InlineKeyboardMarkup([
-        [InlineKeyboardButton("◀️ Вернуться к предыдущему вопросу", callback_data="go_back")]
-    ])
+def nav_keyboard(step_count: int) -> InlineKeyboardMarkup | None:
+    buttons = []
+    if step_count > 0:
+        buttons.append([InlineKeyboardButton("◀️ Предыдущий вопрос", callback_data="go_back")])
+    if step_count > 1:
+        buttons.append([InlineKeyboardButton("✏️ Изменить любой ответ", callback_data="edit_menu")])
+    return InlineKeyboardMarkup(buttons) if buttons else None
+
+
+def steps_keyboard(steps: list) -> InlineKeyboardMarkup:
+    buttons = []
+    show = steps[-8:] if len(steps) > 8 else steps
+    offset = len(steps) - len(show)
+    for i, step in enumerate(show):
+        real_idx = offset + i
+        q = step["question"].replace("\n", " ")
+        label = (q[:38] + "…") if len(q) > 38 else q
+        buttons.append([InlineKeyboardButton(f"{real_idx + 1}. {label}", callback_data=f"edit_{real_idx}")])
+    buttons.append([InlineKeyboardButton("❌ Отмена", callback_data="edit_cancel")])
+    return InlineKeyboardMarkup(buttons)
+
+
+def confirm_keyboard() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup([[
+        InlineKeyboardButton("✅ Всё верно, создать ТЗ", callback_data="confirm_tz"),
+        InlineKeyboardButton("✏️ Дополнить", callback_data="reject_tz"),
+    ]])
+
+
+def consent_keyboard() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup([[
+        InlineKeyboardButton("✅ Согласен", callback_data="consent_yes"),
+        InlineKeyboardButton("❌ Отказаться", callback_data="consent_no"),
+    ]])
 
 
 # ─── URL ENRICHMENT ───────────────────────────────────────────────────────────
@@ -217,17 +286,16 @@ def fetch_url_info(url: str) -> str:
     try:
         import requests
         from bs4 import BeautifulSoup
-        r = requests.get(url, timeout=6, headers={"User-Agent": "Mozilla/5.0"})
+        r    = requests.get(url, timeout=6, headers={"User-Agent": "Mozilla/5.0"})
         soup = BeautifulSoup(r.text, "html.parser")
         title = soup.find("title")
-        desc = soup.find("meta", attrs={"name": "description"})
-        info = f"[Сайт: {url}"
+        desc  = soup.find("meta", attrs={"name": "description"})
+        info  = f"[Сайт: {url}"
         if title:
             info += f" | {title.get_text(strip=True)}"
         if desc and desc.get("content"):
             info += f" — {desc['content'][:200]}"
-        info += "]"
-        return info
+        return info + "]"
     except Exception as e:
         logger.warning(f"fetch_url_info {url}: {e}")
         return f"[Ссылка: {url}]"
@@ -257,11 +325,56 @@ def call_claude_sync(system: str, messages: list, max_tokens: int = 800) -> str:
     return resp.content[0].text
 
 
+# ─── TZ SENDER ────────────────────────────────────────────────────────────────
+
+async def _send_tz(message, context, session: dict, tz_text: str):
+    type_label = SITE_TYPES.get(session["site_type"], "Сайт")
+    chat_id    = message.chat_id
+
+    bio = BytesIO(tz_text.encode("utf-8"))
+    await message.reply_document(
+        document=bio,
+        filename="ТЗ_на_сайт.txt",
+        caption=(
+            f"✅ Ваше ТЗ на *{type_label}* готово!\n\n"
+            "Передайте файл Александру или напишите ему:\n"
+            "👉 @alex\\_prohar"
+        ),
+        parse_mode="Markdown",
+    )
+
+    chat      = await context.bot.get_chat(chat_id)
+    username  = f"@{chat.username}" if chat.username else "без username"
+    full_name = chat.full_name or "Клиент"
+
+    contact_hint = ""
+    if "Контактные данные клиента" in tz_text:
+        part = tz_text.split("Контактные данные клиента", 1)[1][:150].strip()
+        contact_hint = f"\nКонтакт: {part}"
+
+    await context.bot.send_message(
+        chat_id=ALEXANDER_CHAT_ID,
+        text=(
+            f"🔔 Новая заявка с ТЗ!\n\n"
+            f"От: {full_name} ({username})\n"
+            f"Тип: {type_label}"
+            f"{contact_hint}\n\n"
+            f"Превью:\n{tz_text[:500]}..."
+        ),
+    )
+    bio2 = BytesIO(tz_text.encode("utf-8"))
+    await context.bot.send_document(
+        chat_id=ALEXANDER_CHAT_ID,
+        document=bio2,
+        filename=f"ТЗ_{full_name}.txt",
+    )
+    db_delete(chat_id)
+
+
 # ─── CORE PROCESS ─────────────────────────────────────────────────────────────
 
 async def _process(update: Update, context: ContextTypes.DEFAULT_TYPE,
                    session: dict, user_content, user_label: str):
-    """Send user input to Claude, save step, reply with nav keyboard."""
     type_label = SITE_TYPES.get(session["site_type"], "Сайт")
     system     = build_system(session["site_type"])
     messages   = build_messages(type_label, session["first_msg"], session["steps"], user_content)
@@ -277,72 +390,71 @@ async def _process(update: Update, context: ContextTypes.DEFAULT_TYPE,
             pass
         return
 
-    if "ТЗ_ГОТОВО" in reply:
-        await update.message.reply_text("✅ Отлично! Формирую ваше ТЗ... ⏳")
-        tz_text = reply.split("ТЗ_ГОТОВО", 1)[1].strip()
+    # Extract and strip topic marker
+    m         = TOPIC_RE.search(reply)
+    topic_num = int(m.group(1)) if m else None
+    clean     = TOPIC_RE.sub("", reply).strip()
 
-        bio = BytesIO(tz_text.encode("utf-8"))
-        await update.message.reply_document(
-            document=bio,
-            filename="ТЗ_на_сайт.txt",
-            caption=(
-                f"✅ Ваше ТЗ на *{type_label}* готово!\n\n"
-                "Передайте файл Александру или напишите ему:\n"
-                "👉 @alex\\_prohar"
-            ),
-            parse_mode="Markdown",
-        )
+    # ── Confirmation stage ──────────────────────────────────────────────────
+    if "ТЗ_ПРОВЕРКА" in clean:
+        after = clean.split("ТЗ_ПРОВЕРКА", 1)[1].strip()
+        if "ТЗ_ГОТОВО" in after:
+            summary, tz_text = after.split("ТЗ_ГОТОВО", 1)
+            summary  = summary.strip()
+            tz_text  = tz_text.strip()
 
-        user     = update.effective_user
-        username = f"@{user.username}" if user.username else "без username"
-        await context.bot.send_message(
-            chat_id=ALEXANDER_CHAT_ID,
-            text=(
-                f"🔔 Новая заявка с ТЗ!\n\n"
-                f"От: {user.full_name} ({username})\n"
-                f"Тип: {type_label}\n\n"
-                f"Превью:\n{tz_text[:600]}..."
-            ),
-        )
-        bio2 = BytesIO(tz_text.encode("utf-8"))
-        await context.bot.send_document(
-            chat_id=ALEXANDER_CHAT_ID,
-            document=bio2,
-            filename=f"ТЗ_{user.full_name}.txt",
-        )
+            new_step  = {"question": session["cur_q"], "user": user_label, "bot": clean}
+            new_steps = session["steps"] + [new_step]
+            db_save(chat_id,
+                    site_type=session["site_type"],
+                    first_msg=session["first_msg"],
+                    steps=new_steps,
+                    cur_q=clean,
+                    pending_tz=tz_text)
 
-        db_delete(chat_id)
+            await update.message.reply_text(
+                f"📋 *Проверьте собранную информацию:*\n\n{summary}\n\n"
+                "Всё верно или хотите что-то дополнить?",
+                parse_mode="Markdown",
+                reply_markup=confirm_keyboard(),
+            )
+            return
+
+    # ── Direct TZ (fallback without ПРОВЕРКА) ──────────────────────────────
+    if "ТЗ_ГОТОВО" in clean:
+        tz_text = clean.split("ТЗ_ГОТОВО", 1)[1].strip()
+        await update.message.reply_text("✅ Формирую ТЗ... ⏳")
+        await _send_tz(update.message, context, session, tz_text)
         return
 
-    new_steps = session["steps"] + [
-        {"question": session["cur_q"], "user": user_label, "bot": reply}
-    ]
+    # ── Normal question flow ────────────────────────────────────────────────
+    if topic_num:
+        await update.message.reply_text(progress_text(topic_num))
+
+    new_step  = {"question": session["cur_q"], "user": user_label, "bot": clean}
+    new_steps = session["steps"] + [new_step]
     db_save(chat_id,
             site_type=session["site_type"],
             first_msg=session["first_msg"],
             steps=new_steps,
-            cur_q=reply)
+            cur_q=clean)
 
-    await update.message.reply_text(reply, reply_markup=nav_keyboard(len(new_steps) > 0))
+    await update.message.reply_text(clean, reply_markup=nav_keyboard(len(new_steps)))
 
 
-def _no_session_reply(session, context):
-    """Return kwargs for "session lost" or "not started" message."""
-    site_type = context.user_data.get("site_type") if not session else None
+def _no_session_reply(context: ContextTypes.DEFAULT_TYPE) -> dict:
+    site_type = context.user_data.get("site_type")
     if site_type:
         label = SITE_TYPES.get(site_type, "Сайт")
         return {
             "text": (
-                f"⚠️ Сессия прервалась — бот перезапускался, история диалога сброшена.\n\n"
+                f"⚠️ Сессия прервалась — бот перезапускался.\n\n"
                 f"Вы выбирали: *{label}*\n\nНачнём заново 👇"
             ),
             "parse_mode": "Markdown",
             "reply_markup": start_keyboard(),
         }
-    return {
-        "text": "👋 Нажмите /start чтобы начать составление ТЗ.",
-        "reply_markup": start_keyboard(),
-    }
+    return {"text": "👋 Нажмите /start чтобы начать составление ТЗ.", "reply_markup": start_keyboard()}
 
 
 # ─── HANDLERS ─────────────────────────────────────────────────────────────────
@@ -352,10 +464,31 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     context.user_data.clear()
     await update.message.reply_text(
         "👋 Привет! Я помогу составить техническое задание на ваш сайт.\n\n"
-        "Это займёт 5–10 минут. Задам несколько вопросов, а в конце пришлю готовое ТЗ.\n\n"
-        "*Какой сайт вы хотите создать?*",
+        "В процессе интервью я запрошу ваше имя и контакт для обратной связи.\n\n"
+        "📄 Нажимая «Согласен», вы подтверждаете согласие на обработку персональных данных "
+        "в соответствии с [Политикой конфиденциальности](https://prohar2f-pixel.github.io/my-first-project/privacy.html).",
+        parse_mode="Markdown",
+        reply_markup=consent_keyboard(),
+        disable_web_page_preview=True,
+    )
+
+
+async def handle_consent_yes(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    query = update.callback_query
+    await query.answer()
+    await query.edit_message_text(
+        "✅ Спасибо!\n\n*Какой сайт вы хотите создать?*",
         parse_mode="Markdown",
         reply_markup=start_keyboard(),
+    )
+
+
+async def handle_consent_no(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    query = update.callback_query
+    await query.answer()
+    await query.edit_message_text(
+        "Понял. Без согласия на обработку данных я не могу начать интервью.\n\n"
+        "Если передумаете — нажмите /start"
     )
 
 
@@ -368,7 +501,6 @@ async def reset(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 async def handle_type_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     query      = update.callback_query
     await query.answer()
-
     site_type  = query.data.replace("type_", "")
     chat_id    = query.message.chat_id
     type_label = SITE_TYPES.get(site_type, "Сайт")
@@ -382,8 +514,9 @@ async def handle_type_callback(update: Update, context: ContextTypes.DEFAULT_TYP
             call_claude_sync, system,
             [{"role": "user", "content": f"Я хочу {type_label}"}], 600
         )
-        db_save(chat_id, site_type=site_type, first_msg=first_msg, steps=[], cur_q=first_msg)
-        await query.message.reply_text(first_msg)
+        clean_first = TOPIC_RE.sub("", first_msg).strip()
+        db_save(chat_id, site_type=site_type, first_msg=clean_first, steps=[], cur_q=clean_first)
+        await query.message.reply_text(clean_first)
     except Exception as e:
         logger.error(f"handle_type_callback: {e}", exc_info=True)
         await query.message.reply_text("❌ Ошибка. Попробуй ещё раз /start")
@@ -401,38 +534,105 @@ async def handle_back_callback(update: Update, context: ContextTypes.DEFAULT_TYP
 
     last_step = session["steps"][-1]
     new_steps = session["steps"][:-1]
-    prev_q    = last_step["question"]
+    db_save(chat_id,
+            site_type=session["site_type"],
+            first_msg=session["first_msg"],
+            steps=new_steps,
+            cur_q=last_step["question"])
+
+    await query.message.reply_text(
+        f"↩️ Вернулись к вопросу:\n\n{last_step['question']}",
+        reply_markup=nav_keyboard(len(new_steps)),
+    )
+
+
+async def handle_edit_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    query   = update.callback_query
+    await query.answer()
+    chat_id = query.message.chat_id
+
+    session = db_get(chat_id)
+    if not session or not session["steps"]:
+        await query.message.reply_text("Нечего редактировать.")
+        return
+
+    await query.message.reply_text(
+        "Выберите вопрос, ответ на который хотите изменить:",
+        reply_markup=steps_keyboard(session["steps"]),
+    )
+
+
+async def handle_edit_step(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    query    = update.callback_query
+    await query.answer()
+    chat_id  = query.message.chat_id
+    step_idx = int(query.data.replace("edit_", ""))
+
+    session = db_get(chat_id)
+    if not session or step_idx >= len(session["steps"]):
+        await query.message.reply_text("❌ Шаг не найден.")
+        return
+
+    target_q  = session["steps"][step_idx]["question"]
+    new_steps = session["steps"][:step_idx]
 
     db_save(chat_id,
             site_type=session["site_type"],
             first_msg=session["first_msg"],
             steps=new_steps,
-            cur_q=prev_q)
+            cur_q=target_q)
 
-    await query.message.reply_text(
-        f"↩️ Вернулись к предыдущему вопросу:\n\n{prev_q}",
-        reply_markup=nav_keyboard(len(new_steps) > 0),
+    await query.edit_message_text(
+        f"✏️ Возвращаемся к вопросу:\n\n{target_q}",
+        reply_markup=nav_keyboard(len(new_steps)),
+    )
+
+
+async def handle_edit_cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    query = update.callback_query
+    await query.answer()
+    try:
+        await query.delete_message()
+    except Exception:
+        await query.edit_message_text("❌ Отменено.")
+
+
+async def handle_confirm_tz(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    query   = update.callback_query
+    await query.answer()
+    chat_id = query.message.chat_id
+
+    session = db_get(chat_id)
+    if not session or not session.get("pending_tz"):
+        await query.message.reply_text("❌ ТЗ не найдено. Напиши /start")
+        return
+
+    await query.edit_message_text("✅ Отлично! Формирую ТЗ... ⏳")
+    await _send_tz(query.message, context, session, session["pending_tz"])
+
+
+async def handle_reject_tz(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    query = update.callback_query
+    await query.answer()
+    await query.edit_message_text(
+        "Хорошо! ✏️ Напишите что хотите уточнить или добавить — продолжим интервью."
     )
 
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    chat_id  = update.effective_chat.id
-    session  = db_get(chat_id)
+    chat_id = update.effective_chat.id
+    session = db_get(chat_id)
 
     if not session:
-        await update.message.reply_text(**_no_session_reply(session, context))
+        await update.message.reply_text(**_no_session_reply(context))
         return
 
     user_text = update.message.text
-
-    # Enrich URLs found in the message
-    urls = URL_RE.findall(user_text)
+    urls      = URL_RE.findall(user_text)
     if urls:
         await update.message.reply_text("🔗 Смотрю ссылку... ⏳")
-        url_infos = await asyncio.gather(
-            *[asyncio.to_thread(fetch_url_info, u) for u in urls]
-        )
-        enriched = user_text + "\n\n" + "\n".join(url_infos)
+        url_infos = await asyncio.gather(*[asyncio.to_thread(fetch_url_info, u) for u in urls])
+        enriched  = user_text + "\n\n" + "\n".join(url_infos)
     else:
         enriched = user_text
 
@@ -442,35 +642,22 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
 async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     chat_id = update.effective_chat.id
     session = db_get(chat_id)
-
     if not session:
-        await update.message.reply_text(**_no_session_reply(session, context))
+        await update.message.reply_text(**_no_session_reply(context))
         return
 
     await update.message.reply_text("📸 Анализирую изображение... ⏳")
-
     photo   = update.message.photo[-1]
     tg_file = await context.bot.get_file(photo.file_id)
     buf     = BytesIO()
     await tg_file.download_to_memory(buf)
     img_b64 = base64.standard_b64encode(buf.getvalue()).decode()
-
     caption = update.message.caption or ""
     label   = f"[📸 Изображение]{' — ' + caption if caption else ''}"
 
     user_content = [
-        {
-            "type": "image",
-            "source": {"type": "base64", "media_type": "image/jpeg", "data": img_b64},
-        },
-        {
-            "type": "text",
-            "text": (
-                "Вот визуальный референс — пример того, что мне нравится по стилю/дизайну."
-                + (f" {caption}" if caption else "")
-                + " Проанализируй что видишь (стиль, цвета, компоновку) и продолжи интервью."
-            ),
-        },
+        {"type": "image", "source": {"type": "base64", "media_type": "image/jpeg", "data": img_b64}},
+        {"type": "text",  "text": f"Визуальный референс.{' ' + caption if caption else ''} Проанализируй стиль и продолжи интервью."},
     ]
     await _process(update, context, session, user_content, label)
 
@@ -478,9 +665,8 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     chat_id = update.effective_chat.id
     session = db_get(chat_id)
-
     if not session:
-        await update.message.reply_text(**_no_session_reply(session, context))
+        await update.message.reply_text(**_no_session_reply(context))
         return
 
     doc  = update.message.document
@@ -491,7 +677,6 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
         tg_file = await context.bot.get_file(doc.file_id)
         buf     = BytesIO()
         await tg_file.download_to_memory(buf)
-        raw     = buf.getvalue()
 
         def extract_pdf(data: bytes) -> str:
             import pdfplumber
@@ -505,15 +690,14 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
             return "\n".join(texts)[:3000]
 
         try:
-            pdf_text = await asyncio.to_thread(extract_pdf, raw)
+            pdf_text = await asyncio.to_thread(extract_pdf, buf.getvalue())
         except Exception as e:
             logger.error(f"PDF extract: {e}")
-            await update.message.reply_text("❌ Не удалось прочитать PDF. Опишите содержимое текстом.")
+            await update.message.reply_text("❌ Не удалось прочитать PDF. Опишите текстом.")
             return
 
-        label        = f"[📄 PDF: {doc.file_name}]"
-        user_content = f"{label}\n\n{pdf_text}"
-        await _process(update, context, session, user_content, label)
+        label = f"[📄 PDF: {doc.file_name}]"
+        await _process(update, context, session, f"{label}\n\n{pdf_text}", label)
 
     elif mime.startswith("image/"):
         await update.message.reply_text("📸 Анализирую изображение... ⏳")
@@ -521,23 +705,11 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
         buf     = BytesIO()
         await tg_file.download_to_memory(buf)
         img_b64 = base64.standard_b64encode(buf.getvalue()).decode()
-
         caption = update.message.caption or ""
         label   = f"[📸 Изображение (файл)]{' — ' + caption if caption else ''}"
-
         user_content = [
-            {
-                "type": "image",
-                "source": {"type": "base64", "media_type": mime, "data": img_b64},
-            },
-            {
-                "type": "text",
-                "text": (
-                    "Вот визуальный референс."
-                    + (f" {caption}" if caption else "")
-                    + " Проанализируй стиль и продолжи интервью."
-                ),
-            },
+            {"type": "image", "source": {"type": "base64", "media_type": mime, "data": img_b64}},
+            {"type": "text",  "text": f"Визуальный референс.{' ' + caption if caption else ''} Проанализируй стиль и продолжи интервью."},
         ]
         await _process(update, context, session, user_content, label)
 
@@ -552,40 +724,33 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
 async def handle_voice(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     chat_id = update.effective_chat.id
     session = db_get(chat_id)
-
     if not session:
-        await update.message.reply_text(**_no_session_reply(session, context))
+        await update.message.reply_text(**_no_session_reply(context))
         return
 
     await update.message.reply_text("🎤 Распознаю голос... ⏳")
-
     voice   = update.message.voice
     tg_file = await context.bot.get_file(voice.file_id)
     buf     = BytesIO()
     await tg_file.download_to_memory(buf)
-    ogg_bytes = buf.getvalue()
 
     def transcribe(data: bytes) -> str:
         import speech_recognition as sr
         from pydub import AudioSegment
-
         audio = AudioSegment.from_ogg(BytesIO(data))
         wav   = BytesIO()
         audio.export(wav, format="wav")
         wav.seek(0)
-
         r = sr.Recognizer()
         with sr.AudioFile(wav) as src:
             audio_data = r.record(src)
         return r.recognize_google(audio_data, language="ru-RU")
 
     try:
-        text = await asyncio.to_thread(transcribe, ogg_bytes)
+        text = await asyncio.to_thread(transcribe, buf.getvalue())
     except Exception as e:
         logger.error(f"Voice transcription error: {e}")
-        await update.message.reply_text(
-            "❌ Не удалось распознать голос — попробуйте ещё раз или напишите текстом."
-        )
+        await update.message.reply_text("❌ Не удалось распознать — попробуйте ещё раз или напишите текстом.")
         return
 
     await update.message.reply_text(f"🎤 _«{text}»_", parse_mode="Markdown")
@@ -597,11 +762,11 @@ async def handle_other(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     session = db_get(chat_id)
     if session:
         await update.message.reply_text(
-            "📝 Я понимаю текст, голосовые сообщения, изображения, PDF и ссылки.\n"
+            "📝 Я понимаю текст, голосовые, изображения, PDF и ссылки.\n"
             "Напишите ответ, запишите голосовое или пришлите скриншот / файл."
         )
     else:
-        await update.message.reply_text(**_no_session_reply(session, context))
+        await update.message.reply_text(**_no_session_reply(context))
 
 
 async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -622,13 +787,20 @@ def main() -> None:
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("reset", reset))
 
+    app.add_handler(CallbackQueryHandler(handle_consent_yes,   pattern="^consent_yes$"))
+    app.add_handler(CallbackQueryHandler(handle_consent_no,    pattern="^consent_no$"))
     app.add_handler(CallbackQueryHandler(handle_type_callback, pattern="^type_"))
     app.add_handler(CallbackQueryHandler(handle_back_callback, pattern="^go_back$"))
+    app.add_handler(CallbackQueryHandler(handle_edit_menu,     pattern="^edit_menu$"))
+    app.add_handler(CallbackQueryHandler(handle_edit_step,     pattern=r"^edit_\d+$"))
+    app.add_handler(CallbackQueryHandler(handle_edit_cancel,   pattern="^edit_cancel$"))
+    app.add_handler(CallbackQueryHandler(handle_confirm_tz,    pattern="^confirm_tz$"))
+    app.add_handler(CallbackQueryHandler(handle_reject_tz,     pattern="^reject_tz$"))
 
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
-    app.add_handler(MessageHandler(filters.PHOTO, handle_photo))
+    app.add_handler(MessageHandler(filters.PHOTO,        handle_photo))
     app.add_handler(MessageHandler(filters.Document.ALL, handle_document))
-    app.add_handler(MessageHandler(filters.VOICE, handle_voice))
+    app.add_handler(MessageHandler(filters.VOICE,        handle_voice))
     app.add_handler(MessageHandler(~filters.TEXT & ~filters.COMMAND, handle_other))
 
     app.add_error_handler(error_handler)
