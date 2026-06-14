@@ -34,8 +34,8 @@ let config = {
     SIM_RESOLUTION: 128,
     DYE_RESOLUTION: 1024,
     CAPTURE_RESOLUTION: 512,
-    DENSITY_DISSIPATION: 1,
-    VELOCITY_DISSIPATION: 0.2,
+    DENSITY_DISSIPATION: 0.3,
+    VELOCITY_DISSIPATION: 0.1,
     PRESSURE: 0.8,
     PRESSURE_ITERATIONS: 20,
     CURL: 30,
@@ -1471,9 +1471,9 @@ function correctDeltaY (delta) {
 function generateColor () {
     // purple/violet hue range: 0.70–0.82
     let c = HSVtoRGB(0.70 + Math.random() * 0.12, 0.9, 1.0);
-    c.r *= 0.5;
-    c.g *= 0.5;
-    c.b *= 0.5;
+    c.r *= 1.5;
+    c.g *= 1.5;
+    c.b *= 1.5;
     return c;
 }
 
