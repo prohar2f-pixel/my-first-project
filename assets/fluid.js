@@ -1471,9 +1471,9 @@ function correctDeltaY (delta) {
 function generateColor () {
     // purple/violet hue range: 0.70–0.82
     let c = HSVtoRGB(0.70 + Math.random() * 0.12, 0.9, 1.0);
-    c.r *= 0.7;
-    c.g *= 0.7;
-    c.b *= 0.7;
+    c.r *= 0.1;
+    c.g *= 0.1;
+    c.b *= 0.1;
     return c;
 }
 
