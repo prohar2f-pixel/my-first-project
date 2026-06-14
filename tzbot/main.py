@@ -549,13 +549,56 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
         )
 
 
+async def handle_voice(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    chat_id = update.effective_chat.id
+    session = db_get(chat_id)
+
+    if not session:
+        await update.message.reply_text(**_no_session_reply(session, context))
+        return
+
+    await update.message.reply_text("🎤 Распознаю голос... ⏳")
+
+    voice   = update.message.voice
+    tg_file = await context.bot.get_file(voice.file_id)
+    buf     = BytesIO()
+    await tg_file.download_to_memory(buf)
+    ogg_bytes = buf.getvalue()
+
+    def transcribe(data: bytes) -> str:
+        import speech_recognition as sr
+        from pydub import AudioSegment
+
+        audio = AudioSegment.from_ogg(BytesIO(data))
+        wav   = BytesIO()
+        audio.export(wav, format="wav")
+        wav.seek(0)
+
+        r = sr.Recognizer()
+        with sr.AudioFile(wav) as src:
+            audio_data = r.record(src)
+        return r.recognize_google(audio_data, language="ru-RU")
+
+    try:
+        text = await asyncio.to_thread(transcribe, ogg_bytes)
+    except Exception as e:
+        logger.error(f"Voice transcription error: {e}")
+        await update.message.reply_text(
+            "❌ Не удалось распознать голос — попробуйте ещё раз или напишите текстом."
+        )
+        return
+
+    await update.message.reply_text(f"🎤 _«{text}»_", parse_mode="Markdown")
+    await _process(update, context, session, text, f"[🎤 Голосовое] {text}")
+
+
 async def handle_other(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     chat_id = update.effective_chat.id
     session = db_get(chat_id)
     if session:
         await update.message.reply_text(
-            "📝 Я понимаю текст, изображения, PDF и ссылки.\n"
-            "Напишите ответ или пришлите скриншот / файл."
+            "📝 Я понимаю текст, голосовые сообщения, изображения, PDF и ссылки.\n"
+            "Напишите ответ, запишите голосовое или пришлите скриншот / файл."
         )
     else:
         await update.message.reply_text(**_no_session_reply(session, context))
@@ -585,6 +628,7 @@ def main() -> None:
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
     app.add_handler(MessageHandler(filters.PHOTO, handle_photo))
     app.add_handler(MessageHandler(filters.Document.ALL, handle_document))
+    app.add_handler(MessageHandler(filters.VOICE, handle_voice))
     app.add_handler(MessageHandler(~filters.TEXT & ~filters.COMMAND, handle_other))
 
     app.add_error_handler(error_handler)
