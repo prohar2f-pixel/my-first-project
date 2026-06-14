@@ -42,7 +42,7 @@ let config = {
     SPLAT_RADIUS: 0.25,
     SPLAT_FORCE: 6000,
     SHADING: true,
-    COLORFUL: false,
+    COLORFUL: true,
     COLOR_UPDATE_SPEED: 10,
     PAUSED: false,
     BACK_COLOR: { r: 0, g: 0, b: 0 },
@@ -1469,8 +1469,7 @@ function correctDeltaY (delta) {
 }
 
 function generateColor () {
-    // purple/violet hue range: 0.70–0.82
-    let c = HSVtoRGB(0.70 + Math.random() * 0.12, 0.9, 1.0);
+    let c = HSVtoRGB(Math.random(), 1.0, 1.0);
     c.r *= 0.15;
     c.g *= 0.15;
     c.b *= 0.15;
