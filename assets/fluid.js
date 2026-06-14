@@ -1373,10 +1373,11 @@ canvas.addEventListener('mousedown', e => {
     updatePointerDownData(pointer, -1, posX, posY);
 });
 
-canvas.addEventListener('mousemove', e => {
+window.addEventListener('mousemove', e => {
     let pointer = pointers[0];
-    let posX = scaleByPixelRatio(e.offsetX);
-    let posY = scaleByPixelRatio(e.offsetY);
+    let rect = canvas.getBoundingClientRect();
+    let posX = scaleByPixelRatio(e.clientX - rect.left);
+    let posY = scaleByPixelRatio(e.clientY - rect.top);
     updatePointerMoveData(pointer, posX, posY);
 });
 
