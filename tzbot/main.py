@@ -1,12 +1,14 @@
 import os
 import asyncio
 import logging
-import sqlite3
 import json
 import base64
 import re
 from io import BytesIO
 from datetime import date
+
+import psycopg2
+import psycopg2.pool
 
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, BotCommand
 from telegram.ext import (
@@ -24,32 +26,56 @@ ALEXANDER_CHAT_ID = int(os.environ["ALEXANDER_CHAT_ID"])
 
 claude = anthropic.Anthropic(api_key=CLAUDE_API_KEY)
 
-DB_PATH = "tzbot.db"
 URL_RE = re.compile(r'https?://[^\s]+')
+
+_pool: psycopg2.pool.ThreadedConnectionPool | None = None
 
 
 # ─── DATABASE ─────────────────────────────────────────────────────────────────
 
+def _get_pool() -> psycopg2.pool.ThreadedConnectionPool:
+    global _pool
+    if _pool is None:
+        _pool = psycopg2.pool.ThreadedConnectionPool(
+            1, 10, os.environ["DATABASE_URL"]
+        )
+    return _pool
+
+
+def _exec(sql: str, params: tuple = (), fetch: bool = False):
+    pool = _get_pool()
+    conn = pool.getconn()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(sql, params)
+            result = cur.fetchone() if fetch else None
+        conn.commit()
+        return result
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        pool.putconn(conn)
+
+
 def db_init():
-    with sqlite3.connect(DB_PATH) as conn:
-        conn.execute("""
-            CREATE TABLE IF NOT EXISTS sessions (
-                chat_id    INTEGER PRIMARY KEY,
-                site_type  TEXT,
-                first_msg  TEXT DEFAULT '',
-                steps      TEXT DEFAULT '[]',
-                cur_q      TEXT DEFAULT '',
-                updated_at REAL DEFAULT (strftime('%s','now'))
-            )
-        """)
+    _exec("""
+        CREATE TABLE IF NOT EXISTS sessions (
+            chat_id    BIGINT PRIMARY KEY,
+            site_type  TEXT,
+            first_msg  TEXT DEFAULT '',
+            steps      TEXT DEFAULT '[]',
+            cur_q      TEXT DEFAULT '',
+            updated_at BIGINT DEFAULT extract(epoch from now())::BIGINT
+        )
+    """)
 
 
 def db_get(chat_id: int) -> dict | None:
-    with sqlite3.connect(DB_PATH) as conn:
-        row = conn.execute(
-            "SELECT site_type, first_msg, steps, cur_q FROM sessions WHERE chat_id=?",
-            (chat_id,)
-        ).fetchone()
+    row = _exec(
+        "SELECT site_type, first_msg, steps, cur_q FROM sessions WHERE chat_id=%s",
+        (chat_id,), fetch=True
+    )
     if not row:
         return None
     return {
@@ -61,23 +87,21 @@ def db_get(chat_id: int) -> dict | None:
 
 
 def db_save(chat_id: int, *, site_type: str, first_msg: str, steps: list, cur_q: str):
-    with sqlite3.connect(DB_PATH) as conn:
-        conn.execute("""
-            INSERT INTO sessions (chat_id, site_type, first_msg, steps, cur_q)
-            VALUES (?, ?, ?, ?, ?)
-            ON CONFLICT(chat_id) DO UPDATE SET
-                site_type=excluded.site_type,
-                first_msg=excluded.first_msg,
-                steps=excluded.steps,
-                cur_q=excluded.cur_q,
-                updated_at=strftime('%s','now')
-        """, (chat_id, site_type, first_msg,
-              json.dumps(steps, ensure_ascii=False), cur_q))
+    _exec("""
+        INSERT INTO sessions (chat_id, site_type, first_msg, steps, cur_q)
+        VALUES (%s, %s, %s, %s, %s)
+        ON CONFLICT (chat_id) DO UPDATE SET
+            site_type  = EXCLUDED.site_type,
+            first_msg  = EXCLUDED.first_msg,
+            steps      = EXCLUDED.steps,
+            cur_q      = EXCLUDED.cur_q,
+            updated_at = extract(epoch from now())::BIGINT
+    """, (chat_id, site_type, first_msg,
+          json.dumps(steps, ensure_ascii=False), cur_q))
 
 
 def db_delete(chat_id: int):
-    with sqlite3.connect(DB_PATH) as conn:
-        conn.execute("DELETE FROM sessions WHERE chat_id=?", (chat_id,))
+    _exec("DELETE FROM sessions WHERE chat_id=%s", (chat_id,))
 
 
 # ─── CONSTANTS ────────────────────────────────────────────────────────────────
