@@ -382,6 +382,18 @@ footer{padding:52px 0 36px;text-align:center}
 .f-copy{color:rgba(107,107,107,.28);font-size:.72rem}
 
 /* ── RESPONSIVE ─────────────────────────── */
+.tzbot-layout{display:flex;align-items:center;gap:64px}
+.tzbot-img{flex:0 0 44%;max-width:44%}
+.tzbot-img img{width:100%;height:auto;display:block}
+.tzbot-text{flex:1;min-width:0}
+.tzbot-text .sec-h{text-align:left;margin-bottom:14px}
+.tzbot-text .sec-label{text-align:left}
+.tzbot-text .sec-sub{text-align:left;margin-bottom:0}
+.tzbot-steps{display:flex;flex-direction:column;gap:18px;margin:28px 0 36px}
+.tzbot-step{display:flex;align-items:flex-start;gap:14px}
+.tzbot-step-num{flex-shrink:0;width:38px;height:38px;border-radius:50%;background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.35);display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:700;color:var(--p)}
+.tzbot-step-body h4{font-size:.98rem;font-weight:600;margin:0 0 4px;color:#fff}
+.tzbot-step-body p{font-size:.82rem;color:rgba(255,255,255,.5);margin:0}
 @media(max-width:1024px){
   .trust-grid{grid-template-columns:repeat(2,1fr)}
   .cta-inner{grid-template-columns:1fr}
@@ -416,6 +428,9 @@ footer{padding:52px 0 36px;text-align:center}
   .hn1,.hn2{font-size:clamp(2.8rem,10vw,4.2rem)}
   .hero-content{padding:0 20px}
   .srv-grid,.res-grid{grid-template-columns:1fr}
+  .tzbot-layout{flex-direction:column;gap:40px}
+  .tzbot-img{max-width:420px;width:100%}
+  .tzbot-text .sec-h,.tzbot-text .sec-label,.tzbot-text .sec-sub{text-align:center}
   .guarantee{flex-direction:column;gap:18px;text-align:center;padding:28px 20px}
   .cta-inner{grid-template-columns:1fr;gap:0}
   .cta-feats{grid-template-columns:repeat(2,1fr);margin:0 -20px;padding:20px}
@@ -449,12 +464,13 @@ footer{padding:52px 0 36px;text-align:center}
 
 <!-- HEADER -->
 <header>
-  <a href="#" class="logo logo-img"><img src="logo.png" alt="АП" style="height:60px;width:auto;display:block"></a>
+  <a href="#" class="logo logo-img"><img src="assets/logo.png" alt="АП" style="height:60px;width:auto;display:block"></a>
   <nav id="nav">
     <a href="#about">Обо мне</a>
     <a href="#services">Что делаю</a>
     <a href="#trust">Преимущества</a>
     <a href="#results">Результат</a>
+    <a href="#tzbot">ТЗ-бот</a>
     <a href="#contact">Контакты</a>
   </nav>
   <button class="nav-toggle" id="navToggle" aria-label="Меню">
@@ -469,7 +485,7 @@ footer{padding:52px 0 36px;text-align:center}
 
   <!-- photo -->
   <div class="hero-photo">
-    <img src="photo.jpg" alt="Александр Прохоров">
+    <img src="assets/photo.jpg" alt="Александр Прохоров">
   </div>
 
   <!-- content -->
@@ -816,6 +832,74 @@ footer{padding:52px 0 36px;text-align:center}
 
 <div class="divider"></div>
 
+<!-- ═══════════════════════════════════ TZ BOT -->
+<section id="tzbot" style="position:relative;overflow:hidden">
+
+  <!-- smoke bg -->
+  <div style="position:absolute;left:50%;top:0;transform:translateX(-50%);width:900px;height:100%;pointer-events:none;z-index:1">
+    <div style="position:absolute;left:50%;top:20%;transform:translateX(-50%);width:700px;height:500px;
+      background:radial-gradient(ellipse at 50% 40%,rgba(120,0,255,.16) 0%,rgba(168,85,247,.08) 40%,transparent 70%);
+      filter:blur(48px)"></div>
+  </div>
+
+  <div class="wrap" style="position:relative;z-index:2">
+    <div class="tzbot-layout">
+
+      <!-- LEFT: image -->
+      <div class="tzbot-img">
+        <img src="assets/tzbot_hero.png" alt="ИИ-бот берёт интервью для ТЗ">
+      </div>
+
+      <!-- RIGHT: text -->
+      <div class="tzbot-text">
+        <div class="sec-label">Умный помощник</div>
+        <h2 class="sec-h" style="font-size:clamp(2rem,3.6vw,3rem);margin-bottom:14px">Получите ТЗ на сайт<br><span>за 5–10 минут</span></h2>
+        <p class="sec-sub" style="margin-bottom:0;font-size:.95rem">Бот задаст нужные вопросы о вашем бизнесе<br>и пришлёт готовое техническое задание.</p>
+
+        <!-- steps -->
+        <div class="tzbot-steps">
+
+          <div class="tzbot-step">
+            <div class="tzbot-step-num">1</div>
+            <div class="tzbot-step-body">
+              <h4>Выберите тип сайта</h4>
+              <p>Лендинг, магазин, портфолио или визитка — бот подстраивается под ваш запрос.</p>
+            </div>
+          </div>
+
+          <div class="tzbot-step">
+            <div class="tzbot-step-num">2</div>
+            <div class="tzbot-step-body">
+              <h4>Ответьте на вопросы</h4>
+              <p>Бизнес, дизайн, структура, контент, интеграции — по одному вопросу за раз.</p>
+            </div>
+          </div>
+
+          <div class="tzbot-step">
+            <div class="tzbot-step-num">3</div>
+            <div class="tzbot-step-body">
+              <h4>Получите готовое ТЗ</h4>
+              <p>Бот пришлёт файл, я получу уведомление и свяжусь с вами.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <a href="https://t.me/prohar_tz_bot" target="_blank" rel="noopener" class="btn btn-primary" style="display:inline-flex;align-items:center;gap:10px;font-size:1rem;padding:15px 36px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M21.2 2.5L2.5 9.9c-1.3.5-1.2 1.3-.2 1.6l4.7 1.5 1.8 5.5c.2.6.4.8 1 .8.4 0 .7-.2 1-.4l2.4-2.3 4.8 3.5c.9.5 1.5.2 1.7-.8l3-14.1c.3-1.3-.5-1.9-1.5-1.7z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Получить ТЗ бесплатно
+        </a>
+        <p style="margin-top:12px;font-size:.78rem;color:rgba(255,255,255,.35)">Занимает 5–10 минут · Бесплатно · Файл сразу в Telegram</p>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
 <!-- ═══════════════════════════════════ CTA -->
 <section id="contact" style="padding:60px 40px 80px">
   <div class="cta-box fi">
@@ -852,8 +936,8 @@ footer{padding:52px 0 36px;text-align:center}
 
       <!-- RIGHT: photo -->
       <div class="cta-photo-wrap fi">
-        <img src="photo_cta.png" alt="Александр Прохоров" class="cta-photo">
-        <img src="photo_cta_mobile.png" alt="Александр Прохоров" class="cta-photo cta-photo-mobile">
+        <img src="assets/photo_cta.png" alt="Александр Прохоров" class="cta-photo">
+        <img src="assets/photo_cta_mobile.png" alt="Александр Прохоров" class="cta-photo cta-photo-mobile">
       </div>
     </div>
 
