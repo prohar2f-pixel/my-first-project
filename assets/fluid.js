@@ -1364,9 +1364,10 @@ function correctRadius (radius) {
     return radius;
 }
 
-canvas.addEventListener('mousedown', e => {
-    let posX = scaleByPixelRatio(e.offsetX);
-    let posY = scaleByPixelRatio(e.offsetY);
+window.addEventListener('mousedown', e => {
+    let rect = canvas.getBoundingClientRect();
+    let posX = scaleByPixelRatio(e.clientX - rect.left);
+    let posY = scaleByPixelRatio(e.clientY - rect.top);
     let pointer = pointers.find(p => p.id == -1);
     if (pointer == null)
         pointer = new pointerPrototype();
@@ -1375,6 +1376,8 @@ canvas.addEventListener('mousedown', e => {
 
 window.addEventListener('mousemove', e => {
     let pointer = pointers[0];
+    if (!pointer.color || Array.isArray(pointer.color))
+        pointer.color = generateColor();
     let rect = canvas.getBoundingClientRect();
     let posX = scaleByPixelRatio(e.clientX - rect.left);
     let posY = scaleByPixelRatio(e.clientY - rect.top);
