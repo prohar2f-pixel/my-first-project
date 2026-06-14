@@ -407,6 +407,30 @@ footer{padding:52px 0 36px;text-align:center}
 .price-feats li{font-size:.8rem;color:rgba(255,255,255,.65);padding-left:28px;position:relative;line-height:1.4}
 .price-feats li::before{content:'✓';position:absolute;left:0;top:0;width:18px;height:18px;border-radius:50%;background:rgba(168,85,247,.15);border:1px solid rgba(168,85,247,.4);color:var(--p);font-size:.6rem;font-weight:700;line-height:18px;text-align:center}
 
+/* ── ORDER BUTTON & MODAL ─── */
+.order-btn{margin-top:auto;padding-top:20px}
+.order-btn button{width:100%;padding:12px;background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;border:none;border-radius:12px;font-size:.88rem;font-weight:600;cursor:pointer;transition:opacity .2s,transform .15s;letter-spacing:.02em}
+.order-btn button:hover{opacity:.85;transform:translateY(-1px)}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal-box{background:#0f0f1a;border:1px solid rgba(168,85,247,.35);border-radius:20px;padding:36px 32px;width:100%;max-width:460px;position:relative;box-shadow:0 0 60px rgba(168,85,247,.15)}
+.modal-close{position:absolute;top:16px;right:20px;background:none;border:none;color:rgba(255,255,255,.35);font-size:1.5rem;cursor:pointer;line-height:1;padding:0}
+.modal-close:hover{color:rgba(255,255,255,.8)}
+.modal-title{font-size:1.25rem;font-weight:700;color:#fff;margin-bottom:6px}
+.modal-sub{font-size:.82rem;color:rgba(255,255,255,.4);margin-bottom:24px;line-height:1.5}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:.72rem;color:rgba(255,255,255,.45);margin-bottom:6px;text-transform:uppercase;letter-spacing:.07em}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(168,85,247,.2);border-radius:10px;padding:11px 14px;color:#fff;font-size:.88rem;outline:none;box-sizing:border-box;transition:border-color .2s;font-family:inherit}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:rgba(168,85,247,.6)}
+.form-group select option{background:#0f0f1a;color:#fff}
+.form-group textarea{height:88px;resize:none}
+.form-submit{width:100%;padding:13px;background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;border:none;border-radius:12px;font-size:.92rem;font-weight:600;cursor:pointer;margin-top:8px;transition:opacity .2s;font-family:inherit}
+.form-submit:hover{opacity:.85}
+.form-submit:disabled{opacity:.4;cursor:not-allowed}
+.form-success{text-align:center;padding:16px 0}
+.form-success-icon{font-size:3rem;margin-bottom:14px}
+.form-success h3{color:#fff;font-size:1.15rem;margin:0 0 8px}
+.form-success p{color:rgba(255,255,255,.45);font-size:.84rem;line-height:1.5;margin:0}
 .tzbot-layout{display:flex;align-items:center;gap:64px}
 .tzbot-img{flex:0 0 44%;max-width:44%}
 .tzbot-img img{width:100%;height:auto;display:block}
@@ -965,6 +989,7 @@ footer{padding:52px 0 36px;text-align:center}
           <li>Форма обратной связи</li>
           <li>Базовое SEO</li>
         </ul>
+        <div class="order-btn"><button type="button">Заказать</button></div>
       </div>
 
       <div class="card price-card featured fi">
@@ -984,6 +1009,7 @@ footer{padding:52px 0 36px;text-align:center}
           <li>Форма заявки / WhatsApp</li>
           <li>Подключение аналитики</li>
         </ul>
+        <div class="order-btn"><button type="button">Заказать</button></div>
       </div>
 
       <div class="card price-card fi">
@@ -1002,6 +1028,7 @@ footer{padding:52px 0 36px;text-align:center}
           <li>Блог или новости</li>
           <li>SEO-оптимизация</li>
         </ul>
+        <div class="order-btn"><button type="button">Заказать</button></div>
       </div>
 
       <div class="card price-card fi">
@@ -1020,6 +1047,7 @@ footer{padding:52px 0 36px;text-align:center}
           <li>Личный кабинет</li>
           <li>Управление товарами</li>
         </ul>
+        <div class="order-btn"><button type="button">Заказать</button></div>
       </div>
 
       <div class="card price-card fi">
@@ -1038,6 +1066,7 @@ footer{padding:52px 0 36px;text-align:center}
           <li>Уведомления владельцу</li>
           <li>ИИ по запросу</li>
         </ul>
+        <div class="order-btn"><button type="button">Заказать</button></div>
       </div>
 
       <div class="card price-card fi">
@@ -1056,6 +1085,7 @@ footer{padding:52px 0 36px;text-align:center}
           <li>Автоматизация задач</li>
           <li>Консультация бесплатно</li>
         </ul>
+        <div class="order-btn"><button type="button">Заказать</button></div>
       </div>
 
     </div>
@@ -1180,6 +1210,78 @@ footer{padding:52px 0 36px;text-align:center}
   const nav    = document.getElementById('nav');
   toggle.addEventListener('click', () => nav.classList.toggle('open'));
   nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => nav.classList.remove('open')));
+
+  // order modal
+  const BOT = '8891745478:AAHpXUI1ZZ6rLnlh6ex3Dti-Ne2lBYDly_I';
+  const CID = '5089980481';
+  const modal = document.getElementById('orderModal');
+  const fservice = document.getElementById('fservice');
+  document.querySelectorAll('.order-btn button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const name = btn.closest('.price-card').querySelector('.price-name')?.textContent || '';
+      for(let i=0;i<fservice.options.length;i++){
+        if(fservice.options[i].text.startsWith(name)){fservice.selectedIndex=i;break}
+      }
+      document.getElementById('formWrap').style.display='';
+      document.getElementById('formSuccess').style.display='none';
+      document.getElementById('orderForm').reset();
+      modal.classList.add('open');
+    });
+  });
+  document.getElementById('modalClose').addEventListener('click',()=>modal.classList.remove('open'));
+  modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('open');});
+  document.getElementById('orderForm').addEventListener('submit',async e=>{
+    e.preventDefault();
+    const btn=document.getElementById('submitBtn');
+    btn.disabled=true;btn.textContent='Отправляю...';
+    const name=document.getElementById('fname').value.trim();
+    const phone=document.getElementById('fphone').value.trim();
+    const service=fservice.value;
+    const comment=document.getElementById('fcomment').value.trim();
+    const text=`🛒 <b>Новая заявка с сайта!</b>\n\n👤 <b>Имя:</b> ${name}\n📞 <b>Контакт:</b> ${phone}\n💼 <b>Услуга:</b> ${service}${comment?`\n💬 <b>Комментарий:</b> ${comment}`:''}`;
+    try{
+      await fetch(`https://api.telegram.org/bot${BOT}/sendMessage`,{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({chat_id:CID,text,parse_mode:'HTML'})
+      });
+      document.getElementById('formWrap').style.display='none';
+      document.getElementById('formSuccess').style.display='block';
+    }catch{
+      btn.disabled=false;btn.textContent='Отправить заявку';
+      alert('Ошибка отправки. Попробуйте снова.');
+    }
+  });
 </script>
+
+<div class="modal-overlay" id="orderModal">
+  <div class="modal-box">
+    <button class="modal-close" id="modalClose">×</button>
+    <div id="formWrap">
+      <div class="modal-title">Оставить заявку</div>
+      <div class="modal-sub">Свяжусь в течение часа и обсудим детали проекта</div>
+      <form id="orderForm">
+        <div class="form-group"><label>Ваше имя *</label><input type="text" id="fname" placeholder="Александр" required></div>
+        <div class="form-group"><label>Телефон / Telegram *</label><input type="text" id="fphone" placeholder="+7 999 123 45 67 или @username" required></div>
+        <div class="form-group"><label>Услуга</label>
+          <select id="fservice">
+            <option>Сайт-визитка — 30 000 ₽</option>
+            <option>Лендинг — 50 000 ₽</option>
+            <option>Корпоративный сайт — 90 000 ₽</option>
+            <option>Интернет-магазин — от 150 000 ₽</option>
+            <option>Telegram-бот — от 25 000 ₽</option>
+            <option>ИИ-интеграция — от 20 000 ₽</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Комментарий</label><textarea id="fcomment" placeholder="Расскажите о проекте..."></textarea></div>
+        <button type="submit" class="form-submit" id="submitBtn">Отправить заявку</button>
+      </form>
+    </div>
+    <div class="form-success" id="formSuccess" style="display:none">
+      <div class="form-success-icon">✅</div>
+      <h3>Заявка отправлена!</h3>
+      <p>Свяжусь с вами в течение часа</p>
+    </div>
+  </div>
+</div>
 </body>
 </html>
