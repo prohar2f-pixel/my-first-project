@@ -1239,9 +1239,10 @@ footer{padding:52px 0 36px;text-align:center}
     btn.disabled=true;btn.textContent='Отправляю...';
     const name=document.getElementById('fname').value.trim();
     const phone=document.getElementById('fphone').value.trim();
+    const email=document.getElementById('femail').value.trim();
     const service=fservice.value;
     const comment=document.getElementById('fcomment').value.trim();
-    const text=`🛒 <b>Новая заявка с сайта!</b>\n\n👤 <b>Имя:</b> ${name}\n📞 <b>Контакт:</b> ${phone}\n💼 <b>Услуга:</b> ${service}${comment?`\n💬 <b>Комментарий:</b> ${comment}`:''}`;
+    const text=`🛒 <b>Новая заявка с сайта!</b>\n\n👤 <b>Имя:</b> ${name}\n📞 <b>Контакт:</b> ${phone}${email?`\n📧 <b>Email:</b> ${email}`:''}\n💼 <b>Услуга:</b> ${service}${comment?`\n💬 <b>Комментарий:</b> ${comment}`:''}`;
     try{
       await fetch(`https://api.telegram.org/bot${BOT}/sendMessage`,{
         method:'POST',headers:{'Content-Type':'application/json'},
@@ -1265,6 +1266,7 @@ footer{padding:52px 0 36px;text-align:center}
       <form id="orderForm">
         <div class="form-group"><label>Ваше имя *</label><input type="text" id="fname" placeholder="Александр" required></div>
         <div class="form-group"><label>Телефон / Telegram *</label><input type="text" id="fphone" placeholder="+7 999 123 45 67 или @username" required></div>
+        <div class="form-group"><label>Эл. почта</label><input type="email" id="femail" placeholder="example@mail.com"></div>
         <div class="form-group"><label>Услуга</label>
           <select id="fservice">
             <option>Сайт-визитка — 30 000 ₽</option>
