@@ -174,15 +174,39 @@ async def reset(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     )
 
 
+async def handle_non_text(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    chat_id = update.effective_chat.id
+    if chat_id in conversations:
+        await update.message.reply_text(
+            "📝 Я работаю только с текстом — просто напишите ваш ответ словами."
+        )
+    else:
+        await update.message.reply_text(
+            "👋 Нажмите /start чтобы начать составление ТЗ.",
+            reply_markup=start_keyboard()
+        )
+
+
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     chat_id = update.effective_chat.id
     user_text = update.message.text
 
     if chat_id not in conversations:
-        await update.message.reply_text(
-            "Нажми /start чтобы начать 👇",
-            reply_markup=start_keyboard()
-        )
+        site_type = context.user_data.get("site_type")
+        if site_type:
+            type_label = SITE_TYPES.get(site_type, "Сайт")
+            await update.message.reply_text(
+                f"⚠️ Сессия прервалась — бот перезапускался и история диалога не сохранилась.\n\n"
+                f"Вы выбирали: *{type_label}*\n\n"
+                f"Придётся начать заново — выберите тип сайта 👇",
+                parse_mode="Markdown",
+                reply_markup=start_keyboard()
+            )
+        else:
+            await update.message.reply_text(
+                "👋 Нажмите /start чтобы начать составление ТЗ.",
+                reply_markup=start_keyboard()
+            )
         return
 
     site_type = context.user_data.get("site_type", "other")
@@ -269,6 +293,7 @@ def main() -> None:
     app.add_handler(CommandHandler("reset", reset))
     app.add_handler(CallbackQueryHandler(handle_type_callback, pattern="^type_"))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+    app.add_handler(MessageHandler(~filters.TEXT & ~filters.COMMAND, handle_non_text))
     app.add_error_handler(error_handler)
     app.run_polling(allowed_updates=Update.ALL_TYPES, drop_pending_updates=True)
 
