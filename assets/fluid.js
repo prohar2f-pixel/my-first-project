@@ -45,9 +45,9 @@ let config = {
     COLORFUL: false,
     COLOR_UPDATE_SPEED: 10,
     PAUSED: false,
-    BACK_COLOR: { r: 0, g: 0, b: 0 },
+    BACK_COLOR: { r: 8, g: 8, b: 15 },
     TRANSPARENT: false,
-    BLOOM: true,
+    BLOOM: false,
     BLOOM_ITERATIONS: 8,
     BLOOM_RESOLUTION: 256,
     BLOOM_INTENSITY: 0.8,
@@ -1471,9 +1471,9 @@ function correctDeltaY (delta) {
 function generateColor () {
     // purple/violet hue range: 0.70–0.82
     let c = HSVtoRGB(0.70 + Math.random() * 0.12, 0.9, 1.0);
-    c.r *= 0.1;
-    c.g *= 0.1;
-    c.b *= 0.1;
+    c.r *= 0.3;
+    c.g *= 0.3;
+    c.b *= 0.3;
     return c;
 }
 
