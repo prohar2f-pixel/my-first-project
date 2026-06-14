@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+(function () {
 'use strict';
 
 // Simulation section
@@ -44,8 +45,8 @@ let config = {
     COLORFUL: false,
     COLOR_UPDATE_SPEED: 10,
     PAUSED: false,
-    BACK_COLOR: { r: 0, g: 0, b: 0 },
-    TRANSPARENT: true,
+    BACK_COLOR: { r: 8, g: 8, b: 15 },
+    TRANSPARENT: false,
     BLOOM: true,
     BLOOM_ITERATIONS: 8,
     BLOOM_RESOLUTION: 256,
@@ -126,7 +127,7 @@ function getWebGLContext (canvas) {
         formatR = getSupportedFormat(gl, gl.RGBA, gl.RGBA, halfFloatTexType);
     }
 
-    ga('send', 'event', isWebGL2 ? 'webgl2' : 'webgl', formatRGBA == null ? 'not supported' : 'supported');
+    if (typeof ga === 'function') ga('send', 'event', isWebGL2 ? 'webgl2' : 'webgl', formatRGBA == null ? 'not supported' : 'supported');
 
     return {
         gl,
@@ -1547,3 +1548,5 @@ function hashCode (s) {
     }
     return hash;
 };
+
+})();
