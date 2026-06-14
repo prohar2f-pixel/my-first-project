@@ -27,6 +27,7 @@ SITE_TYPES = {
     "shop": "🛒 Интернет-магазин",
     "corporate": "🏢 Корпоративный сайт",
     "portfolio": "🎨 Портфолио",
+    "vizitka": "💼 Сайт-визитка",
     "other": "💡 Другой тип",
 }
 
@@ -93,6 +94,7 @@ SITE_TYPE_HINTS = {
     "shop": "Клиент выбрал: Интернет-магазин. Уточни количество товаров, категории, систему оплаты, доставку, личный кабинет покупателя.",
     "corporate": "Клиент выбрал: Корпоративный сайт. Фокусируй вопросы на разделах компании, команде, услугах, новостях и контактах.",
     "portfolio": "Клиент выбрал: Портфолио. Уточни какие работы показывать, хочет ли блог, форму для связи и заказа.",
+    "vizitka": "Клиент выбрал: Сайт-визитка (небольшой сайт 1-3 страницы для представления специалиста или малого бизнеса). Фокусируй вопросы на описании деятельности, контактах, услугах и форме связи.",
     "other": "Клиент выбрал: Другой тип сайта. Сначала уточни что именно он хочет, затем адаптируй вопросы.",
 }
 
@@ -108,7 +110,8 @@ def start_keyboard() -> InlineKeyboardMarkup:
          InlineKeyboardButton(SITE_TYPES["shop"], callback_data="type_shop")],
         [InlineKeyboardButton(SITE_TYPES["corporate"], callback_data="type_corporate"),
          InlineKeyboardButton(SITE_TYPES["portfolio"], callback_data="type_portfolio")],
-        [InlineKeyboardButton(SITE_TYPES["other"], callback_data="type_other")],
+        [InlineKeyboardButton(SITE_TYPES["vizitka"], callback_data="type_vizitka"),
+         InlineKeyboardButton(SITE_TYPES["other"], callback_data="type_other")],
     ]
     return InlineKeyboardMarkup(buttons)
 
