@@ -252,6 +252,10 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
             pass
 
 
+async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
+    logger.error("Exception while handling update:", exc_info=context.error)
+
+
 async def post_init(app: Application) -> None:
     await app.bot.set_my_commands([
         BotCommand("start", "Начать сбор ТЗ"),
@@ -265,6 +269,7 @@ def main() -> None:
     app.add_handler(CommandHandler("reset", reset))
     app.add_handler(CallbackQueryHandler(handle_type_callback, pattern="^type_"))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+    app.add_error_handler(error_handler)
     app.run_polling(allowed_updates=Update.ALL_TYPES, drop_pending_updates=True)
 
 
