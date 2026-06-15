@@ -40,7 +40,7 @@ let config = {
     PRESSURE_ITERATIONS: 20,
     CURL: 30,
     SPLAT_RADIUS: 0.25,
-    SPLAT_FORCE: 25,
+    SPLAT_FORCE: 3000,
     SHADING: true,
     COLORFUL: true,
     COLOR_UPDATE_SPEED: 10,
@@ -1374,24 +1374,17 @@ window.addEventListener('mousedown', e => {
     updatePointerDownData(pointer, -1, posX, posY);
 });
 
+let lastSplatTime = 0;
 window.addEventListener('mousemove', e => {
+    let now = Date.now();
+    if (now - lastSplatTime < 32) return;
+    lastSplatTime = now;
     let pointer = pointers[0];
     if (!pointer.color || Array.isArray(pointer.color))
         pointer.color = generateColor();
     let rect = canvas.getBoundingClientRect();
     let posX = scaleByPixelRatio(e.clientX - rect.left);
     let posY = scaleByPixelRatio(e.clientY - rect.top);
-    // clamp delta to avoid bright bursts on fast movement
-    let prevX = pointer.texcoordX * canvas.width;
-    let prevY = (1 - pointer.texcoordY) * canvas.height;
-    let dx = posX - prevX;
-    let dy = posY - prevY;
-    let len = Math.sqrt(dx*dx + dy*dy);
-    let maxDelta = 8;
-    if (len > maxDelta) {
-        posX = prevX + dx / len * maxDelta;
-        posY = prevY + dy / len * maxDelta;
-    }
     updatePointerMoveData(pointer, posX, posY);
 });
 
