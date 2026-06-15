@@ -7,9 +7,10 @@ from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKe
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from config import BOT_TOKEN, USER_ID, CHECK_INTERVAL, KEYWORDS, TG_CHANNELS
-from database import init_db, is_seen, mark_seen
+from database import init_db, is_seen, mark_seen, get_order
 from filters import matches
 from notifier import send_order
+from responder import generate_response
 import parsers.flru as flru
 import parsers.habr as habr
 import parsers.kwork as kwork
@@ -135,6 +136,27 @@ async def cb_status(callback: CallbackQuery):
     )
 
 
+@dp.callback_query(F.data.startswith("reply:"))
+async def cb_reply(callback: CallbackQuery):
+    if callback.from_user.id != USER_ID:
+        return
+    await callback.answer("Генерирую отклик...")
+    order_id = callback.data.split(":", 1)[1]
+    order = get_order(order_id)
+    if not order:
+        await callback.message.answer("Данные заказа не найдены.")
+        return
+    msg = await callback.message.answer("✍️ Генерирую отклик через Claude...")
+    try:
+        response = await generate_response(order["title"], order["description"], order["source"])
+        await msg.edit_text(
+            f"✍️ <b>Отклик готов:</b>\n\n{response}",
+            parse_mode="HTML",
+        )
+    except Exception as e:
+        await msg.edit_text(f"Ошибка генерации: {e}")
+
+
 @dp.callback_query(F.data == "back")
 async def cb_back(callback: CallbackQuery):
     if callback.from_user.id != USER_ID:
@@ -196,7 +218,7 @@ async def check_all() -> int:
         for order in orders:
             if is_seen(order.id):
                 continue
-            mark_seen(order.id, order.source)
+            mark_seen(order.id, order.source, order.title, order.description)
             if matches(order.title + " " + order.description):
                 await send_order(bot, USER_ID, order)
                 total_new += 1
