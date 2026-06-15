@@ -1,0 +1,7 @@
+[build]
+builder = "nixpacks"
+buildCommand = "pip install -r freelance-bot/requirements.txt"
+
+[deploy]
+startCommand = "python freelance-bot/main.py"
+restartPolicyType = "always"

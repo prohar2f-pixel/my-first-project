@@ -1,7 +1,9 @@
+import os
 import sqlite3
 from pathlib import Path
 
-DB_PATH = Path(__file__).parent / "seen_orders.db"
+_data_dir = Path(os.getenv("DATA_DIR", Path(__file__).parent))
+DB_PATH = _data_dir / "seen_orders.db"
 
 
 def init_db():
