@@ -1,57 +1,53 @@
+import re
 import logging
+import httpx
 from parsers import Order
 
 log = logging.getLogger(__name__)
 
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+}
+
 
 async def fetch(channels: list[str]) -> list[Order]:
-    """
-    Читает последние 30 сообщений из каждого Telegram-канала через Telethon.
-    Требует API_ID и API_HASH из my.telegram.org.
-    При первом запуске попросит войти в аккаунт (один раз).
-    """
     if not channels:
         return []
 
-    try:
-        from telethon import TelegramClient
-        from telethon.errors import FloodWaitError
-        from config import API_ID, API_HASH
-    except ImportError:
-        log.warning("[TG] telethon не установлен, пропускаю.")
-        return []
-
-    if not API_ID or not API_HASH:
-        log.warning("[TG] API_ID/API_HASH не заданы в .env, пропускаю.")
-        return []
-
     orders = []
-    client = TelegramClient("freelance_session", API_ID, API_HASH)
-
-    try:
-        await client.start()
+    async with httpx.AsyncClient(headers=HEADERS, timeout=15, follow_redirects=True) as client:
         for channel in channels:
-            channel = channel.strip()
-            if not channel:
-                continue
+            channel_name = channel.strip().lstrip("@")
             try:
-                async for msg in client.iter_messages(channel, limit=30):
-                    if not msg.text:
+                resp = await client.get(f"https://t.me/s/{channel_name}")
+                if resp.status_code != 200:
+                    log.warning(f"[TG] {channel_name}: статус {resp.status_code}")
+                    continue
+
+                messages = re.findall(
+                    r'<div class="tgme_widget_message_text[^"]*"[^>]*>(.*?)</div>',
+                    resp.text, re.DOTALL
+                )
+                ids = re.findall(
+                    r'data-post="[^/]+/(\d+)"',
+                    resp.text
+                )
+
+                for i, (msg_html, msg_id) in enumerate(zip(messages, ids)):
+                    text = re.sub(r"<[^>]+>", "", msg_html).strip()
+                    text = re.sub(r"\s+", " ", text)
+                    if not text:
                         continue
-                    channel_name = channel.lstrip("@")
-                    url = f"https://t.me/{channel_name}/{msg.id}"
+                    url = f"https://t.me/{channel_name}/{msg_id}"
                     orders.append(Order(
-                        id=f"tg_{channel_name}_{msg.id}",
-                        title=msg.text[:80].replace("\n", " "),
-                        description=msg.text[:500],
+                        id=f"tg_{channel_name}_{msg_id}",
+                        title=text[:80].replace("\n", " "),
+                        description=text[:500],
                         url=url,
                         source=f"TG @{channel_name}",
                     ))
-            except FloodWaitError as e:
-                log.warning(f"[TG] FloodWait {e.seconds}с для {channel}")
+
             except Exception as e:
-                log.error(f"[TG] Ошибка чтения {channel}: {e}")
-    finally:
-        await client.disconnect()
+                log.error(f"[TG] Ошибка чтения {channel_name}: {e}")
 
     return orders
