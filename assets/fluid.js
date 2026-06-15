@@ -55,7 +55,7 @@ let config = {
     BLOOM_SOFT_KNEE: 0.7,
     SUNRAYS: true,
     SUNRAYS_RESOLUTION: 196,
-    SUNRAYS_WEIGHT: 0.25,
+    SUNRAYS_WEIGHT: 0.1,
 }
 
 function pointerPrototype () {
@@ -1470,9 +1470,9 @@ function correctDeltaY (delta) {
 
 function generateColor () {
     let c = HSVtoRGB(Math.random(), 1.0, 1.0);
-    c.r *= 0.07;
-    c.g *= 0.07;
-    c.b *= 0.07;
+    c.r *= 0.03;
+    c.g *= 0.03;
+    c.b *= 0.03;
     return c;
 }
 
