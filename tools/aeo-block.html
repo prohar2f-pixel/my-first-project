@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AEO блок</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{background:#080810;font-family:'Inter',sans-serif;color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:48px 24px}
+.wrap{max-width:1160px;width:100%}
+
+/* ─── HERO ─── */
+.hero{display:grid;grid-template-columns:52% 48%;align-items:center;gap:40px;margin-bottom:32px}
+
+.badge{display:inline-flex;align-items:center;gap:8px;background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.35);border-radius:99px;padding:5px 16px 5px 10px;font-size:.75rem;font-weight:600;color:#c084fc;margin-bottom:22px}
+.badge-dot{width:8px;height:8px;border-radius:50%;background:#a855f7;box-shadow:0 0 8px #a855f7}
+
+h1{font-size:3.2rem;font-weight:900;line-height:1.1;margin-bottom:18px;letter-spacing:-.02em}
+.h1a{display:block;color:#fff}
+.h1b{display:block;background:linear-gradient(90deg,#c084fc 0%,#818cf8 60%,#60a5fa 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+.competitors{font-size:1rem;color:#9ca3af;margin-bottom:2px}
+.you{font-size:1rem;font-weight:700;color:#a855f7;margin-bottom:20px}
+.about{font-size:.88rem;color:#6b7280;line-height:1.8;margin-bottom:18px}
+.russia p{color:#a855f7;font-size:.85rem;line-height:1.9}
+
+/* ─── GLOBE IMAGE ─── */
+.vis{position:relative;display:flex;align-items:center;justify-content:center}
+.vis img{width:100%;max-width:520px;height:auto;display:block;filter:drop-shadow(0 0 40px rgba(139,92,246,.4))}
+
+/* ─── CARDS ─── */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.card{background:#0d0d1c;border:1px solid rgba(168,85,247,.14);border-radius:16px;padding:20px;display:flex;gap:14px;align-items:flex-start;transition:transform .22s,border-color .22s,box-shadow .22s}
+.card:hover{transform:translateY(-3px);border-color:rgba(168,85,247,.4);box-shadow:0 8px 32px rgba(109,40,217,.18)}
+.cico{width:50px;height:50px;min-width:50px;border-radius:50%;background:linear-gradient(135deg,rgba(168,85,247,.15),rgba(123,63,242,.3));border:1px solid rgba(168,85,247,.3);display:flex;align-items:center;justify-content:center;box-shadow:0 0 16px rgba(168,85,247,.12)}
+.card h3{font-size:.86rem;font-weight:700;margin-bottom:5px;line-height:1.35;color:#f3f4f6}
+.card p{font-size:.75rem;color:#6b7280;line-height:1.65}
+
+/* ─── PROMO ─── */
+.promo{background:linear-gradient(130deg,#0a0520,#110830,#0a0520);border:1px solid rgba(168,85,247,.2);border-radius:20px;padding:28px 32px;display:grid;grid-template-columns:auto 1fr auto;gap:36px;align-items:center;position:relative;overflow:hidden}
+
+.plabel{font-size:.85rem;font-weight:700;color:#f97316;margin-bottom:8px}
+.prices{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+.pold{font-size:1.5rem;font-weight:700;color:#4b5563;text-decoration:line-through}
+.pnew{font-size:2.8rem;font-weight:900;color:#fff;line-height:1}
+.ptag{display:inline-block;background:rgba(168,85,247,.15);border:1px solid rgba(168,85,247,.3);color:#c084fc;font-size:.7rem;font-weight:600;border-radius:99px;padding:3px 12px;margin-bottom:12px}
+.ptags{display:flex;gap:14px;font-size:.72rem;color:#6b7280}
+.ptags span{display:flex;align-items:center;gap:4px}
+
+.pmid-head{font-size:.88rem;font-weight:700;color:#fff;margin-bottom:10px}
+.pmid-head em{color:#a855f7;font-style:normal}
+.pbar{height:8px;background:rgba(255,255,255,.07);border-radius:99px;overflow:hidden;margin-bottom:12px}
+.pbar-fill{height:100%;width:100%;background:linear-gradient(90deg,#7c3aed,#a855f7,#c084fc);border-radius:99px}
+.pcheck{display:flex;align-items:center;gap:7px;font-size:.75rem;color:#4ade80;font-weight:600;margin-bottom:8px}
+.pcheck::before{content:'✓';width:18px;height:18px;border-radius:50%;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);display:flex;align-items:center;justify-content:center;font-size:.6rem}
+.pavs{display:flex;align-items:center;gap:8px;font-size:.75rem;color:#6b7280}
+.avs{display:flex}
+.av{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#374151,#1f2937);border:2px solid #080810;font-size:.55rem;display:flex;align-items:center;justify-content:center;font-weight:700;margin-left:-7px}
+.av:first-child{margin-left:0}
+.av.more{background:rgba(168,85,247,.2);color:#a855f7}
+
+.pbwrap{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px}
+.pbtn{background:linear-gradient(135deg,#9333ea,#7c3aed);border:none;color:#fff;font-family:inherit;font-size:1.05rem;font-weight:800;padding:18px 28px;border-radius:16px;cursor:pointer;line-height:1.3;text-align:center;box-shadow:0 0 30px rgba(139,92,246,.45),0 0 60px rgba(109,40,217,.15);transition:transform .2s,box-shadow .3s}
+.pbtn:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(168,85,247,.7),0 0 100px rgba(109,40,217,.3)}
+.psub{font-size:.68rem;color:#6b7280;text-align:center;max-width:160px}
+.psmoke{position:absolute;bottom:-12px;left:50%;transform:translateX(-50%);width:140px;height:36px;background:radial-gradient(ellipse,rgba(168,85,247,.5),transparent);filter:blur(14px);border-radius:50%;opacity:0;transition:opacity .3s;pointer-events:none}
+.pbwrap:hover .psmoke{opacity:1}
+
+@media(max-width:960px){
+  .hero{grid-template-columns:1fr;gap:32px}
+  .cards{grid-template-columns:1fr 1fr}
+  .promo{grid-template-columns:1fr;gap:20px;padding:24px}
+  h1{font-size:2.4rem}
+}
+@media(max-width:560px){
+  .cards{grid-template-columns:1fr}
+  h1{font-size:2rem}
+  .pbtn{width:100%}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div>
+      <div class="badge"><span class="badge-dot"></span>Только у нас · 2026</div>
+      <h1>
+        <span class="h1a">Ваш сайт найдут</span>
+        <span class="h1b">ChatGPT, Perplexity и Claude</span>
+      </h1>
+      <p class="competitors">Ваши конкуренты уже получают клиентов из нейросетей.</p>
+      <p class="you">Вы — пока нет.</p>
+      <p class="about">В 2026 году люди ищут через ИИ.<br>Мы настраиваем сайт так, чтобы нейросети рекомендовали<br>именно вас — с ценами, услугами и контактами.</p>
+      <div class="russia">
+        <p>🇷🇺 В России этим занимаются единицы</p>
+        <p>Мы уже внедрили AEO и получаем результат</p>
+      </div>
+    </div>
+
+    <div class="vis">
+      <img src="../assets/aeo-globe.png" alt="ИИ-поиск визуализация">
+    </div>
+  </div>
+
+  <!-- CARDS -->
+  <div class="cards">
+    <div class="card">
+      <div class="cico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="3"/><path d="M8 8V6a4 4 0 0 1 8 0v2"/><circle cx="9" cy="14" r="1.5" fill="#a855f7" stroke="none"/><circle cx="15" cy="14" r="1.5" fill="#a855f7" stroke="none"/><path d="M9 18h6"/></svg></div>
+      <div><h3>1. Вас находят в ИИ</h3><p>Ваш сайт открывают ChatGPT, Perplexity и Claude</p></div>
+    </div>
+    <div class="card">
+      <div class="cico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A6.5 6.5 0 0 1 16 8.5c0 2.5-1.4 4.7-3.5 5.8V16h-3v-1.7A6.5 6.5 0 0 1 9.5 2z"/><path d="M9 16h6"/><path d="M10 19h4"/><path d="M12 19v2"/></svg></div>
+      <div><h3>2. Клиенты понимают, чем вы полезны</h3><p>ИИ объясняет ваш продукт за вас</p></div>
+    </div>
+    <div class="card">
+      <div class="cico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div>
+      <div><h3>3. Ваши цены озвучивают вслух</h3><p>Голосовые ассистенты называют именно ваши услуги</p></div>
+    </div>
+    <div class="card">
+      <div class="cico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M12 8v4"/><circle cx="12" cy="15" r=".5" fill="#a855f7" stroke="none"/></svg></div>
+      <div><h3>4. Вы — ответ на вопрос клиента</h3><p>ChatGPT рекомендует вас напрямую</p></div>
+    </div>
+    <div class="card">
+      <div class="cico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c-2.5 3-4 5.5-4 9s1.5 6 4 9"/><path d="M12 3c2.5 3 4 5.5 4 9s-1.5 6-4 9"/></svg></div>
+      <div><h3>5. Вы полностью видны нейросетям</h3><p>Никакой информации не скрыто</p></div>
+    </div>
+    <div class="card">
+      <div class="cico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-5"/></svg></div>
+      <div><h3>6. Вы уверены в результате</h3><p>Мы проверяем, что ИИ реально вас видит</p></div>
+    </div>
+  </div>
+
+  <!-- PROMO -->
+  <div class="promo">
+    <div>
+      <div class="plabel">🔥 Акция — первые 5 заказов</div>
+      <div class="prices"><span class="pold">15 000 ₽</span><span class="pnew">5 000 ₽</span></div>
+      <div class="ptag">Цена тестовая — дальше будет дороже</div>
+      <div class="ptags">
+        <span>⏱ 1–2 дня</span>
+        <span>🖥 Любой сайт</span>
+        <span>🏷 Экономия 10 000 ₽</span>
+      </div>
+    </div>
+    <div>
+      <div class="pmid-head">Осталось <em>5 из 5 мест</em></div>
+      <div class="pbar"><div class="pbar-fill"></div></div>
+      <div class="pcheck">Уже подключили: 12 сайтов</div>
+      <div class="pavs">
+        <div class="avs">
+          <div class="av">АП</div><div class="av">МК</div><div class="av">ДС</div><div class="av more">+8</div>
+        </div>
+        <span>3 места могут занять сегодня</span>
+      </div>
+    </div>
+    <div class="pbwrap">
+      <button class="pbtn">Занять место<br>за 5 000 ₽</button>
+      <div class="psub">Нажимая кнопку, вы бронируете место по акции</div>
+      <div class="psmoke"></div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
