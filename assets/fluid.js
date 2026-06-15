@@ -34,20 +34,20 @@ let config = {
     SIM_RESOLUTION: 128,
     DYE_RESOLUTION: 1024,
     CAPTURE_RESOLUTION: 512,
-    DENSITY_DISSIPATION: 0.35,
-    VELOCITY_DISSIPATION: 0.2,
+    DENSITY_DISSIPATION: 0.97,
+    VELOCITY_DISSIPATION: 0.97,
     PRESSURE: 0.1,
     PRESSURE_ITERATIONS: 20,
     CURL: 30,
     SPLAT_RADIUS: 0.07,
     SPLAT_FORCE: 25,
     SHADING: true,
-    COLORFUL: true,
+    COLORFUL: false,
     COLOR_UPDATE_SPEED: 10,
     PAUSED: false,
     BACK_COLOR: { r: 0, g: 0, b: 0 },
     TRANSPARENT: false,
-    BLOOM: true,
+    BLOOM: false,
     BLOOM_ITERATIONS: 8,
     BLOOM_RESOLUTION: 256,
     BLOOM_INTENSITY: 0.10,
@@ -1469,10 +1469,10 @@ function correctDeltaY (delta) {
 }
 
 function generateColor () {
-    let c = HSVtoRGB(Math.random(), 1.0, 1.0);
-    c.r *= 0.10;
-    c.g *= 0.10;
-    c.b *= 0.10;
+    let c = HSVtoRGB(0.77, 1.0, 1.0);
+    c.r *= 0.25;
+    c.g *= 0.25;
+    c.b *= 0.25;
     return c;
 }
 
