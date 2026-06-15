@@ -1,8 +1,11 @@
 import json
 import logging
+from datetime import datetime, timezone, timedelta
 from aiogram import Bot
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from parsers import Order
+
+MOSCOW = timezone(timedelta(hours=3))
 
 log = logging.getLogger(__name__)
 
@@ -24,6 +27,11 @@ def order_keyboard(order: Order) -> InlineKeyboardMarkup:
 
 
 async def send_order(bot: Bot, user_id: int, order: Order):
+    hour = datetime.now(MOSCOW).hour
+    if not (8 <= hour < 22):
+        log.info(f"Ночное время ({hour}:xx МСК) — уведомление отложено")
+        return
+
     emoji = SOURCE_EMOJI.get(order.source, "🔔")
     price_line = f"\n💰 <b>{order.price}</b>" if order.price else ""
     desc = order.description[:400].strip()
