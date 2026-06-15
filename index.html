@@ -1323,5 +1323,20 @@ footer{padding:52px 0 36px;text-align:center}
 </script>
 <canvas id="smokeCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:9998;pointer-events:none;mix-blend-mode:screen"></canvas>
 <script src="assets/fluid.js"></script>
+
+<!-- COOKIE BANNER -->
+<div id="cookieBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:10000;
+  background:rgba(10,6,22,.97);border-top:1px solid rgba(168,85,247,.3);
+  padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+  <p style="margin:0;font-size:.82rem;color:rgba(255,255,255,.6);line-height:1.5">
+    Мы используем cookie-файлы. Это нужно для лучшей работы сайта.
+    Продолжая пользоваться сайтом, вы соглашаетесь с этим.
+    <a href="privacy.html" style="color:var(--p);text-decoration:none;white-space:nowrap">Подробнее →</a>
+  </p>
+  <button onclick="document.getElementById('cookieBanner').style.display='none';localStorage.setItem('cookie_ok','1')"
+    style="flex-shrink:0;padding:9px 22px;background:var(--p);color:#fff;border:none;border-radius:10px;
+    font-size:.84rem;font-weight:600;cursor:pointer;white-space:nowrap">Понятно</button>
+</div>
+<script>if(!localStorage.getItem('cookie_ok'))document.getElementById('cookieBanner').style.display='flex';</script>
 </body>
 </html>
