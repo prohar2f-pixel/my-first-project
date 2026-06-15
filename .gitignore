@@ -13,3 +13,5 @@ venv/
 # База данных бота
 *.db
 .claude/
+drafts/
+*.png
