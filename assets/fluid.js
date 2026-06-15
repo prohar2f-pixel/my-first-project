@@ -39,7 +39,7 @@ let config = {
     PRESSURE: 0.8,
     PRESSURE_ITERATIONS: 20,
     CURL: 30,
-    SPLAT_RADIUS: 0.25,
+    SPLAT_RADIUS: 0.07,
     SPLAT_FORCE: 25,
     SHADING: true,
     COLORFUL: true,
@@ -1381,17 +1381,6 @@ window.addEventListener('mousemove', e => {
     let rect = canvas.getBoundingClientRect();
     let posX = scaleByPixelRatio(e.clientX - rect.left);
     let posY = scaleByPixelRatio(e.clientY - rect.top);
-    // clamp delta to avoid bright bursts on fast movement
-    let prevX = pointer.texcoordX * canvas.width;
-    let prevY = (1 - pointer.texcoordY) * canvas.height;
-    let dx = posX - prevX;
-    let dy = posY - prevY;
-    let len = Math.sqrt(dx*dx + dy*dy);
-    let maxDelta = 8;
-    if (len > maxDelta) {
-        posX = prevX + dx / len * maxDelta;
-        posY = prevY + dy / len * maxDelta;
-    }
     updatePointerMoveData(pointer, posX, posY);
 });
 
