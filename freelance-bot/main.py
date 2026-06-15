@@ -1,9 +1,9 @@
 import asyncio
 import logging
 
-from aiogram import Bot, Dispatcher
+from aiogram import Bot, Dispatcher, F
 from aiogram.filters import Command
-from aiogram.types import Message
+from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from config import BOT_TOKEN, USER_ID, CHECK_INTERVAL, KEYWORDS, TG_CHANNELS
@@ -25,20 +25,33 @@ bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
 
+def main_keyboard() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(text="🔍 Проверить сейчас", callback_data="check"),
+        ],
+        [
+            InlineKeyboardButton(text="📋 Ключевые слова", callback_data="keywords"),
+            InlineKeyboardButton(text="📢 Каналы", callback_data="channels"),
+        ],
+        [
+            InlineKeyboardButton(text="📊 Статус", callback_data="status"),
+        ],
+    ])
+
+
 @dp.message(Command("start"))
 async def cmd_start(message: Message):
     if message.from_user.id != USER_ID:
         return
     interval_min = CHECK_INTERVAL // 60
     await message.answer(
-        "Бот запущен!\n\n"
-        f"Мониторю: FL.ru, Habr Freelance, Kwork, Telegram-каналы\n"
-        f"Интервал проверки: каждые {interval_min} мин\n"
-        f"Ключевых слов: {len(KEYWORDS)}\n\n"
-        "Команды:\n"
-        "/keywords — список ключевых слов\n"
-        "/channels — список каналов\n"
-        "/check — проверить прямо сейчас"
+        f"🤖 <b>Freelance Monitor Bot</b>\n\n"
+        f"Мониторю: FL.ru, Habr Freelance, Kwork, TG-каналы\n"
+        f"Интервал: каждые {interval_min} мин\n"
+        f"Ключевых слов: {len(KEYWORDS)}",
+        reply_markup=main_keyboard(),
+        parse_mode="HTML",
     )
 
 
@@ -46,31 +59,125 @@ async def cmd_start(message: Message):
 async def cmd_keywords(message: Message):
     if message.from_user.id != USER_ID:
         return
-    kw_list = "\n".join(f"• {kw}" for kw in KEYWORDS)
-    await message.answer(f"Ключевые слова:\n\n{kw_list}")
+    await show_keywords(message)
 
 
 @dp.message(Command("channels"))
 async def cmd_channels(message: Message):
     if message.from_user.id != USER_ID:
         return
-    if TG_CHANNELS:
-        ch_list = "\n".join(f"• {ch}" for ch in TG_CHANNELS)
-        await message.answer(f"Telegram-каналы:\n\n{ch_list}")
-    else:
-        await message.answer("Telegram-каналы не настроены. Добавь их в .env файл.")
+    await show_channels(message)
 
 
 @dp.message(Command("check"))
 async def cmd_check(message: Message):
     if message.from_user.id != USER_ID:
         return
-    await message.answer("Запускаю проверку...")
-    await check_all()
-    await message.answer("Проверка завершена.")
+    msg = await message.answer("🔄 Запускаю проверку...")
+    count = await check_all()
+    await msg.edit_text(
+        f"✅ Проверка завершена.\n"
+        f"Новых подходящих заказов: <b>{count}</b>",
+        reply_markup=main_keyboard(),
+        parse_mode="HTML",
+    )
 
 
-async def check_all():
+@dp.callback_query(F.data == "check")
+async def cb_check(callback: CallbackQuery):
+    if callback.from_user.id != USER_ID:
+        return
+    await callback.answer()
+    await callback.message.edit_text("🔄 Запускаю проверку...")
+    count = await check_all()
+    await callback.message.edit_text(
+        f"✅ Проверка завершена.\n"
+        f"Новых подходящих заказов: <b>{count}</b>",
+        reply_markup=main_keyboard(),
+        parse_mode="HTML",
+    )
+
+
+@dp.callback_query(F.data == "keywords")
+async def cb_keywords(callback: CallbackQuery):
+    if callback.from_user.id != USER_ID:
+        return
+    await callback.answer()
+    await show_keywords(callback.message)
+
+
+@dp.callback_query(F.data == "channels")
+async def cb_channels(callback: CallbackQuery):
+    if callback.from_user.id != USER_ID:
+        return
+    await callback.answer()
+    await show_channels(callback.message)
+
+
+@dp.callback_query(F.data == "status")
+async def cb_status(callback: CallbackQuery):
+    if callback.from_user.id != USER_ID:
+        return
+    await callback.answer()
+    interval_min = CHECK_INTERVAL // 60
+    await callback.message.edit_text(
+        f"📊 <b>Статус бота</b>\n\n"
+        f"✅ FL.ru — активен\n"
+        f"✅ Habr Freelance — активен\n"
+        f"✅ Kwork — активен\n"
+        f"✅ TG-каналов: {len(TG_CHANNELS)}\n\n"
+        f"⏱ Интервал проверки: каждые {interval_min} мин\n"
+        f"🔑 Ключевых слов: {len(KEYWORDS)}",
+        reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="◀️ Назад", callback_data="back")]
+        ]),
+        parse_mode="HTML",
+    )
+
+
+@dp.callback_query(F.data == "back")
+async def cb_back(callback: CallbackQuery):
+    if callback.from_user.id != USER_ID:
+        return
+    await callback.answer()
+    interval_min = CHECK_INTERVAL // 60
+    await callback.message.edit_text(
+        f"🤖 <b>Freelance Monitor Bot</b>\n\n"
+        f"Мониторю: FL.ru, Habr Freelance, Kwork, TG-каналы\n"
+        f"Интервал: каждые {interval_min} мин\n"
+        f"Ключевых слов: {len(KEYWORDS)}",
+        reply_markup=main_keyboard(),
+        parse_mode="HTML",
+    )
+
+
+async def show_keywords(message: Message):
+    kw_list = "\n".join(f"• {kw}" for kw in KEYWORDS)
+    await message.answer(
+        f"🔑 <b>Ключевые слова:</b>\n\n{kw_list}",
+        reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="◀️ Назад", callback_data="back")]
+        ]),
+        parse_mode="HTML",
+    )
+
+
+async def show_channels(message: Message):
+    if TG_CHANNELS:
+        ch_list = "\n".join(f"• {ch}" for ch in TG_CHANNELS)
+        text = f"📢 <b>Telegram-каналы:</b>\n\n{ch_list}"
+    else:
+        text = "Telegram-каналы не настроены."
+    await message.answer(
+        text,
+        reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="◀️ Назад", callback_data="back")]
+        ]),
+        parse_mode="HTML",
+    )
+
+
+async def check_all() -> int:
     log.info("Запускаю проверку всех источников...")
 
     results = await asyncio.gather(
@@ -93,9 +200,10 @@ async def check_all():
             if matches(order.title + " " + order.description):
                 await send_order(bot, USER_ID, order)
                 total_new += 1
-                await asyncio.sleep(0.5)  # небольшая пауза между сообщениями
+                await asyncio.sleep(0.5)
 
     log.info(f"Готово. Новых подходящих заказов: {total_new}")
+    return total_new
 
 
 async def main():
