@@ -1274,8 +1274,7 @@ footer{padding:52px 0 36px;text-align:center}
   nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => nav.classList.remove('open')));
 
   // order modal
-  const BOT = '8891745478:AAHpXUI1ZZ6rLnlh6ex3Dti-Ne2lBYDly_I';
-  const CID = '5089980481';
+  const WORKER_URL = 'WORKER_URL_HERE';
   const modal = document.getElementById('orderModal');
   const fservice = document.getElementById('fservice');
 
@@ -1302,13 +1301,11 @@ footer{padding:52px 0 36px;text-align:center}
     const name=document.getElementById('fname').value.trim();
     const phone=document.getElementById('fphone').value.trim();
     const email=document.getElementById('femail').value.trim();
-    const service=fservice.value;
     const comment=document.getElementById('fcomment').value.trim();
-    const text=`🛒 <b>Новая заявка с сайта!</b>\n\n👤 <b>Имя:</b> ${name}\n📞 <b>Контакт:</b> ${phone}${email?`\n📧 <b>Email:</b> ${email}`:''}\n💼 <b>Услуга:</b> ${service}${comment?`\n💬 <b>Комментарий:</b> ${comment}`:''}`;
     try{
-      await fetch(`https://api.telegram.org/bot${BOT}/sendMessage`,{
+      await fetch(WORKER_URL,{
         method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({chat_id:CID,text,parse_mode:'HTML'})
+        body:JSON.stringify({name,phone,email,service:fservice.value,comment})
       });
       document.getElementById('formWrap').style.display='none';
       document.getElementById('formSuccess').style.display='block';
