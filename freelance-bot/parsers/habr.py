@@ -1,5 +1,7 @@
+import re
 import hashlib
 import logging
+import urllib.request
 import feedparser
 from parsers import Order
 
@@ -8,10 +10,12 @@ SOURCE = "Habr Freelance"
 
 log = logging.getLogger(__name__)
 
+_opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+
 
 async def fetch() -> list[Order]:
     try:
-        feed = feedparser.parse(RSS_URL)
+        feed = feedparser.parse(RSS_URL, handlers=[_opener])
         orders = []
         for entry in feed.entries:
             url = entry.get("link", "")
@@ -19,7 +23,7 @@ async def fetch() -> list[Order]:
             orders.append(Order(
                 id=f"habr_{order_id}",
                 title=entry.get("title", "Без названия"),
-                description=_clean(entry.get("summary", "")),
+                description=re.sub(r"<[^>]+>", "", entry.get("summary", "")).strip(),
                 url=url,
                 source=SOURCE,
             ))
@@ -27,8 +31,3 @@ async def fetch() -> list[Order]:
     except Exception as e:
         log.error(f"[Habr] Ошибка: {e}")
         return []
-
-
-def _clean(text: str) -> str:
-    import re
-    return re.sub(r"<[^>]+>", "", text).strip()

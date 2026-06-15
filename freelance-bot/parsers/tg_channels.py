@@ -15,7 +15,7 @@ async def fetch(channels: list[str]) -> list[Order]:
         return []
 
     orders = []
-    async with httpx.AsyncClient(headers=HEADERS, timeout=15, follow_redirects=True) as client:
+    async with httpx.AsyncClient(headers=HEADERS, timeout=15, follow_redirects=True, trust_env=False) as client:
         for channel in channels:
             channel_name = channel.strip().lstrip("@")
             try:
