@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Design Studio</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--p:#a855f7;--pd:#7c3aed;--bg:#0a0a0a;--bg2:#111118;--card:rgba(255,255,255,.04);--border:rgba(255,255,255,.08);--text:#e8e8e8;--muted:#666}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh}
+
+/* HEADER */
+header{padding:20px 32px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.logo{font-size:1.1rem;font-weight:700;color:#fff;letter-spacing:-.02em}
+.logo span{color:var(--p)}
+.key-wrap{display:flex;gap:8px;margin-left:auto;flex:1;max-width:520px}
+.key-wrap input{flex:1;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:#fff;font-size:.85rem;outline:none;transition:border-color .2s}
+.key-wrap input:focus{border-color:rgba(168,85,247,.5)}
+.key-wrap input::placeholder{color:var(--muted)}
+#connectBtn{background:linear-gradient(135deg,var(--p),var(--pd));color:#fff;border:none;border-radius:10px;padding:10px 20px;font-size:.85rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:opacity .2s}
+#connectBtn:hover{opacity:.85}
+#connectBtn:disabled{opacity:.5;cursor:default}
+.status{font-size:.78rem;padding:4px 12px;border-radius:20px;white-space:nowrap}
+.status.ok{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.3)}
+.status.err{background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.25)}
+.status.idle{background:var(--card);color:var(--muted);border:1px solid var(--border)}
+
+/* TABS */
+nav{display:flex;gap:4px;padding:20px 32px 0;border-bottom:1px solid var(--border)}
+.tab{background:none;border:none;color:var(--muted);padding:10px 18px;font-size:.88rem;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .2s,border-color .2s;border-radius:6px 6px 0 0}
+.tab:hover{color:#fff}
+.tab.active{color:var(--p);border-bottom-color:var(--p)}
+
+/* MAIN */
+main{padding:32px}
+.panel{display:none;max-width:820px;margin:0 auto}
+.panel.active{display:block}
+
+h2{font-size:1.3rem;font-weight:700;margin-bottom:6px}
+.desc{font-size:.85rem;color:var(--muted);margin-bottom:28px;line-height:1.6}
+
+/* FORM */
+.form-row{margin-bottom:18px}
+label{display:block;font-size:.82rem;font-weight:600;color:rgba(255,255,255,.7);margin-bottom:6px}
+textarea,input[type=text],select{width:100%;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:#fff;font-size:.88rem;outline:none;transition:border-color .2s;font-family:inherit}
+textarea{resize:vertical;min-height:80px}
+textarea:focus,input[type=text]:focus,select:focus{border-color:rgba(168,85,247,.5)}
+textarea::placeholder,input::placeholder{color:var(--muted)}
+select option{background:#1a1a2e}
+
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* UPLOAD ZONE */
+.upload-zone{border:2px dashed var(--border);border-radius:14px;padding:40px 24px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative}
+.upload-zone:hover,.upload-zone.drag{border-color:rgba(168,85,247,.5);background:rgba(168,85,247,.04)}
+.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.upload-zone .icon{font-size:2rem;margin-bottom:8px}
+.upload-zone p{font-size:.85rem;color:var(--muted)}
+.upload-zone .fname{font-size:.82rem;color:var(--p);margin-top:6px}
+
+/* BUTTON */
+.run-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--p),var(--pd));color:#fff;border:none;border-radius:12px;font-size:.95rem;font-weight:600;cursor:pointer;transition:opacity .2s,transform .15s;margin-top:8px}
+.run-btn:hover{opacity:.9;transform:translateY(-1px)}
+.run-btn:disabled{opacity:.4;cursor:default;transform:none}
+
+/* RESULT */
+.result{margin-top:28px;display:none}
+.result.show{display:block}
+.result-label{font-size:.8rem;color:var(--muted);margin-bottom:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.result img,.result video{width:100%;border-radius:14px;border:1px solid var(--border)}
+.result-actions{display:flex;gap:10px;margin-top:12px}
+.dl-btn{flex:1;padding:10px;background:rgba(168,85,247,.15);border:1px solid rgba(168,85,247,.3);color:var(--p);border-radius:10px;font-size:.85rem;font-weight:600;cursor:pointer;text-align:center;text-decoration:none;transition:background .2s}
+.dl-btn:hover{background:rgba(168,85,247,.25)}
+
+/* LOADER */
+.loader{display:none;text-align:center;padding:40px}
+.loader.show{display:block}
+.spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--p);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 14px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loader p{font-size:.85rem;color:var(--muted)}
+
+/* ERROR */
+.err-box{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:14px 16px;font-size:.83rem;color:#f87171;margin-top:16px;display:none}
+.err-box.show{display:block}
+
+/* SIZES GRID */
+.sizes{display:flex;gap:8px;flex-wrap:wrap}
+.size-btn{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-size:.78rem;color:var(--muted);cursor:pointer;transition:all .2s}
+.size-btn.active,.size-btn:hover{border-color:rgba(168,85,247,.5);color:var(--p);background:rgba(168,85,247,.08)}
+
+.tip{font-size:.75rem;color:var(--muted);margin-top:6px;line-height:1.5}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">AI Design <span>Studio</span></div>
+  <div class="key-wrap">
+    <input type="password" id="apiKey" placeholder="Вставь Runware API ключ..." autocomplete="off">
+    <button id="connectBtn">Подключить</button>
+    <span class="status idle" id="statusBadge">Не подключён</span>
+  </div>
+</header>
+
+<nav>
+  <button class="tab active" data-tab="generate">🎨 Генерация</button>
+  <button class="tab" data-tab="background">✂️ Фон</button>
+  <button class="tab" data-tab="upscale">⬆️ Качество</button>
+</nav>
+
+<main>
+
+  <!-- ═══ ГЕНЕРАЦИЯ ИЗОБРАЖЕНИЯ ═══ -->
+  <div class="panel active" id="tab-generate">
+    <h2>Генерация изображения</h2>
+    <p class="desc">Опиши что хочешь получить — ИИ нарисует картинку. Пиши на английском для лучшего результата.</p>
+
+    <div class="form-row">
+      <label>Что нарисовать (prompt)</label>
+      <textarea id="g-prompt" placeholder="A luxury website hero section, dark background, purple gradients, modern minimal design, 8K quality..."></textarea>
+    </div>
+
+    <div class="form-row">
+      <label>Что исключить (негативный prompt — необязательно)</label>
+      <textarea id="g-neg" placeholder="blurry, low quality, text, watermark..." style="min-height:54px"></textarea>
+    </div>
+
+    <div class="form-row">
+      <label>Размер</label>
+      <div class="sizes">
+        <button class="size-btn active" data-w="1024" data-h="1024">1024×1024 (квадрат)</button>
+        <button class="size-btn" data-w="1440" data-h="810">1440×810 (широкий)</button>
+        <button class="size-btn" data-w="768" data-h="1024">768×1024 (портрет)</button>
+        <button class="size-btn" data-w="1920" data-h="1080">1920×1080 (Full HD)</button>
+      </div>
+    </div>
+
+    <div class="row2">
+      <div class="form-row">
+        <label>Модель</label>
+        <select id="g-model">
+          <option value="runware:100@1">Runware Fast (быстрая)</option>
+          <option value="runware:101@1" selected>Runware Quality (лучшее качество)</option>
+          <option value="civitai:618692@691639">Realistic Vision (реализм)</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>Шаги генерации (чем больше — тем детальнее)</label>
+        <input type="text" id="g-steps" value="28">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <label>Количество вариантов</label>
+      <div class="sizes">
+        <button class="size-btn count-btn active" data-n="1">1 вариант</button>
+        <button class="size-btn count-btn" data-n="2">2 варианта</button>
+        <button class="size-btn count-btn" data-n="4">4 варианта</button>
+      </div>
+    </div>
+
+    <button class="run-btn" id="g-run">✨ Сгенерировать</button>
+
+    <div class="loader" id="g-loader"><div class="spinner"></div><p id="g-loader-text">Генерируем изображение...</p></div>
+    <div class="err-box" id="g-err"></div>
+    <div class="result" id="g-result">
+      <div class="result-label">Результат</div>
+      <div id="g-images" style="display:grid;gap:12px"></div>
+    </div>
+  </div>
+
+  <!-- ═══ УДАЛЕНИЕ ФОНА ═══ -->
+  <div class="panel" id="tab-background">
+    <h2>Удаление фона</h2>
+    <p class="desc">Загрузи изображение — ИИ автоматически вырежет фон и оставит только объект на прозрачном фоне (PNG).</p>
+
+    <div class="form-row">
+      <div class="upload-zone" id="bg-zone">
+        <input type="file" id="bg-file" accept="image/*">
+        <div class="icon">🖼️</div>
+        <p>Нажми или перетащи изображение сюда</p>
+        <div class="fname" id="bg-fname"></div>
+      </div>
+    </div>
+
+    <button class="run-btn" id="bg-run">✂️ Убрать фон</button>
+
+    <div class="loader" id="bg-loader"><div class="spinner"></div><p>Удаляем фон...</p></div>
+    <div class="err-box" id="bg-err"></div>
+    <div class="result" id="bg-result">
+      <div class="result-label">Результат</div>
+      <img id="bg-img" src="" alt="Результат">
+      <div class="result-actions">
+        <a class="dl-btn" id="bg-dl" href="#" download="result-nobg.png">⬇️ Скачать PNG</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ УЛУЧШЕНИЕ КАЧЕСТВА ═══ -->
+  <div class="panel" id="tab-upscale">
+    <h2>Улучшение качества (апскейл)</h2>
+    <p class="desc">Загрузи изображение — ИИ увеличит его разрешение и улучшит детали. Идеально для фото заказчиков низкого качества.</p>
+
+    <div class="form-row">
+      <div class="upload-zone" id="up-zone">
+        <input type="file" id="up-file" accept="image/*">
+        <div class="icon">📷</div>
+        <p>Нажми или перетащи изображение сюда</p>
+        <div class="fname" id="up-fname"></div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <label>Увеличение</label>
+      <div class="sizes">
+        <button class="size-btn scale-btn active" data-scale="2">×2 (в 2 раза)</button>
+        <button class="size-btn scale-btn" data-scale="4">×4 (в 4 раза)</button>
+      </div>
+      <p class="tip">×2 — быстрее, ×4 — лучше качество но дольше</p>
+    </div>
+
+    <button class="run-btn" id="up-run">⬆️ Улучшить качество</button>
+
+    <div class="loader" id="up-loader"><div class="spinner"></div><p>Улучшаем качество...</p></div>
+    <div class="err-box" id="up-err"></div>
+    <div class="result" id="up-result">
+      <div class="result-label">Результат</div>
+      <img id="up-img" src="" alt="Результат">
+      <div class="result-actions">
+        <a class="dl-btn" id="up-dl" href="#" download="result-upscaled.png">⬇️ Скачать</a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script type="module">
+import { Runware } from 'https://esm.sh/@runware/sdk-js';
+
+// ── STATE ──────────────────────────────────────────────
+let runware = null;
+let connected = false;
+let genWidth = 1024, genHeight = 1024, genCount = 1, upscaleFactor = 2;
+
+// ── PERSIST API KEY ────────────────────────────────────
+const keyInput = document.getElementById('apiKey');
+const saved = localStorage.getItem('rw_api_key');
+if (saved) keyInput.value = saved;
+
+// ── CONNECT ────────────────────────────────────────────
+const connectBtn = document.getElementById('connectBtn');
+const badge = document.getElementById('statusBadge');
+
+function setStatus(state, text) {
+  badge.className = 'status ' + state;
+  badge.textContent = text;
+}
+
+connectBtn.addEventListener('click', async () => {
+  const key = keyInput.value.trim();
+  if (!key) return;
+  connectBtn.disabled = true;
+  setStatus('idle', 'Подключаемся...');
+  try {
+    if (runware) { try { await runware.disconnect(); } catch(_) {} }
+    runware = new Runware({ apiKey: key, shouldReconnect: true });
+    await runware.ensureConnection();
+    connected = true;
+    localStorage.setItem('rw_api_key', key);
+    setStatus('ok', '✓ Подключён');
+    connectBtn.textContent = 'Переподключить';
+  } catch(e) {
+    connected = false;
+    setStatus('err', '✗ Ошибка подключения');
+    console.error(e);
+  }
+  connectBtn.disabled = false;
+});
+
+// Автоподключение если ключ уже сохранён
+if (saved) setTimeout(() => connectBtn.click(), 300);
+
+// ── TABS ───────────────────────────────────────────────
+document.querySelectorAll('.tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ── SIZE BUTTONS ───────────────────────────────────────
+document.querySelectorAll('.size-btn:not(.count-btn):not(.scale-btn)').forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.closest('.sizes').querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if (btn.dataset.w) { genWidth = +btn.dataset.w; genHeight = +btn.dataset.h; }
+  });
+});
+document.querySelectorAll('.count-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.closest('.sizes').querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    genCount = +btn.dataset.n;
+  });
+});
+document.querySelectorAll('.scale-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.closest('.sizes').querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    upscaleFactor = +btn.dataset.scale;
+  });
+});
+
+// ── UPLOAD ZONES ───────────────────────────────────────
+function setupUpload(zoneId, fileId, fnameId) {
+  const zone = document.getElementById(zoneId);
+  const file = document.getElementById(fileId);
+  const fname = document.getElementById(fnameId);
+  file.addEventListener('change', () => { if(file.files[0]) fname.textContent = '📎 ' + file.files[0].name; });
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag'));
+  zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('drag'); if(e.dataTransfer.files[0]) { file.files = e.dataTransfer.files; fname.textContent = '📎 ' + file.files[0].name; }});
+}
+setupUpload('bg-zone','bg-file','bg-fname');
+setupUpload('up-zone','up-file','up-fname');
+
+// ── HELPERS ────────────────────────────────────────────
+function showLoader(id, show) { document.getElementById(id).classList.toggle('show', show); }
+function showResult(id, show) { document.getElementById(id).classList.toggle('show', show); }
+function showErr(id, msg) { const el = document.getElementById(id); el.textContent = msg; el.classList.add('show'); }
+function hideErr(id) { document.getElementById(id).classList.remove('show'); }
+
+function checkConnected(errId) {
+  if (!connected) { showErr(errId, 'Сначала подключи API ключ вверху страницы.'); return false; }
+  return true;
+}
+
+async function fileToBase64(file) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = e => res(e.target.result);
+    r.onerror = rej;
+    r.readAsDataURL(file);
+  });
+}
+
+// ── GENERATE ───────────────────────────────────────────
+document.getElementById('g-run').addEventListener('click', async () => {
+  hideErr('g-err');
+  if (!checkConnected('g-err')) return;
+  const prompt = document.getElementById('g-prompt').value.trim();
+  if (!prompt) { showErr('g-err', 'Введи описание изображения.'); return; }
+
+  const btn = document.getElementById('g-run');
+  btn.disabled = true;
+  showLoader('g-loader', true);
+  showResult('g-result', false);
+  document.getElementById('g-images').innerHTML = '';
+
+  try {
+    const results = await runware.requestImages({
+      positivePrompt: prompt,
+      negativePrompt: document.getElementById('g-neg').value.trim() || undefined,
+      model: document.getElementById('g-model').value,
+      width: genWidth,
+      height: genHeight,
+      steps: +document.getElementById('g-steps').value || 28,
+      numberResults: genCount,
+      outputType: 'URL',
+    });
+
+    const grid = document.getElementById('g-images');
+    grid.style.gridTemplateColumns = genCount > 1 ? '1fr 1fr' : '1fr';
+
+    results.forEach((img, i) => {
+      const wrap = document.createElement('div');
+      const image = document.createElement('img');
+      image.src = img.imageURL;
+      image.style.cssText = 'width:100%;border-radius:12px;border:1px solid rgba(255,255,255,.08)';
+      const dl = document.createElement('a');
+      dl.href = img.imageURL;
+      dl.download = `generated-${i+1}.png`;
+      dl.target = '_blank';
+      dl.className = 'dl-btn';
+      dl.style.marginTop = '8px';
+      dl.style.display = 'block';
+      dl.textContent = `⬇️ Скачать вариант ${i+1}`;
+      wrap.appendChild(image);
+      wrap.appendChild(dl);
+      grid.appendChild(wrap);
+    });
+
+    showResult('g-result', true);
+  } catch(e) {
+    showErr('g-err', 'Ошибка: ' + (e.message || e));
+  }
+
+  showLoader('g-loader', false);
+  btn.disabled = false;
+});
+
+// ── REMOVE BACKGROUND ──────────────────────────────────
+document.getElementById('bg-run').addEventListener('click', async () => {
+  hideErr('bg-err');
+  if (!checkConnected('bg-err')) return;
+  const file = document.getElementById('bg-file').files[0];
+  if (!file) { showErr('bg-err', 'Выбери изображение.'); return; }
+
+  const btn = document.getElementById('bg-run');
+  btn.disabled = true;
+  showLoader('bg-loader', true);
+  showResult('bg-result', false);
+
+  try {
+    const b64 = await fileToBase64(file);
+    const results = await runware.removeImageBackground({
+      inputImage: b64,
+      outputType: 'URL',
+    });
+    const url = results[0].imageURL;
+    document.getElementById('bg-img').src = url;
+    document.getElementById('bg-dl').href = url;
+    showResult('bg-result', true);
+  } catch(e) {
+    showErr('bg-err', 'Ошибка: ' + (e.message || e));
+  }
+
+  showLoader('bg-loader', false);
+  btn.disabled = false;
+});
+
+// ── UPSCALE ────────────────────────────────────────────
+document.getElementById('up-run').addEventListener('click', async () => {
+  hideErr('up-err');
+  if (!checkConnected('up-err')) return;
+  const file = document.getElementById('up-file').files[0];
+  if (!file) { showErr('up-err', 'Выбери изображение.'); return; }
+
+  const btn = document.getElementById('up-run');
+  btn.disabled = true;
+  showLoader('up-loader', true);
+  showResult('up-result', false);
+
+  try {
+    const b64 = await fileToBase64(file);
+    const results = await runware.upscaleGan({
+      inputImage: b64,
+      upscaleFactor: upscaleFactor,
+      outputType: 'URL',
+    });
+    const url = results[0].imageURL;
+    document.getElementById('up-img').src = url;
+    document.getElementById('up-dl').href = url;
+    showResult('up-result', true);
+  } catch(e) {
+    showErr('up-err', 'Ошибка: ' + (e.message || e));
+  }
+
+  showLoader('up-loader', false);
+  btn.disabled = false;
+});
+</script>
+</body>
+</html>
