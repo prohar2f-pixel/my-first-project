@@ -23,4 +23,4 @@ Allow: /
 User-agent: Applebot-Extended
 Allow: /
 
-Sitemap: https://prohar2f.github.io/my-first-project/sitemap.xml
+Sitemap: https://prohar2f-pixel.github.io/my-first-project/sitemap.xml

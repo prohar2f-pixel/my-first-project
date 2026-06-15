@@ -1,4 +1,4 @@
-const ALLOWED_ORIGIN = 'https://prohar2f.github.io';
+const ALLOWED_ORIGIN = 'https://prohar2f-pixel.github.io';
 
 export default {
   async fetch(request, env) {
