@@ -10,8 +10,16 @@ USER_ID = int(os.getenv("USER_ID", "0"))
 API_ID = int(os.getenv("API_ID", "0"))
 API_HASH = os.getenv("API_HASH", "")
 
-# Telegram channels to monitor, comma-separated, e.g. @freelance_ru,@toppchallenge
-TG_CHANNELS = [ch.strip() for ch in os.getenv("TG_CHANNELS", "").split(",") if ch.strip()]
+# Telegram channels to monitor, comma-separated
+DEFAULT_TG_CHANNELS = (
+    "@freelansim_ru,"    # Habr Freelance — заказы с ценами на боты, Python, WordPress, сайты
+    "@freelance_ru,"     # FL.ru — общий фриланс, крупнейший русскоязычный канал
+    "@web_fl,"           # Фрилансер — заказы на верстку, WordPress, лендинги
+    "@workk_on,"         # Work On — проекты на лендинги, веб-дизайн (72k подписчиков)
+    "@allgigs,"          # Mellow — международные заказы, веб, дизайн, разработка
+    "@toppchallenge"     # Топп — заказы и проекты для разработчиков
+)
+TG_CHANNELS = [ch.strip() for ch in os.getenv("TG_CHANNELS", DEFAULT_TG_CHANNELS).split(",") if ch.strip()]
 
 # How often to check platforms (seconds)
 CHECK_INTERVAL = int(os.getenv("CHECK_INTERVAL", "300"))
@@ -20,7 +28,8 @@ KEYWORDS = [
     # Сайты и лендинги
     "лендинг", "landing page", "сайт-визитка", "одностраничный сайт",
     "html верстка", "верстка по макету", "tilda", "сайт на тильда",
-    "тильда", "сделать сайт",
+    "тильда", "сделать сайт", "создать сайт", "разработать сайт",
+    "wordpress", "вордпресс", "wp сайт",
     # Интернет-магазины
     "интернет-магазин", "интернет магазин", "магазин на сайте",
     "каталог товаров", "корзина", "woocommerce", "сайт для продаж",
@@ -28,5 +37,9 @@ KEYWORDS = [
     # Боты и автоматизация
     "телеграм бот", "telegram bot", "тг бот", "бот для бизнеса",
     "автоматизация", "парсер", "скрипт python", "python скрипт",
-    "написать бота", "создать бота",
+    "написать бота", "создать бота", "разработать бота",
+    "aiogram", "python telegram",
+    # Верстка
+    "сверстать", "верстальщик", "верстка сайта", "html css",
+    "figma верстка", "макет верстка",
 ]
