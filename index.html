@@ -1302,14 +1302,20 @@ footer{padding:52px 0 36px;text-align:center}
     const phone=document.getElementById('fphone').value.trim();
     const email=document.getElementById('femail').value.trim();
     const comment=document.getElementById('fcomment').value.trim();
+    const ctrl=new AbortController();
+    const timer=setTimeout(()=>ctrl.abort(),10000);
     try{
-      await fetch(WORKER_URL,{
+      const res=await fetch(WORKER_URL,{
         method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({name,phone,email,service:fservice.value,comment})
+        body:JSON.stringify({name,phone,email,service:fservice.value,comment}),
+        signal:ctrl.signal
       });
+      clearTimeout(timer);
+      if(!res.ok)throw new Error('server');
       document.getElementById('formWrap').style.display='none';
       document.getElementById('formSuccess').style.display='block';
     }catch{
+      clearTimeout(timer);
       btn.disabled=false;btn.textContent='Отправить заявку';
       alert('Ошибка отправки. Попробуйте снова.');
     }
