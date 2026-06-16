@@ -29,6 +29,24 @@ log = logging.getLogger(__name__)
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
+# Ждём следующее текстовое сообщение как аргумент для add/del-кнопок
+pending: dict[int, str] = {}
+
+
+def channels_keyboard() -> InlineKeyboardMarkup:
+    buttons = [[InlineKeyboardButton(text=f"🗑 {ch}", callback_data=f"delch:{ch}")] for ch in get_channels()]
+    buttons.append([InlineKeyboardButton(text="➕ Добавить канал", callback_data="addch_prompt")])
+    buttons.append([InlineKeyboardButton(text="◀️ Назад", callback_data="back")])
+    return InlineKeyboardMarkup(inline_keyboard=buttons)
+
+
+def keywords_keyboard() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="➕ Добавить слово", callback_data="addkw_prompt")],
+        [InlineKeyboardButton(text="➖ Удалить слово", callback_data="delkw_prompt")],
+        [InlineKeyboardButton(text="◀️ Назад", callback_data="back")],
+    ])
+
 
 def main_keyboard() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=[
@@ -221,6 +239,48 @@ async def cb_reply(callback: CallbackQuery):
         await msg.edit_text(f"Ошибка генерации: {e}")
 
 
+@dp.callback_query(F.data.startswith("delch:"))
+async def cb_delchannel_btn(callback: CallbackQuery):
+    if callback.from_user.id != USER_ID:
+        return
+    name = callback.data.split(":", 1)[1]
+    remove_channel(name)
+    await callback.answer(f"Удалён {name}")
+    channels = get_channels()
+    text = (
+        "📢 <b>Telegram-каналы:</b>\n\nНажми на канал, чтобы удалить, или добавь новый кнопкой ниже."
+        if channels else "Telegram-каналы не настроены."
+    )
+    await callback.message.edit_text(text, reply_markup=channels_keyboard(), parse_mode="HTML")
+
+
+@dp.callback_query(F.data == "addch_prompt")
+async def cb_addchannel_prompt(callback: CallbackQuery):
+    if callback.from_user.id != USER_ID:
+        return
+    pending[callback.from_user.id] = "addchannel"
+    await callback.answer()
+    await callback.message.answer("Напиши @username канала следующим сообщением.")
+
+
+@dp.callback_query(F.data == "addkw_prompt")
+async def cb_addkeyword_prompt(callback: CallbackQuery):
+    if callback.from_user.id != USER_ID:
+        return
+    pending[callback.from_user.id] = "addkeyword"
+    await callback.answer()
+    await callback.message.answer("Напиши слово или фразу следующим сообщением.")
+
+
+@dp.callback_query(F.data == "delkw_prompt")
+async def cb_delkeyword_prompt(callback: CallbackQuery):
+    if callback.from_user.id != USER_ID:
+        return
+    pending[callback.from_user.id] = "delkeyword"
+    await callback.answer()
+    await callback.message.answer("Напиши слово или фразу для удаления следующим сообщением.")
+
+
 @dp.callback_query(F.data == "back")
 async def cb_back(callback: CallbackQuery):
     if callback.from_user.id != USER_ID:
@@ -241,11 +301,8 @@ async def show_keywords(message: Message):
     kw_list = "\n".join(f"• {kw}" for kw in get_keywords())
     await message.answer(
         f"🔑 <b>Ключевые слова:</b>\n\n{kw_list}\n\n"
-        f"Добавить: <code>/addkeyword слово</code>\n"
-        f"Удалить: <code>/delkeyword слово</code>",
-        reply_markup=InlineKeyboardMarkup(inline_keyboard=[
-            [InlineKeyboardButton(text="◀️ Назад", callback_data="back")]
-        ]),
+        f"Кнопками ниже или командой: <code>/addkeyword слово</code> / <code>/delkeyword слово</code>",
+        reply_markup=keywords_keyboard(),
         parse_mode="HTML",
     )
 
@@ -253,18 +310,46 @@ async def show_keywords(message: Message):
 async def show_channels(message: Message):
     channels = get_channels()
     if channels:
-        ch_list = "\n".join(f"• {ch}" for ch in channels)
-        text = f"📢 <b>Telegram-каналы:</b>\n\n{ch_list}"
+        text = "📢 <b>Telegram-каналы:</b>\n\nНажми на канал, чтобы удалить, или добавь новый кнопкой ниже."
     else:
         text = "Telegram-каналы не настроены."
-    text += "\n\nДобавить: <code>/addchannel @канал</code>\nУдалить: <code>/delchannel @канал</code>"
-    await message.answer(
-        text,
-        reply_markup=InlineKeyboardMarkup(inline_keyboard=[
-            [InlineKeyboardButton(text="◀️ Назад", callback_data="back")]
-        ]),
-        parse_mode="HTML",
-    )
+    await message.answer(text, reply_markup=channels_keyboard(), parse_mode="HTML")
+
+
+@dp.message(F.text)
+async def handle_pending_text(message: Message):
+    if message.from_user.id != USER_ID:
+        return
+    if message.text.startswith("/"):
+        return
+    action = pending.pop(message.from_user.id, None)
+    if not action:
+        return
+
+    arg = message.text.strip()
+
+    if action == "addchannel":
+        if not arg.startswith("@"):
+            arg = "@" + arg
+        if add_channel(arg):
+            await message.answer(f"✅ Канал {arg} добавлен.")
+        else:
+            await message.answer(f"Канал {arg} уже в списке.")
+        await show_channels(message)
+
+    elif action == "addkeyword":
+        if add_keyword(arg):
+            await message.answer(f"✅ Ключевое слово «{arg}» добавлено.")
+        else:
+            await message.answer(f"«{arg}» уже в списке.")
+        await show_keywords(message)
+
+    elif action == "delkeyword":
+        if remove_keyword(arg):
+            await message.answer(f"🗑 «{arg}» удалено.")
+        else:
+            await message.answer(f"«{arg}» не найдено.")
+        await show_keywords(message)
 
 
 async def check_all() -> int:
