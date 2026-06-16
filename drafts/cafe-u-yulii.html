@@ -136,6 +136,39 @@
       flex-wrap: wrap;
       justify-content: center;
     }
+
+    /* WHY US */
+    #why { background: var(--white); }
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 24px; text-align: center;
+    }
+    .why-item svg { width: 48px; height: 48px; margin: 0 auto 12px; }
+    .why-item p { font-size: 13px; line-height: 1.5; color: #555; }
+
+    /* MENU */
+    #menu { background: var(--cream); }
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .menu-card { background: var(--white); border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+    .menu-card img { height: 180px; }
+    .menu-card-body { padding: 16px; }
+    .menu-card-body h3 { font-size: 16px; margin-bottom: 6px; }
+    .menu-card-body .price { font-size: 20px; font-weight: 700; color: var(--gold); }
+    .menu-cta { text-align: center; margin-top: 40px; }
+
+    @media (max-width: 768px) {
+      .why-grid { grid-template-columns: repeat(2, 1fr); }
+      .why-grid .why-item:last-child { grid-column: span 2; }
+      .menu-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .menu-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -173,6 +206,107 @@
       <button class="btn btn-gold" onclick="openModal('book')">Забронировать стол</button>
       <a href="#menu" class="btn btn-outline">Посмотреть меню</a>
       <button class="btn btn-outline" onclick="openModal('delivery')">Заказать доставку</button>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="why">
+  <div class="container">
+    <h2 class="section-title">Почему выбирают нас</h2>
+    <div class="why-grid">
+      <div class="why-item">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="24" cy="24" r="22" stroke="#C8A96E" stroke-width="2"/>
+          <path d="M24 12c-4 0-8 4-8 10s3 9 8 9 8-3 8-9-4-10-8-10z" fill="#C8A96E" opacity=".3"/>
+          <path d="M16 34c0-4 3.6-7 8-7s8 3 8 7" stroke="#C8A96E" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <p>Узбекская кухня<br>из свежих продуктов</p>
+      </div>
+      <div class="why-item">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="24" cy="24" r="22" stroke="#C8A96E" stroke-width="2"/>
+          <ellipse cx="24" cy="26" rx="12" ry="6" fill="#C8A96E" opacity=".3"/>
+          <path d="M14 22h20M12 26h24" stroke="#C8A96E" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <p>Большие порции<br>и вкусные блюда</p>
+      </div>
+      <div class="why-item">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="24" cy="24" r="22" stroke="#C8A96E" stroke-width="2"/>
+          <path d="M17 30l4-8 3 5 3-3 4 6" stroke="#C8A96E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <p>Доступные цены<br>и честные порции</p>
+      </div>
+      <div class="why-item">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="24" cy="24" r="22" stroke="#C8A96E" stroke-width="2"/>
+          <path d="M24 14v10l6 6" stroke="#C8A96E" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <p>Уютная атмосфера<br>как дома</p>
+      </div>
+      <div class="why-item">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="24" cy="24" r="22" stroke="#C8A96E" stroke-width="2"/>
+          <path d="M24 16v8l5 5" stroke="#C8A96E" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="24" cy="24" r="8" stroke="#C8A96E" stroke-width="1.5" opacity=".4"/>
+        </svg>
+        <p>Быстрое<br>обслуживание</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu">
+  <div class="container">
+    <h2 class="section-title">Наше меню</h2>
+    <div class="menu-grid">
+      <div class="menu-card">
+        <img src="https://images.unsplash.com/photo-1596797038530-2c107229654b?w=400&q=80" alt="Плов по-узбекски" loading="lazy">
+        <div class="menu-card-body">
+          <h3>Плов по-узбекски</h3>
+          <div class="price">350 ₽</div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <img src="https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=400&q=80" alt="Лагман домашний" loading="lazy">
+        <div class="menu-card-body">
+          <h3>Лагман домашний</h3>
+          <div class="price">320 ₽</div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=400&q=80" alt="Шурпа" loading="lazy">
+        <div class="menu-card-body">
+          <h3>Шурпа</h3>
+          <div class="price">290 ₽</div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=400&q=80" alt="Манты" loading="lazy">
+        <div class="menu-card-body">
+          <h3>Манты</h3>
+          <div class="price">300 ₽</div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&q=80" alt="Шашлык из баранины" loading="lazy">
+        <div class="menu-card-body">
+          <h3>Шашлык из баранины</h3>
+          <div class="price">550 ₽</div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <img src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400&q=80" alt="Самса" loading="lazy">
+        <div class="menu-card-body">
+          <h3>Самса</h3>
+          <div class="price">150 ₽</div>
+        </div>
+      </div>
+    </div>
+    <div class="menu-cta">
+      <a href="#contacts" class="btn btn-gold">Заказать столик</a>
     </div>
   </div>
 </section>
