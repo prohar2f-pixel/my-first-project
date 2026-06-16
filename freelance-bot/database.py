@@ -27,7 +27,57 @@ def init_db():
         except Exception:
             pass
         conn.execute("DELETE FROM seen WHERE seen_at < datetime('now', '-30 days')")
+
+        conn.execute("CREATE TABLE IF NOT EXISTS channels (name TEXT PRIMARY KEY)")
+        conn.execute("CREATE TABLE IF NOT EXISTS keywords (word TEXT PRIMARY KEY)")
         conn.commit()
+
+        # Засеять из config.py при первом запуске — дальше список живёт только в БД
+        if conn.execute("SELECT COUNT(*) FROM channels").fetchone()[0] == 0:
+            from config import TG_CHANNELS
+            conn.executemany("INSERT OR IGNORE INTO channels (name) VALUES (?)", [(c,) for c in TG_CHANNELS])
+        if conn.execute("SELECT COUNT(*) FROM keywords").fetchone()[0] == 0:
+            from config import KEYWORDS
+            conn.executemany("INSERT OR IGNORE INTO keywords (word) VALUES (?)", [(k.lower(),) for k in KEYWORDS])
+        conn.commit()
+
+
+def get_channels() -> list[str]:
+    with sqlite3.connect(DB_PATH) as conn:
+        return [r[0] for r in conn.execute("SELECT name FROM channels ORDER BY name").fetchall()]
+
+
+def add_channel(name: str) -> bool:
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.execute("INSERT OR IGNORE INTO channels (name) VALUES (?)", (name,))
+        conn.commit()
+        return cur.rowcount > 0
+
+
+def remove_channel(name: str) -> bool:
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.execute("DELETE FROM channels WHERE name = ?", (name,))
+        conn.commit()
+        return cur.rowcount > 0
+
+
+def get_keywords() -> list[str]:
+    with sqlite3.connect(DB_PATH) as conn:
+        return [r[0] for r in conn.execute("SELECT word FROM keywords ORDER BY word").fetchall()]
+
+
+def add_keyword(word: str) -> bool:
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.execute("INSERT OR IGNORE INTO keywords (word) VALUES (?)", (word.lower(),))
+        conn.commit()
+        return cur.rowcount > 0
+
+
+def remove_keyword(word: str) -> bool:
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.execute("DELETE FROM keywords WHERE word = ?", (word.lower(),))
+        conn.commit()
+        return cur.rowcount > 0
 
 
 def is_seen(order_id: str) -> bool:
