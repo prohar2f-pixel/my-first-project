@@ -9,7 +9,9 @@ import { join } from "node:path";
 
 const AGENT_HOME = process.env.AGENT_HOME || "/home/agent";
 const DB_PATH = join(AGENT_HOME, ".agent", "memory.db");
-const MIGRATIONS_DIR = join(AGENT_HOME, ".agent", "bot", "migrations");
+// Migrations ship next to this file's own bot install (sibling of lib/),
+// not under AGENT_HOME — the bot source dir doesn't always live there (e.g. Windows).
+const MIGRATIONS_DIR = join(import.meta.dirname, "..", "migrations");
 
 let _db = null;
 let _SQL = null;

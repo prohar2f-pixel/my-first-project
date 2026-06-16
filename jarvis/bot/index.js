@@ -23,8 +23,48 @@ import https from "node:https";
 import http from "node:http";
 import { handlePendingInput, registerSecretsHandlers } from "./secrets-menu.js";
 import { hasAnyTranscriber, registerVoiceHelpers, voiceFallbackKeyboard, VOICE_FALLBACK_PROMPT } from "./voice-helper.js";
+import { isOfficeDoc, extractOfficeText, extractVideoAudio, extractVideoFrames } from "./lib/media-extract.js";
+
+// ─── PROXY (some hosts have no direct egress — route via HTTPS_PROXY/HTTP_PROXY if set) ──
+{
+  const proxyUrl = process.env.HTTPS_PROXY || process.env.https_proxy || process.env.HTTP_PROXY || process.env.http_proxy;
+  if (proxyUrl) {
+    const { ProxyAgent, setGlobalDispatcher } = await import("undici");
+    const { HttpsProxyAgent } = await import("https-proxy-agent");
+    setGlobalDispatcher(new ProxyAgent(proxyUrl)); // covers fetch() (grammy, etc.)
+    const proxyAgent = new HttpsProxyAgent(proxyUrl);
+    https.globalAgent = proxyAgent; // covers raw https.get/request (Deepgram, Voyage, update-check)
+    http.globalAgent = proxyAgent;
+    console.log("[proxy] outbound traffic routed via", proxyUrl.replace(/\/\/[^@]+@/, "//***:***@"));
+  }
+}
 
 // ─── CONFIG ──────────────────────────────────────────────────────────────────
+
+function resolveClaudeBin() {
+  // On Windows, "claude" on PATH resolves to claude.cmd/.ps1 wrappers, which
+  // Node's spawn() can't execute directly (ENOENT) without shell:true — and
+  // shell:true lets cmd.exe reinterpret special characters inside prompts.
+  // Resolve the real claude.exe next to the npm global install instead.
+  if (process.platform !== "win32") return "claude";
+
+  // Under a Windows service (LocalSystem), PATH/APPDATA don't point at the
+  // Administrator profile, so "where claude.cmd" finds nothing — build the
+  // path from AGENT_HOME directly instead of relying on PATH lookup.
+  const home = process.env.AGENT_HOME || process.env.USERPROFILE;
+  if (home) {
+    const exePath = join(home, "AppData", "Roaming", "npm", "node_modules", "@anthropic-ai", "claude-code", "bin", "claude.exe");
+    if (existsSync(exePath)) return exePath;
+  }
+
+  try {
+    const cmdPath = execSync("where claude.cmd", { encoding: "utf8" }).trim().split(/\r?\n/)[0];
+    const exePath = join(cmdPath, "..", "node_modules", "@anthropic-ai", "claude-code", "bin", "claude.exe");
+    if (existsSync(exePath)) return exePath;
+  } catch {}
+  return "claude";
+}
+const CLAUDE_BIN = resolveClaudeBin();
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const AGENT_HOME = process.env.AGENT_HOME || "/home/agent";
@@ -662,15 +702,18 @@ function _callClaudeInner(prompt, sessionId, { onText } = {}) {
       "--model", getCurrentModel(),
       "--dangerously-skip-permissions",
     ];
+    // claude-code 2.x rejects --output-format=stream-json without --verbose
+    // (exits immediately with no stdout — was silently surfacing as "(пустой ответ)")
+    if (useStream) args.push("--verbose");
 
     const systemPrompt = buildSystemPrompt();
     if (systemPrompt) args.push("--append-system-prompt", systemPrompt);
 
     if (sessionId) args.push("--resume", sessionId);
 
-    const child = spawn("claude", args, {
+    const child = spawn(CLAUDE_BIN, args, {
       cwd: WORKSPACE,
-      env: { ...process.env, HOME: AGENT_HOME },
+      env: { ...process.env, HOME: AGENT_HOME, USERPROFILE: AGENT_HOME },
       timeout: 600000, // 10 min
     });
     _activeChild = child;
@@ -730,6 +773,13 @@ function _callClaudeInner(prompt, sessionId, { onText } = {}) {
               if (obj.result) lastText = obj.result;
             }
           } catch {}
+        }
+        if (code !== 0 && !lastText) {
+          try {
+            writeFileSync(CRASH_CONTEXT_FILE,
+              `Последний запрос (${new Date().toISOString()}):\n${prompt.slice(0, 500)}\n\nОшибка: exit ${code}\n${stderr.slice(0, 300)}`);
+          } catch {}
+          return reject(new Error(`Claude exit ${code}: ${stderr.slice(0, 300)}`));
         }
         recordSpend(cost);
         resolve({
@@ -876,13 +926,53 @@ async function processMediaBatch(key) {
     return;
   }
 
-  // Build prompt with file paths
-  const filesBlock = downloaded
-    .map((d) => {
-      const label = d.kind === "photo" ? "Фото" : d.kind === "video" ? "Видео" : `Файл (${d.fileName || d.ext})`;
-      return `${label}: ${d.path}`;
-    })
-    .join("\n");
+  // Build prompt with file paths — office docs and video need pre-extraction
+  // since Claude's Read tool can't parse OOXML zips or play video natively.
+  const filesBlockParts = [];
+  for (const d of downloaded) {
+    if (d.kind === "document" && isOfficeDoc(d.ext)) {
+      try {
+        const text = await extractOfficeText(d.path, d.ext);
+        filesBlockParts.push(
+          `Файл (${d.fileName || d.ext}): ${d.path}\n--- извлечённый текст ---\n${text || "(текст не найден)"}\n--- конец текста ---`
+        );
+      } catch (e) {
+        console.warn(`[media] office extract failed: ${e.message}`);
+        filesBlockParts.push(`Файл (${d.fileName || d.ext}): ${d.path} (не удалось извлечь текст автоматически)`);
+      }
+      continue;
+    }
+
+    if (d.kind === "video") {
+      const lines = [`Видео: ${d.path}`];
+      try {
+        for (const frame of extractVideoFrames(d.path)) {
+          lines.push(`Кадр из видео (открой через Read): ${frame}`);
+        }
+      } catch (e) {
+        console.warn(`[media] frame extract failed: ${e.message}`);
+      }
+      try {
+        const audioPath = extractVideoAudio(d.path);
+        if (audioPath) {
+          const transcript = await transcribeVoice(audioPath);
+          lines.push(
+            transcript
+              ? `Распознанная речь из видео: "${transcript}"`
+              : `Звук распознать не удалось (не настроен Deepgram/Whisper — см. /settings)`
+          );
+        }
+      } catch (e) {
+        console.warn(`[media] audio extract failed: ${e.message}`);
+      }
+      filesBlockParts.push(lines.join("\n"));
+      continue;
+    }
+
+    const label = d.kind === "photo" ? "Фото" : `Файл (${d.fileName || d.ext})`;
+    filesBlockParts.push(`${label}: ${d.path}`);
+  }
+  const filesBlock = filesBlockParts.join("\n\n");
 
   const mediaIntro = downloaded.length === 1
     ? "Пользователь отправил медиа. Файл сохранён — открой через Read:"
@@ -1601,7 +1691,10 @@ function spendLimitKeyboard() {
 
 // ─── TELEGRAM BOT ────────────────────────────────────────────────────────────
 
-const bot = new Bot(BOT_TOKEN);
+// grammy's Node shim defaults to node-fetch with its own keep-alive Agent,
+// which bypasses our proxy setup above. Force it onto native fetch (which
+// does go through the undici dispatcher we configured) when a proxy is set.
+const bot = new Bot(BOT_TOKEN, (process.env.HTTPS_PROXY || process.env.HTTP_PROXY) ? { client: { fetch: globalThis.fetch } } : undefined);
 bot.api.config.use(autoRetry());
 
 // Env callbacks (модуль secrets-menu.js — только callbacks, не /settings)

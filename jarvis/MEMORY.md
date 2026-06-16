@@ -20,23 +20,31 @@
 
 ## Активные проекты
 
-1. Разработка собственной площадки для веб-дизайна на базе ИИ с интеграцией в Figma
+Полный список и статус — в `PROJECTS.md`. Кратко: AI Design Platform (спека готова, не начата), сайт "Все туры" (production), Freelance Monitor Bot (прототип), Smeta Bot (ждёт API-ключ), ТЗ-бот/tzbot (в разработке).
+
+Все код-проекты живут в основном репо github.com/prohar2f-pixel/my-first-project (один репозиторий, несколько папок-проектов внутри: freelance-bot/, smeta-bot/, tzbot/, cloudflare-worker/). Второй репо prohar2f-pixel.github.io — зеркало сайта на GitHub Pages.
 
 ---
 
 ## Инфраструктура
 
-> Сюда дописывайте: серверы (VPS, IP, доступы), домены, базы данных, ключевые шаблоны deploy-команд. Чтобы Агент мог работать с инфраструктурой не переспрашивая.
+Этот сервер (Windows Server 2022) — основное рабочее место Агента. Jarvis лежит в `C:\Users\Administrator\Documents\Projects\jarvis`, остальные проекты клонированы в `C:\Users\Administrator\projects\` (my-first-project, prohar2f-pixel.github.io).
 
-*Пока пусто. Появится когда заведёте свой сервер или домен.*
+Telegram-бот Агента: @alex_proharov_bot, работает как служба Windows (NSSM, служба `JarvisAgentBot`) — переживает перезагрузку без входа в систему.
+
+Сервер не имеет прямого доступа в интернет — весь трафик через HTTP-прокси (переменные `HTTPS_PROXY`/`HTTP_PROXY`, уже настроены и используются ботом и npm).
 
 ---
 
 ## Стек и инструменты
 
-> Дописывайте по мере выбора: что используете для frontend, backend, AI, deploy, дизайна. Локальные утилиты на компьютере (например yt-dlp, ffmpeg) — тоже сюда.
-
-*Пока пусто. Появится по мере появления конкретного стека.*
+- Сайты: статический HTML/CSS/JS (без фреймворков), GitHub Pages
+- Боты: Python (python-telegram-bot, Telethon), Node.js (grammy)
+- AI: Anthropic API (Claude) — анализ, генерация, извлечение данных
+- Прочие API по проектам: Runware (медиа-генерация), Figma REST API, Tilda API, Serper (поиск)
+- Деплой ботов: Railway (tzbot — есть Procfile/nixpacks.toml)
+- Инфра сайта: Cloudflare Workers (прокси формы, чтобы токены не светились в браузере)
+- БД: PostgreSQL (tzbot)
 
 ---
 
@@ -63,10 +71,9 @@
 
 > Карта справочников из папки `knowledge/`. Когда добавите туда новый файл — дайте здесь ссылку и одну строку «когда читать».
 
-Пример формата:
-> `knowledge/brandbook.md` — стиль и голос автора. Читать когда пишу пост, презентацию или любой публичный текст.
+`knowledge/ai-design-platform-spec.md` — полная спецификация AI Design Platform (ChatGPT → Figma → Tilda). Читать перед началом работы над этим проектом.
 
-*Пока пусто.*
+`knowledge/coding-principles.md` — принципы работы над кодом (4 правила Karpathy), перенесены из другого проекта клиента. Читать при любой задаче на разработку/правку кода.
 
 ---
 

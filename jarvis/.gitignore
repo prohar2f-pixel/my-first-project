@@ -16,6 +16,11 @@ Thumbs.db
 .env.*.local
 *.pem
 *.key
+bot/run-bot.cmd
 
 # Claude Code локальные настройки
 .claude/settings.local.json
+.claude/scheduled_tasks.lock
+
+# Node deps
+node_modules/
