@@ -373,15 +373,27 @@ async def _send_tz(message, context, session: dict, tz_text: str):
 
 # ─── CORE PROCESS ─────────────────────────────────────────────────────────────
 
+FINISH_TRIGGER = (
+    "Я ответил на все вопросы. Пожалуйста, подведи итог и составь полное ТЗ прямо сейчас. "
+    "Строго следуй формату: сначала ТЗ_ПРОВЕРКА с кратким резюме, затем ТЗ_ГОТОВО с полным ТЗ."
+)
+
+
 async def _process(update: Update, context: ContextTypes.DEFAULT_TYPE,
                    session: dict, user_content, user_label: str):
     type_label = SITE_TYPES.get(session["site_type"], "Сайт")
     system     = build_system(session["site_type"])
+
+    # Auto-inject finish trigger after 10+ steps so Claude doesn't loop forever
+    steps_count = len(session["steps"])
+    if steps_count >= 10 and isinstance(user_content, str):
+        user_content = user_content + "\n\n" + FINISH_TRIGGER
+
     messages   = build_messages(type_label, session["first_msg"], session["steps"], user_content)
     chat_id    = update.effective_chat.id
 
     try:
-        max_tokens = 4096 if len(session["steps"]) >= 7 else 2000
+        max_tokens = 4096 if steps_count >= 7 else 2000
         reply = await asyncio.to_thread(call_claude_sync, system, messages, max_tokens)
     except Exception as e:
         logger.error(f"Claude error: {e}", exc_info=True)
@@ -497,6 +509,16 @@ async def reset(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     db_delete(update.effective_chat.id)
     context.user_data.clear()
     await update.message.reply_text("🔄 Начинаем заново!", reply_markup=start_keyboard())
+
+
+async def finish(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    chat_id = update.effective_chat.id
+    session = db_get(chat_id)
+    if not session or not session["steps"]:
+        await update.message.reply_text("Нет активной сессии или ещё не начали. Нажмите /start")
+        return
+    await update.message.reply_text("⏳ Собираю ТЗ по всем вашим ответам...")
+    await _process(update, context, session, FINISH_TRIGGER, "[Завершить интервью]")
 
 
 async def handle_type_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -777,16 +799,18 @@ async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> N
 async def post_init(app: Application) -> None:
     db_init()
     await app.bot.set_my_commands([
-        BotCommand("start", "Начать сбор ТЗ"),
-        BotCommand("reset", "Начать заново"),
+        BotCommand("start",  "Начать сбор ТЗ"),
+        BotCommand("finish", "Завершить интервью и получить ТЗ"),
+        BotCommand("reset",  "Начать заново"),
     ])
 
 
 def main() -> None:
     app = Application.builder().token(TELEGRAM_TOKEN).post_init(post_init).build()
 
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(CommandHandler("reset", reset))
+    app.add_handler(CommandHandler("start",  start))
+    app.add_handler(CommandHandler("reset",  reset))
+    app.add_handler(CommandHandler("finish", finish))
 
     app.add_handler(CallbackQueryHandler(handle_consent_yes,   pattern="^consent_yes$"))
     app.add_handler(CallbackQueryHandler(handle_consent_no,    pattern="^consent_no$"))
