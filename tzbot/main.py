@@ -381,7 +381,8 @@ async def _process(update: Update, context: ContextTypes.DEFAULT_TYPE,
     chat_id    = update.effective_chat.id
 
     try:
-        reply = await asyncio.to_thread(call_claude_sync, system, messages, 2000)
+        max_tokens = 4096 if len(session["steps"]) >= 7 else 2000
+        reply = await asyncio.to_thread(call_claude_sync, system, messages, max_tokens)
     except Exception as e:
         logger.error(f"Claude error: {e}", exc_info=True)
         try:
