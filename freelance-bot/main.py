@@ -8,10 +8,14 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from config import BOT_TOKEN, USER_ID, CHECK_INTERVAL
 from database import (
-    init_db, is_seen, mark_seen, get_order,
+    init_db, is_seen, is_seen_fingerprint, mark_seen, get_order,
     get_channels, add_channel, remove_channel,
     get_keywords, add_keyword, remove_keyword,
+    _make_fingerprint,
 )
+
+MAX_PER_CYCLE = 5       # макс. уведомлений за одну проверку
+MIN_TEXT_LEN  = 100     # минимальная длина текста вакансии
 from filters import matches
 from notifier import send_order
 from responder import generate_response
@@ -369,10 +373,22 @@ async def check_all() -> int:
             log.error(f"Ошибка парсера: {orders}")
             continue
         for order in orders:
+            if total_new >= MAX_PER_CYCLE:
+                break
+            # Пропускаем слишком короткие тексты (спам, объявления без смысла)
+            full_text = order.title + " " + order.description
+            if len(full_text) < MIN_TEXT_LEN:
+                continue
+            # Дедупликация по ID
             if is_seen(order.id):
                 continue
+            # Дедупликация по содержимому (один заказ в нескольких каналах)
+            fp = _make_fingerprint(full_text)
+            if is_seen_fingerprint(fp):
+                mark_seen(order.id, order.source, order.title, order.description)
+                continue
             mark_seen(order.id, order.source, order.title, order.description)
-            if matches(order.title + " " + order.description):
+            if matches(full_text):
                 await send_order(bot, USER_ID, order)
                 total_new += 1
                 await asyncio.sleep(0.5)
