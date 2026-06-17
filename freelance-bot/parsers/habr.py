@@ -1,4 +1,5 @@
 import re
+import asyncio
 import hashlib
 import logging
 import urllib.request
@@ -15,7 +16,7 @@ _opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
 
 async def fetch() -> list[Order]:
     try:
-        feed = feedparser.parse(RSS_URL, handlers=[_opener])
+        feed = await asyncio.to_thread(feedparser.parse, RSS_URL, handlers=[_opener])
         orders = []
         for entry in feed.entries:
             url = entry.get("link", "")

@@ -1,4 +1,3 @@
-import json
 import logging
 from datetime import datetime, timezone, timedelta
 from aiogram import Bot
@@ -17,7 +16,6 @@ SOURCE_EMOJI = {
 
 
 def order_keyboard(order: Order) -> InlineKeyboardMarkup:
-    data = json.dumps({"id": order.id, "t": order.title[:40], "d": order.description[:200], "s": order.source})
     return InlineKeyboardMarkup(inline_keyboard=[
         [
             InlineKeyboardButton(text="🔗 Открыть заказ", url=order.url),

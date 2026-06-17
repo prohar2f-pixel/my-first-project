@@ -1,3 +1,4 @@
+import asyncio
 import anthropic
 from config import ANTHROPIC_API_KEY
 
@@ -31,12 +32,11 @@ async def generate_response(job_title: str, job_description: str, source: str) -
 Покажи что понял задачу, кратко расскажи почему подходишь, назови примерные сроки и стоимость если можешь оценить.
 Заканчивай предложением написать в личку для деталей."""
 
-    message = client.messages.create(
+    message = await asyncio.to_thread(
+        client.messages.create,
         model="claude-haiku-4-5-20251001",
         max_tokens=400,
-        messages=[
-            {"role": "user", "content": prompt}
-        ],
+        messages=[{"role": "user", "content": prompt}],
         system=PROFILE,
     )
     return message.content[0].text
