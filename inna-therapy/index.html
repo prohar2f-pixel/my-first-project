@@ -51,7 +51,7 @@ nav {
     text-decoration: none;
     flex-shrink: 0;
 }
-.nav-logo-icon { font-size: 22px; }
+.nav-logo-icon { display:inline-flex; align-items:center; justify-content:center; }
 .nav-logo-text {
     font-size: 11px;
     font-weight: 600;
@@ -367,7 +367,7 @@ nav {
     box-shadow: 0 6px 24px rgba(196,132,124,0.16);
     transform: translateY(-3px);
 }
-.p-icon { font-size: 26px; margin-bottom: 10px; }
+.p-icon { display:flex; align-items:center; justify-content:center; height:32px; margin-bottom:10px; }
 .price-card h3 { font-size: 13px; margin-bottom: 6px; line-height: 1.35; }
 .p-desc { font-size: 11px; color: #7A5555; line-height: 1.5; margin-bottom: 12px; flex: 1; }
 .p-amount {
@@ -476,7 +476,7 @@ nav {
 .option-card.hl .o-sub { color: rgba(255,255,255,0.8); }
 .option-card.hl .btn { background: #fff; color: #C4847C; }
 .option-card.hl .btn:hover { background: #FAF6F4; }
-.o-icon { font-size: 28px; margin-bottom: 12px; }
+.o-icon { display:flex; align-items:center; justify-content:center; height:36px; margin-bottom:12px; }
 .option-card h3 { font-size: 20px; margin-bottom: 10px; }
 .o-sub { font-size: 14px; color: #7A5555; margin-bottom: 20px; line-height: 1.6; }
 .o-note { font-size: 12px; color: rgba(255,255,255,0.65); margin-top: 10px; }
@@ -603,7 +603,7 @@ footer a:hover { color: #fff; }
 <div class="container">
 <div class="nav-inner">
     <a href="#" class="nav-logo">
-        <span class="nav-logo-icon">🌸</span>
+        <span class="nav-logo-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c0 4-3 6-3 6s3 1 3 5c0-4 3-5 3-5s-3-2-3-6z"/><path d="M12 18c0-4-3-5-3-5s3-1 3-5c0 4 3 5 3 5s-3 1-3 5z"/><path d="M2 12c4 0 6 3 6 3s1-3 5-3c-4 0-5-3-5-3s-1 3-6 3z"/><path d="M22 12c-4 0-6 3-6 3s-1-3-5-3c4 0 5-3 5-3s1 3 6 3z"/><circle cx="12" cy="12" r="1.5" fill="#C4847C" stroke="none"/></svg></span>
         <span class="nav-logo-text">Комплексная<br>телесная терапия</span>
     </a>
     <ul class="nav-links">
@@ -671,31 +671,31 @@ footer a:hover { color: #fff; }
     <h2>Как проходит сеанс</h2>
     <div class="steps-grid">
         <div class="step-card">
-            <div class="step-icon">🔍</div>
+            <div class="step-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></div>
             <div class="step-num">1</div>
             <h3>Диагностика</h3>
             <p>Понимаем, откуда растут ноги проблемы — физическая боль, эмоциональные блоки, родовые программы</p>
         </div>
         <div class="step-card">
-            <div class="step-icon">🤲</div>
+            <div class="step-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 00-2-2 2 2 0 00-2 2"/><path d="M14 10V4a2 2 0 00-2-2 2 2 0 00-2 2v2"/><path d="M10 10.5V6a2 2 0 00-2-2 2 2 0 00-2 2v8"/><path d="M18 8a2 2 0 114 0v6a8 8 0 01-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 012.83-2.82L7 15"/></svg></div>
             <div class="step-num">2</div>
             <h3>Глубокий мягкий массаж</h3>
             <p>Убираем напряжение из всех тканей тела — мышцы, связки и фасции расслабляются</p>
         </div>
         <div class="step-card">
-            <div class="step-icon">🧠</div>
+            <div class="step-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 017 4.5v0A2.5 2.5 0 014.5 7v0a2.5 2.5 0 000 5v0A2.5 2.5 0 017 14.5v0A2.5 2.5 0 009.5 17H12"/><path d="M14.5 2A2.5 2.5 0 0117 4.5v0A2.5 2.5 0 0119.5 7v0a2.5 2.5 0 010 5v0A2.5 2.5 0 0117 14.5v0A2.5 2.5 0 0114.5 17H12"/><path d="M12 17v4"/><path d="M9 21h6"/><path d="M12 12v-2"/><path d="M12 7v1"/></svg></div>
             <div class="step-num">3</div>
             <h3>Работа с нейросоматикой</h3>
             <p>Меняем мышление, раскрываем внутренние блоки — страхи и тревоги теряют власть</p>
         </div>
         <div class="step-card">
-            <div class="step-icon">🌬️</div>
+            <div class="step-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.59 4.59A2 2 0 1111 8H2"/><path d="M12.42 19.42A2 2 0 1014 16H2"/><path d="M17.73 7.73A2.5 2.5 0 1119.5 12H2"/></svg></div>
             <div class="step-num">4</div>
             <h3>Выравнивание диафрагмы</h3>
             <p>Восстанавливаем свободное дыхание — появляется лёгкость и ощущение пространства</p>
         </div>
         <div class="step-card">
-            <div class="step-icon">🌸</div>
+            <div class="step-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c0 4-3 6-3 6s3 1 3 5c0-4 3-5 3-5s-3-2-3-6z"/><path d="M2 12c4 0 6-3 6-3s1 3 5 3c-4 0-5 3-5 3s-1-3-6-3z"/><path d="M22 12c-4 0-6-3-6-3s-1 3-5 3c4 0 5 3 5 3s1-3 6-3z"/><circle cx="12" cy="12" r="1.5" fill="#C4847C" stroke="none"/></svg></div>
             <div class="step-num">5</div>
             <h3>Матрица судьбы</h3>
             <p>Видим родовые программы, которые мешают достичь целей, и начинаем их менять</p>
@@ -762,31 +762,31 @@ footer a:hover { color: #fff; }
             <div class="p-amount">1 500 ₽</div>
         </div>
         <div class="price-card">
-            <div class="p-icon">✨</div>
+            <div class="p-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg></div>
             <h3>1 сеанс</h3>
             <p class="p-desc">Полный сеанс терапии</p>
             <div class="p-amount">4 000 ₽</div>
         </div>
         <div class="price-card">
-            <div class="p-icon">🌿</div>
+            <div class="p-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 014 13c0-4 3-8 9-10 0 6-1 10-5 12"/><path d="M20 8c0 7-7 13-9 13"/></svg></div>
             <h3>3 сеанса</h3>
             <p class="p-desc">3 полных сеанса + массаж живота</p>
             <div class="p-amount">12 000 ₽</div>
         </div>
         <div class="price-card">
-            <div class="p-icon">🌸</div>
+            <div class="p-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c0 4-3 6-3 6s3 1 3 5c0-4 3-5 3-5s-3-2-3-6z"/><path d="M2 12c4 0 6-3 6-3s1 3 5 3c-4 0-5 3-5 3s-1-3-6-3z"/><path d="M22 12c-4 0-6-3-6-3s-1 3-5 3c4 0 5 3 5 3s1-3 6-3z"/><circle cx="12" cy="12" r="1.5" fill="#C4847C" stroke="none"/></svg></div>
             <h3>4 сеанса</h3>
             <p class="p-desc">4 сеанса + массаж живота (для опущения органов)</p>
             <div class="p-amount">16 000 ₽</div>
         </div>
         <div class="price-card">
-            <div class="p-icon">⭐</div>
+            <div class="p-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>
             <h3>5 сеансов</h3>
             <p class="p-desc">5 сеансов + мини разбор матрицы судьбы</p>
             <div class="p-amount">20 000 ₽</div>
         </div>
         <div class="price-card">
-            <div class="p-icon">🌺</div>
+            <div class="p-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12"/><path d="M12 12C12 7 8 4 8 4s0 4 4 8"/><path d="M12 12C12 7 16 4 16 4s0 4-4 8"/><path d="M12 12C7 12 4 8 4 8s4 0 8 4"/><path d="M12 12C17 12 20 8 20 8s-4 0-8 4"/></svg></div>
             <h3>Правка живота</h3>
             <p class="p-desc">Масляное выглаживание для женщин</p>
             <div class="p-amount">2 500 ₽</div>
@@ -874,19 +874,19 @@ footer a:hover { color: #fff; }
             <p class="o-sub">Напишите мне в Telegram или MAX — отвечу в течение 24 часов</p>
             <a href="https://t.me/innaborisova_therapy" class="btn">У меня есть вопрос</a>
             <div class="contact-btns">
-                <a href="https://t.me/innaborisova_therapy" class="contact-btn">✈ Перейти в Telegram</a>
+                <a href="https://t.me/innaborisova_therapy" class="contact-btn" style="display:inline-flex;align-items:center;gap:8px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>Перейти в Telegram</a>
                 <a href="https://max.ru/join/i1C_POb-7DKMmllA3l9MRT-gtDn4qeQYvaYgkNUHDxM" class="contact-btn">MAX</a>
             </div>
         </div>
         <div class="option-card hl">
-            <div class="o-icon">🎯</div>
+            <div class="o-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
             <h3>Хочу попробовать</h3>
             <p class="o-sub">Забронируйте место и получите скидку на первый сеанс</p>
             <a href="#" class="btn">Предоплата 1 000 ₽</a>
             <p class="o-note">Предоплата возвращается, если вам не подойдёт после первой встречи</p>
         </div>
         <div class="option-card">
-            <div class="o-icon">✅</div>
+            <div class="o-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
             <h3>Готова к изменениям</h3>
             <p class="o-sub">Выберите курс и оплатите сразу — начните путь к новой себе уже сегодня</p>
             <a href="#prices" class="btn">Оплатить полный курс</a>
