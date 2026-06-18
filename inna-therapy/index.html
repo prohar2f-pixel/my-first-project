@@ -252,48 +252,95 @@ nav {
 .about-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 40px;
+    gap: 48px;
     align-items: start;
 }
+.sec-label {
+    display: block;
+    font-size: 10.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #C4847C;
+    margin-bottom: 14px;
+}
+.about-h2 {
+    text-align: left;
+    font-size: clamp(26px, 3vw, 38px);
+    margin-bottom: 10px;
+}
+.about-lotus {
+    display: flex;
+    align-items: center;
+    margin: 14px 0 20px;
+    color: #C4847C;
+    opacity: 0.65;
+}
 .about-bio p, .about-approach p { font-size: 15px; margin: 0 0 16px; line-height: 1.7; }
+.about-quote-card {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: #F5EAE8;
+    border-radius: 16px;
+    padding: 18px 20px;
+    margin-top: 20px;
+}
+.quote-circle {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: #C4847C;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #fff;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1;
+    padding-top: 6px;
+}
+.quote-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px;
+    font-weight: 600;
+    font-style: italic;
+    color: #3D2424;
+    line-height: 1.4;
+    margin: 0;
+}
 .specialties-list {
     list-style: none;
     padding: 0;
-    margin: 0;
+    margin: 16px 0 0;
 }
 .specialties-list li {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 10px 0;
+    gap: 14px;
+    padding: 12px 0;
     border-bottom: 1px solid #F0DEDA;
     font-size: 15px;
 }
 .s-icon {
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
     background: #F5EAE8;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 13px;
     flex-shrink: 0;
 }
-.about-quote {
-    margin-top: 48px;
-    background: linear-gradient(135deg, #F5EAE8, #FAF6F4);
-    padding: 32px 48px;
-    border-radius: 20px;
-    text-align: center;
-}
-.about-quote p {
+.approach-quote {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 26px;
+    font-size: 17px;
     font-style: italic;
-    color: #3D2424;
-    margin: 0;
-    line-height: 1.4;
+    color: #C4847C;
+    line-height: 1.6;
+    margin: 4px 0 0;
 }
 
 /* ── STEPS ── */
@@ -764,29 +811,57 @@ footer a:hover { color: #fff; }
 <!-- ABOUT -->
 <section id="about" class="about-section">
 <div class="container">
-    <h2>Кто я и чем помогу</h2>
     <div class="about-grid">
+        <!-- Колонка 1: Bio + цитата -->
         <div class="about-bio">
+            <span class="sec-label">Обо мне</span>
+            <h2 class="about-h2">Кто я и чем помогу</h2>
+            <div class="about-lotus"><svg width="26" height="30" viewBox="0 0 36 40" fill="currentColor"><path d="M18 37C18 37 3 28 4 15C10 20 16 27 18 37Z" opacity="0.5"/><path d="M18 37C18 37 33 28 32 15C26 20 20 27 18 37Z" opacity="0.5"/><path d="M18 37C18 37 9 25 9 11C13 17 17 25 18 37Z" opacity="0.82"/><path d="M18 37C18 37 27 25 27 11C23 17 19 25 18 37Z" opacity="0.82"/><path d="M18 37C15.5 23 17 4 18 4C19 4 20.5 23 18 37Z"/></svg></div>
             <p>Я — дипломированный специалист по комплексной телесной терапии. Более 5 лет помогаю людям избавиться от боли, стресса, тревоги и найти глубинные причины их проблем.</p>
             <p>Мой подход объединяет работу с телом, психикой и родовыми программами, чтобы вернуть вам лёгкость, здоровье и радость жизни.</p>
+            <div class="about-quote-card">
+                <div class="quote-circle">❝</div>
+                <p class="quote-text">Я не лечу боль —<br>я устраняю её причины</p>
+            </div>
         </div>
+        <!-- Колонка 2: Специальности -->
         <div>
+            <span class="sec-label">Мои специальности</span>
             <ul class="specialties-list">
-                <li><span class="s-icon">❀</span> Терапевт телесной практики</li>
-                <li><span class="s-icon">❀</span> Нейросоматолог</li>
-                <li><span class="s-icon">❀</span> Психосоматолог</li>
-                <li><span class="s-icon">❀</span> Работа с образом боли</li>
-                <li><span class="s-icon">❀</span> Массаж живота</li>
-                <li><span class="s-icon">❀</span> Родовед</li>
+                <li>
+                    <span class="s-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4" r="2"/><path d="M12 6v9"/><path d="M9 9h6"/><path d="M10 15l-2 5"/><path d="M14 15l2 5"/></svg></span>
+                    Терапевт телесной практики
+                </li>
+                <li>
+                    <span class="s-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 007 4.5 2.5 2.5 0 004.5 7a2.5 2.5 0 000 5A2.5 2.5 0 007 14.5 2.5 2.5 0 009.5 17H12"/><path d="M14.5 2A2.5 2.5 0 0117 4.5 2.5 2.5 0 0119.5 7a2.5 2.5 0 010 5 2.5 2.5 0 01-2.5 2.5A2.5 2.5 0 0114.5 17H12"/></svg></span>
+                    Нейросоматолог
+                </li>
+                <li>
+                    <span class="s-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="9.5"/></svg></span>
+                    Психосоматолог
+                </li>
+                <li>
+                    <span class="s-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></span>
+                    Работа с образом боли
+                </li>
+                <li>
+                    <span class="s-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 00-2-2 2 2 0 00-2 2"/><path d="M14 10V4a2 2 0 00-2-2 2 2 0 00-2 2v2"/><path d="M10 10.5V6a2 2 0 00-2-2 2 2 0 00-2 2v8"/><path d="M18 8a2 2 0 114 0v6a8 8 0 01-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 012.83-2.82L7 15"/></svg></span>
+                    Массаж живота
+                </li>
+                <li>
+                    <span class="s-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-7"/><path d="M12 15l-3-3m3 3l3-3"/><path d="M9 12L6 7h12l-3 5"/><path d="M12 22l-3 .5"/><path d="M12 22l3 .5"/></svg></span>
+                    Родовед
+                </li>
             </ul>
         </div>
+        <!-- Колонка 3: Подход -->
         <div class="about-approach">
+            <span class="sec-label">Мой подход</span>
             <p>Я помогаю разобраться с родовыми программами, страхами, отношениями и физической болью одновременно.</p>
             <p>Телесная работа и психосоматика неразделимы: тело хранит все переживания, а психика влияет на здоровье. Работая с причиной, мы меняем жизнь на всех уровнях.</p>
+            <div class="about-lotus"><svg width="26" height="30" viewBox="0 0 36 40" fill="currentColor"><path d="M18 37C18 37 3 28 4 15C10 20 16 27 18 37Z" opacity="0.5"/><path d="M18 37C18 37 33 28 32 15C26 20 20 27 18 37Z" opacity="0.5"/><path d="M18 37C18 37 9 25 9 11C13 17 17 25 18 37Z" opacity="0.82"/><path d="M18 37C18 37 27 25 27 11C23 17 19 25 18 37Z" opacity="0.82"/><path d="M18 37C15.5 23 17 4 18 4C19 4 20.5 23 18 37Z"/></svg></div>
+            <p class="approach-quote">Тело и душа — единое целое.<br>Изменяя одно, исцеляется всё.</p>
         </div>
-    </div>
-    <div class="about-quote">
-        <p>«Я не лечу боль — я устраняю её причину»</p>
     </div>
 </div>
 </section>
