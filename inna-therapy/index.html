@@ -974,118 +974,133 @@ nav {
 }
 
 /* ── CTA OPTIONS ── */
-.options-section { background: #fff; }
+.options-section { background: #FAF8F6; }
+.options-header { text-align: center; margin-bottom: 48px; }
+.options-header .sec-label { display: block; margin-bottom: 10px; }
+.options-header-lotus { display: flex; justify-content: center; margin: 10px 0 18px; color: #C4847C; opacity: 0.65; }
+.options-h2 { font-size: clamp(28px, 3.5vw, 50px); margin: 0 0 12px; }
+.options-subtitle { text-align: center; font-size: 15px; color: #7A5555; margin: 0; line-height: 1.6; }
 .options-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    margin-bottom: 28px;
+    gap: 18px;
+    margin-bottom: 20px;
 }
 .option-card {
-    background: #FAF6F4;
-    padding: 32px 22px;
+    background: #fff;
+    padding: 28px 22px;
     border-radius: 20px;
-    text-align: center;
-}
-.option-card.hl { background: #C4847C; color: #fff; }
-.option-card.hl h3 { color: #fff; }
-.option-card.hl .o-sub { color: rgba(255,255,255,0.8); }
-.option-card.hl .btn { background: #fff; color: #C4847C; }
-.option-card.hl .btn:hover { background: #FAF6F4; }
-.o-icon { display:flex; align-items:center; justify-content:center; height:36px; margin-bottom:12px; }
-.option-card h3 { font-size: 20px; margin-bottom: 10px; }
-.o-sub { font-size: 14px; color: #7A5555; margin-bottom: 20px; line-height: 1.6; }
-.o-note { font-size: 12px; color: rgba(255,255,255,0.65); margin-top: 10px; }
-.contact-btns {
     display: flex;
-    gap: 8px;
-    justify-content: center;
-    margin-top: 14px;
-    flex-wrap: wrap;
+    flex-direction: column;
 }
-.contact-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 14px;
-    border: 1.5px solid #EDD5D0;
-    border-radius: 20px;
-    font-size: 13px;
-    color: #5C3F3F;
-    text-decoration: none;
-    transition: all 0.2s;
-}
-.contact-btn:hover { border-color: #C4847C; color: #C4847C; }
-.pay-row {
-    display: flex;
-    gap: 6px;
-    justify-content: center;
-    margin-top: 14px;
-    flex-wrap: wrap;
-    align-items: center;
-}
-.pay-badge {
-    padding: 4px 10px;
-    border: 1.5px solid #D4A09A;
-    border-radius: 6px;
-    font-size: 11px;
-    font-weight: 700;
-    color: #5C3F3F;
-    letter-spacing: 0.3px;
-}
-.mc-icon {
-    display: inline-flex;
-    align-items: center;
-    padding: 2px 4px;
-    border: 1.5px solid #D4A09A;
-    border-radius: 6px;
-}
-.mc-circle {
-    width: 13px;
-    height: 13px;
+.option-card.hl { background: #C4847C; }
+.o-icon-circle {
+    width: 64px;
+    height: 64px;
+    background: #F5EAE8;
     border-radius: 50%;
-    display: inline-block;
-}
-.options-note {
-    text-align: center;
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-size: 20px;
-    color: #3D2424;
-}
-
-/* ── CONTACTS ── */
-.contacts-section { background: #FAF6F4; padding: 60px 0; }
-.contacts-section h2 { margin-bottom: 28px; }
-.contacts-btns {
     display: flex;
-    gap: 16px;
+    align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
+    margin: 0 auto 16px;
 }
+.option-card.hl .o-icon-circle { background: rgba(255,255,255,0.2); }
+.option-card h3 { font-size: 19px; font-weight: 700; text-align: center; margin-bottom: 6px; color: #3D2424; line-height: 1.3; }
+.option-card.hl h3 { color: #fff; }
+.opt-lotus { display: flex; justify-content: center; margin: 8px 0 12px; color: #fff; opacity: 0.55; }
+.o-sub { font-size: 13.5px; color: #7A5555; text-align: center; margin-bottom: 18px; line-height: 1.6; flex: 1; }
+.option-card.hl .o-sub { color: rgba(255,255,255,0.85); }
+.opt-btn {
+    display: block;
+    width: 100%;
+    padding: 14px 12px;
+    background: #C4847C;
+    color: #fff;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 800;
+    font-family: 'Nunito', sans-serif;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    transition: background 0.2s;
+    margin-bottom: 14px;
+}
+.opt-btn:hover { background: #B0706A; }
+.option-card.hl .opt-btn { background: #3D2424; }
+.option-card.hl .opt-btn:hover { background: #2A1818; }
+.o-pay-label { font-size: 11.5px; color: #9E7070; text-align: center; margin-bottom: 8px; font-weight: 600; }
+.option-card.hl .o-pay-label { color: rgba(255,255,255,0.65); }
+.pay-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #FAF6F4;
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+}
+.option-card.hl .pay-card { background: rgba(255,255,255,0.18); }
+.pay-check {
+    width: 26px;
+    height: 26px;
+    background: #5CB85C;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.pay-bank { font-size: 12px; font-weight: 700; color: #3D2424; }
+.pay-num { font-size: 14px; font-weight: 800; color: #3D2424; letter-spacing: 0.5px; }
+.option-card.hl .pay-bank,
+.option-card.hl .pay-num { color: #fff; }
+.o-after { font-size: 12px; color: #7A5555; text-align: center; line-height: 1.5; margin-top: auto; }
+.option-card.hl .o-after { color: rgba(255,255,255,0.75); }
+.o-contact-label { font-size: 12px; color: #9E7070; margin: 6px 0 6px; text-align: center; }
+.contact-links { display: flex; flex-direction: column; gap: 8px; }
+.contact-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #FAF6F4;
+    border-radius: 12px;
+    padding: 10px 14px;
+    text-decoration: none;
+    transition: background 0.2s;
+    overflow: hidden;
+}
+.contact-link:hover { background: #F0DEDA; }
+.contact-link-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.contact-link-label { display: block; font-size: 10.5px; color: #9E7070; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 1px; }
+.contact-link-val { display: block; font-size: 12.5px; color: #5C3F3F; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.options-bottom {
+    border-radius: 20px;
+    background: linear-gradient(108deg, #EDD5C0 0%, #D9B89A 38%, #C8A48A 65%, #BF9C84 100%);
+    padding: 28px 44px;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+.options-bottom-text { flex: 1; }
+.options-bottom-text p { font-size: clamp(14px, 1.7vw, 19px); font-weight: 700; color: #3D2424; margin: 0 0 4px; }
+.options-bottom-text em { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(16px, 1.8vw, 22px); color: #C4847C; }
+.options-bottom-sign { text-align: right; flex-shrink: 0; }
+.options-bottom-sign em { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 17px; color: #5C3F3F; display: block; line-height: 1.5; }
 
 /* ── FOOTER ── */
-footer {
-    background: #3D2424;
-    color: rgba(255,255,255,0.6);
-    padding: 40px 0;
-    text-align: center;
-}
-.f-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
-    color: #fff;
-    margin-bottom: 6px;
-}
-.f-links {
+footer { background: #FAF6F4; padding: 20px 0; border-top: 1px solid #F0DEDA; }
+.footer-values {
     display: flex;
-    gap: 24px;
+    align-items: center;
     justify-content: center;
-    margin-top: 14px;
+    gap: 14px;
     flex-wrap: wrap;
+    font-size: 12.5px;
+    color: #9E7070;
 }
-footer a { color: #F0DEDA; text-decoration: none; transition: color 0.2s; }
-footer a:hover { color: #fff; }
+.footer-dot { color: #C4847C; font-size: 7px; line-height: 1; }
 
 /* ── MOBILE ── */
 @media (max-width: 1050px) {
@@ -1103,6 +1118,8 @@ footer a:hover { color: #fff; }
     .offers-inner { grid-template-columns: 1fr; }
     .location-grid { grid-template-columns: 1fr; }
     .options-grid { grid-template-columns: 1fr; }
+    .options-bottom { flex-direction: column; text-align: center; padding: 24px 28px; }
+    .options-bottom-sign { text-align: center; }
 }
 @media (max-width: 600px) {
     section { padding: 60px 0; }
@@ -1555,53 +1572,105 @@ footer a:hover { color: #fff; }
 <!-- CTA OPTIONS -->
 <section id="options" class="options-section">
 <div class="container">
-    <h2>Готовы начать? Выберите свой путь:</h2>
+    <div class="options-header">
+        <span class="sec-label">ГОТОВЫ НАЧАТЬ?</span>
+        <div class="options-header-lotus"><svg width="26" height="30" viewBox="0 0 36 40" fill="currentColor"><path d="M18 37C18 37 3 28 4 15C10 20 16 27 18 37Z" opacity="0.5"/><path d="M18 37C18 37 33 28 32 15C26 20 20 27 18 37Z" opacity="0.5"/><path d="M18 37C18 37 9 25 9 11C13 17 17 25 18 37Z" opacity="0.82"/><path d="M18 37C18 37 27 25 27 11C23 17 19 25 18 37Z" opacity="0.82"/><path d="M18 37C15.5 23 17 4 18 4C19 4 20.5 23 18 37Z"/></svg></div>
+        <h2 class="options-h2">Выберите свой путь</h2>
+        <p class="options-subtitle">Я помогу вам на каждом этапе. Выбирайте то, что подходит именно вам.</p>
+    </div>
     <div class="options-grid">
+        <!-- Карточка 1: Есть вопросы -->
         <div class="option-card">
-            <div class="o-icon">💬</div>
-            <h3>Есть вопросы</h3>
-            <p class="o-sub">Напишите мне в Telegram или MAX — отвечу в течение 24 часов</p>
-            <a href="https://t.me/innaborisova_therapy" class="btn">У меня есть вопрос</a>
-            <div class="contact-btns">
-                <a href="https://t.me/innaborisova_therapy" class="contact-btn" style="display:inline-flex;align-items:center;gap:8px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>Перейти в Telegram</a>
-                <a href="https://max.ru/join/i1C_POb-7DKMmllA3l9MRT-gtDn4qeQYvaYgkNUHDxM" class="contact-btn">MAX</a>
+            <div class="o-icon-circle">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                </svg>
+            </div>
+            <h3>1. Есть вопросы</h3>
+            <p class="o-sub">Напишите мне в Telegram или MAX — отвечу в течение 24 часов и помогу разобраться</p>
+            <a href="https://t.me/innaborisova_therapy" class="opt-btn">У МЕНЯ ЕСТЬ ВОПРОС</a>
+            <p class="o-contact-label">Свяжитесь удобным способом:</p>
+            <div class="contact-links">
+                <a href="https://t.me/innaborisova_therapy" class="contact-link">
+                    <div class="contact-link-icon" style="background:#2AABEE;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    </div>
+                    <div>
+                        <span class="contact-link-label">Telegram</span>
+                        <span class="contact-link-val">@innaborisova_therapy</span>
+                    </div>
+                </a>
+                <a href="https://max.ru/join/i1C_POb-7DKMmllA3l9MRT-gtDn4qeQYvaYgkNUHDxM" class="contact-link">
+                    <div class="contact-link-icon" style="background:#5B5EA6;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M20 2H4a2 2 0 00-2 2v18l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2z"/></svg>
+                    </div>
+                    <div>
+                        <span class="contact-link-label">MAX</span>
+                        <span class="contact-link-val">max.ru/join/i1C_POb-7DK…</span>
+                    </div>
+                </a>
             </div>
         </div>
+        <!-- Карточка 2: Хочу попробовать (выделенная) -->
         <div class="option-card hl">
-            <div class="o-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
-            <h3>Хочу попробовать</h3>
-            <p class="o-sub">Забронируйте место и получите скидку на первый сеанс</p>
-            <a href="#" class="btn">Предоплата 1 000 ₽</a>
-            <p class="o-note">Предоплата возвращается, если вам не подойдёт после первой встречи</p>
-        </div>
-        <div class="option-card">
-            <div class="o-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-            <h3>Готова к изменениям</h3>
-            <p class="o-sub">Выберите курс и оплатите сразу — начните путь к новой себе уже сегодня</p>
-            <a href="#prices" class="btn">Оплатить полный курс</a>
-            <div class="pay-row">
-                <span class="pay-badge">МИР</span>
-                <span class="pay-badge">VISA</span>
-                <span class="mc-icon">
-                    <span class="mc-circle" style="background:#EB001B;"></span>
-                    <span class="mc-circle" style="background:#F79E1B;margin-left:-5px;"></span>
-                </span>
-                <span class="pay-badge">СБП</span>
+            <div class="o-icon-circle">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
             </div>
+            <h3>2. Хочу попробовать</h3>
+            <div class="opt-lotus"><svg width="20" height="23" viewBox="0 0 36 40" fill="currentColor"><path d="M18 37C18 37 3 28 4 15C10 20 16 27 18 37Z" opacity="0.5"/><path d="M18 37C18 37 33 28 32 15C26 20 20 27 18 37Z" opacity="0.5"/><path d="M18 37C18 37 9 25 9 11C13 17 17 25 18 37Z" opacity="0.82"/><path d="M18 37C18 37 27 25 27 11C23 17 19 25 18 37Z" opacity="0.82"/><path d="M18 37C15.5 23 17 4 18 4C19 4 20.5 23 18 37Z"/></svg></div>
+            <p class="o-sub">Забронируйте место и получите скидку на первый сеанс — почувствуйте результат</p>
+            <a href="https://t.me/innaborisova_therapy" class="opt-btn">ПРЕДОПЛАТА 1 000 ₽</a>
+            <p class="o-pay-label">Оплата предоплаты:</p>
+            <div class="pay-card">
+                <div class="pay-check">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div>
+                    <div class="pay-bank">Сбербанк</div>
+                    <div class="pay-num">2202 2036 4486 1260</div>
+                </div>
+            </div>
+            <p class="o-after">Предоплата возвращается, если вам не подойдёт после первой встречи</p>
+        </div>
+        <!-- Карточка 3: Готов к изменениям -->
+        <div class="option-card">
+            <div class="o-icon-circle">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/>
+                </svg>
+            </div>
+            <h3>3. Готов к изменениям</h3>
+            <p class="o-sub">Выберите курс и оплатите сразу — начните путь к новой жизни без боли и ограничений</p>
+            <a href="#prices" class="opt-btn">ОПЛАТИТЬ ПОЛНЫЙ КУРС</a>
+            <p class="o-pay-label">Оплата полного курса:</p>
+            <div class="pay-card">
+                <div class="pay-check">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div>
+                    <div class="pay-bank">Сбербанк</div>
+                    <div class="pay-num">2202 2036 4486 1260</div>
+                </div>
+            </div>
+            <p class="o-after">После оплаты напишите мне — согласуем удобное время</p>
         </div>
     </div>
-    <p class="options-note">Все варианты приводят к одному результату — я вам помогу</p>
-</div>
-</section>
-
-<!-- CONTACTS -->
-<section id="contacts" class="contacts-section">
-<div class="container" style="text-align:center;">
-    <h2>Свяжитесь со мной прямо сейчас</h2>
-    <div class="contacts-btns">
-        <a href="tel:+79259330127" class="btn btn-lg btn-outline">📞 +7 (925) 933-01-27</a>
-        <a href="https://t.me/innaborisova_therapy" class="btn btn-lg">✈ Telegram</a>
-        <a href="https://max.ru/join/i1C_POb-7DKMmllA3l9MRT-gtDn4qeQYvaYgkNUHDxM" class="btn btn-lg" style="background:#6C63D5;">MAX</a>
+    <!-- Мотивационная полоса -->
+    <div class="options-bottom">
+        <div style="flex-shrink:0;">
+            <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+            </svg>
+        </div>
+        <div class="options-bottom-text">
+            <p>Вы сделали первый шаг к новой жизни без боли и ограничений.</p>
+            <em>Я рядом и готова вас поддержать!</em>
+        </div>
+        <div class="options-bottom-sign">
+            <em>С заботой,<br>ваш терапевт</em>
+        </div>
     </div>
 </div>
 </section>
@@ -1609,12 +1678,14 @@ footer a:hover { color: #fff; }
 <!-- FOOTER -->
 <footer>
 <div class="container">
-    <div class="f-name">Инна — Комплексная телесная терапия</div>
-    <div>© 2026. Все права защищены.</div>
-    <div class="f-links">
-        <a href="tel:+79259330127">+7 (925) 933-01-27</a>
-        <a href="https://t.me/innaborisova_therapy">Telegram</a>
-        <a href="https://max.ru/join/i1C_POb-7DKMmllA3l9MRT-gtDn4qeQYvaYgkNUHDxM">MAX</a>
+    <div class="footer-values">
+        <span>Конфиденциальность</span>
+        <span class="footer-dot">&#9679;</span>
+        <span>Безопасность</span>
+        <span class="footer-dot">&#9679;</span>
+        <span>Индивидуальный подход</span>
+        <span class="footer-dot">&#9679;</span>
+        <span>Поддержка на всех этапах</span>
     </div>
 </div>
 </footer>
