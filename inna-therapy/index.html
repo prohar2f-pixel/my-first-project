@@ -29,7 +29,7 @@ h1 { font-size: clamp(30px, 5vw, 52px); line-height: 1.2; margin-bottom: 20px; }
 h2 { font-size: clamp(22px, 3.5vw, 36px); margin-bottom: 36px; text-align: center; }
 h3 { font-size: 18px; margin-bottom: 10px; }
 section { padding: 50px 0; }
-section:not(.hero) { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
+section:not(.hero) { height: 100vh; overflow: hidden; display: flex; flex-direction: column; justify-content: center; }
 section { scroll-margin-top: 68px; }
 
 /* ── NAV ── */
@@ -474,6 +474,7 @@ nav {
     grid-template-columns: repeat(3, 1fr);
     gap: 14px;
 }
+.review-card:nth-child(n+4) { display: none; }
 .review-card {
     background: #fff;
     padding: 20px;
@@ -1130,6 +1131,7 @@ footer { background: #FAF6F4; padding: 20px 0; border-top: 1px solid #F0DEDA; }
     .prices-grid { grid-template-columns: repeat(4, 1fr); }
 }
 @media (max-width: 900px) {
+    section:not(.hero) { height: auto; overflow: visible; }
     .nav-links { display: none; }
     .hero-inner { flex-direction: column; }
     .hero-img { max-width: 100%; }
@@ -1137,6 +1139,7 @@ footer { background: #FAF6F4; padding: 20px 0; border-top: 1px solid #F0DEDA; }
     .steps-grid { grid-template-columns: 1fr 1fr; }
     .reviews-inner { grid-template-columns: 1fr; }
     .text-reviews { grid-template-columns: 1fr; }
+    .review-card:nth-child(n+4) { display: flex; }
     .prices-grid { grid-template-columns: repeat(3, 1fr); }
     .offers-inner { grid-template-columns: 1fr; }
     .location-grid { grid-template-columns: 1fr; }
