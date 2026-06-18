@@ -28,7 +28,9 @@ h1, h2, h3 {
 h1 { font-size: clamp(30px, 5vw, 52px); line-height: 1.2; margin-bottom: 20px; }
 h2 { font-size: clamp(22px, 3.5vw, 36px); margin-bottom: 36px; text-align: center; }
 h3 { font-size: 18px; margin-bottom: 10px; }
-section { padding: 80px 0; }
+section { padding: 50px 0; }
+section:not(.hero) { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
+section { scroll-margin-top: 68px; }
 
 /* ── NAV ── */
 nav {
@@ -345,7 +347,7 @@ nav {
 
 /* ── STEPS ── */
 .steps-section { background: #FAF6F4; }
-.steps-header { text-align: center; margin-bottom: 48px; }
+.steps-header { text-align: center; margin-bottom: 28px; }
 .steps-header .sec-label { display: block; margin-bottom: 10px; }
 .steps-header-lotus { display: flex; justify-content: center; margin: 10px 0 18px; color: #C4847C; opacity: 0.65; }
 .steps-h2 { font-size: clamp(28px, 3.2vw, 42px); margin: 0; }
@@ -416,7 +418,7 @@ nav {
     align-items: center;
     justify-content: center;
     gap: 18px;
-    margin-top: 44px;
+    margin-top: 20px;
     background: #F5EAE8;
     border-radius: 20px;
     padding: 20px 36px;
@@ -436,7 +438,7 @@ nav {
 
 /* ── REVIEWS ── */
 .reviews-section { background: #FAF8F6; }
-.reviews-header { text-align: center; margin-bottom: 48px; }
+.reviews-header { text-align: center; margin-bottom: 28px; }
 .reviews-header .sec-label { display: block; margin-bottom: 10px; }
 .reviews-header-lotus { display: flex; justify-content: center; margin: 10px 0 18px; color: #C4847C; opacity: 0.65; }
 .reviews-h2 { font-size: clamp(28px, 3.5vw, 48px); margin: 0; }
@@ -591,7 +593,7 @@ nav {
     flex-shrink: 0;
 }
 .reviews-quote-bar {
-    margin-top: 48px;
+    margin-top: 20px;
     background: #F5EAE8;
     border-radius: 24px;
     padding: 30px 48px;
@@ -616,7 +618,7 @@ nav {
 
 /* ── PRICES ── */
 .prices-section { background: #FAF6F4; }
-.prices-header { text-align: center; margin-bottom: 48px; }
+.prices-header { text-align: center; margin-bottom: 28px; }
 .prices-header .sec-label { display: block; margin-bottom: 10px; }
 .prices-header-lotus { display: flex; justify-content: center; margin: 10px 0 18px; color: #C4847C; opacity: 0.65; }
 .prices-h2 { font-size: clamp(28px, 3.5vw, 52px); margin: 0; }
@@ -627,7 +629,7 @@ nav {
 }
 .price-card {
     background: #fff;
-    padding: 26px 16px 20px;
+    padding: 18px 14px 14px;
     border-radius: 20px;
     text-align: center;
     display: flex;
@@ -640,14 +642,14 @@ nav {
     transform: translateY(-3px);
 }
 .p-icon {
-    width: 82px;
-    height: 82px;
+    width: 68px;
+    height: 68px;
     background: #F5EAE8;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 16px;
+    margin: 0 auto 10px;
     flex-shrink: 0;
 }
 .price-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; line-height: 1.3; color: #3D2424; }
@@ -723,7 +725,7 @@ nav {
 
 /* ── OFFERS ── */
 .offers-section { background: #FAF8F6; }
-.offers-header { text-align: center; margin-bottom: 48px; }
+.offers-header { text-align: center; margin-bottom: 28px; }
 .offers-header .sec-label { display: block; margin-bottom: 10px; }
 .offers-header-lotus { display: flex; justify-content: center; margin: 10px 0 18px; color: #C4847C; opacity: 0.65; }
 .offers-h2 { font-size: clamp(26px, 3vw, 44px); margin: 0; }
@@ -874,7 +876,7 @@ nav {
 
 /* ── LOCATION ── */
 .location-section { background: #FAF8F6; }
-.location-header { text-align: center; margin-bottom: 40px; }
+.location-header { text-align: center; margin-bottom: 24px; }
 .location-header .sec-label { display: block; margin-bottom: 10px; }
 .location-header-lotus { display: flex; justify-content: center; margin: 10px 0 18px; color: #C4847C; opacity: 0.65; }
 .location-h2 { font-size: clamp(32px, 4vw, 58px); margin: 0 0 14px; }
@@ -975,7 +977,7 @@ nav {
 
 /* ── CTA OPTIONS ── */
 .options-section { background: #FAF8F6; }
-.options-header { text-align: center; margin-bottom: 48px; }
+.options-header { text-align: center; margin-bottom: 28px; }
 .options-header .sec-label { display: block; margin-bottom: 10px; }
 .options-header-lotus { display: flex; justify-content: center; margin: 10px 0 18px; color: #C4847C; opacity: 0.65; }
 .options-h2 { font-size: clamp(28px, 3.5vw, 50px); margin: 0 0 12px; }
@@ -1410,7 +1412,7 @@ footer { background: #FAF6F4; padding: 20px 0; border-top: 1px solid #F0DEDA; }
         <div class="price-card">
             <div class="p-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg></div>
             <h3>5 сеансов</h3>
-            <p class="p-desc">5 полных сеансов + мини разбор матрицы судьбы</p>
+            <p class="p-desc">5 полных сеансов + мини-разбор матрицы судьбы</p>
             <div class="p-amount">20 000 ₽</div>
         </div>
     </div>
@@ -1423,7 +1425,7 @@ footer { background: #FAF6F4; padding: 20px 0; border-top: 1px solid #F0DEDA; }
         </div>
         <div class="prices-banner-item">
             <div class="p-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg></div>
-            <h3>Дарочный сертификат</h3>
+            <h3>Подарочный сертификат</h3>
             <p class="p-desc">Подарок для близких<br>на любую сумму</p>
             <div class="p-amount">На любую сумму</div>
         </div>
@@ -1461,7 +1463,7 @@ footer { background: #FAF6F4; padding: 20px 0; border-top: 1px solid #F0DEDA; }
                         <span class="v-label-pill">Вариант 2</span>
                         <p class="v-sub">Платите 20 000 ₽ и получаете</p>
                         <span class="v-bonus-big">БОНУС</span>
-                        <p class="v-bonus-desc">мини разбор матрицы судьбы</p>
+                        <p class="v-bonus-desc">мини-разбор матрицы судьбы</p>
                     </div>
                 </div>
                 <div class="offer-note">
@@ -1487,7 +1489,7 @@ footer { background: #FAF6F4; padding: 20px 0; border-top: 1px solid #F0DEDA; }
                     </div>
                     <div class="offer-step">
                         <div class="offer-step-num">3</div>
-                        <p>Мини разбор матрицы судьбы <strong>БЕСПЛАТНО</strong></p>
+                        <p>Мини-разбор матрицы судьбы <strong>БЕСПЛАТНО</strong></p>
                     </div>
                 </div>
                 <div class="offer-thankyou">
