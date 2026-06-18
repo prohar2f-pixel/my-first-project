@@ -435,11 +435,15 @@ nav {
 }
 
 /* ── REVIEWS ── */
-.reviews-section { background: #fff; }
+.reviews-section { background: #FAF8F6; }
+.reviews-header { text-align: center; margin-bottom: 48px; }
+.reviews-header .sec-label { display: block; margin-bottom: 10px; }
+.reviews-header-lotus { display: flex; justify-content: center; margin: 10px 0 18px; color: #C4847C; opacity: 0.65; }
+.reviews-h2 { font-size: clamp(28px, 3.5vw, 48px); margin: 0; }
 .reviews-inner {
     display: grid;
-    grid-template-columns: 1fr 320px;
-    gap: 40px;
+    grid-template-columns: 1fr 296px;
+    gap: 28px;
     align-items: start;
 }
 .text-reviews {
@@ -448,33 +452,63 @@ nav {
     gap: 14px;
 }
 .review-card {
-    background: #FAF6F4;
-    padding: 22px;
+    background: #fff;
+    padding: 20px;
     border-radius: 16px;
+    display: flex;
+    flex-direction: column;
 }
-.review-card .q-icon {
-    font-size: 36px;
+.r-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+.r-photo {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #F0DEDA;
+    flex-shrink: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+.r-quote-icon {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 52px;
+    line-height: 0.85;
     color: #EDD5D0;
-    line-height: 1;
-    display: block;
-    margin-bottom: 6px;
-    font-family: Georgia, serif;
+    font-weight: 700;
+    margin-top: 4px;
+    user-select: none;
 }
-.review-card .r-text {
-    font-size: 13px;
-    font-style: italic;
+.r-text {
+    font-size: 12.5px;
     line-height: 1.65;
     color: #5C3F3F;
-    display: block;
-    margin-bottom: 12px;
+    margin: 0 0 12px;
+    flex: 1;
 }
-.review-card .r-author {
+.r-author {
     font-size: 13px;
-    font-weight: 600;
-    color: #C4847C;
+    font-weight: 700;
+    color: #3D2424;
     display: block;
 }
-.voice-reviews h3 { font-size: 20px; margin-bottom: 14px; }
+.r-role {
+    font-size: 11.5px;
+    color: #9E7070;
+    display: block;
+    margin-top: 2px;
+}
+.voice-reviews {
+    background: #fff;
+    border-radius: 20px;
+    padding: 22px;
+}
+.voice-reviews h3 { font-size: 17px; font-weight: 700; margin-bottom: 16px; color: #3D2424; }
 .audio-item {
     background: #FAF6F4;
     border-radius: 12px;
@@ -485,8 +519,8 @@ nav {
     gap: 10px;
 }
 .play-btn {
-    width: 34px;
-    height: 34px;
+    width: 36px;
+    height: 36px;
     background: #C4847C;
     border-radius: 50%;
     display: flex;
@@ -501,9 +535,9 @@ nav {
     content: '';
     width: 0;
     height: 0;
-    border-top: 7px solid transparent;
-    border-bottom: 7px solid transparent;
-    border-left: 11px solid #fff;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-left: 10px solid #fff;
     margin-left: 2px;
 }
 .waveform {
@@ -530,20 +564,55 @@ nav {
 .btn-tg {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 8px;
+    justify-content: space-between;
     background: #C4847C;
     color: #fff;
-    border-radius: 10px;
-    padding: 12px 18px;
-    font-size: 14px;
-    font-weight: 600;
+    border-radius: 50px;
+    padding: 10px 10px 10px 18px;
+    font-size: 13.5px;
+    font-weight: 700;
     font-family: 'Nunito', sans-serif;
     text-decoration: none;
-    margin-top: 12px;
+    margin-top: 14px;
     transition: background 0.2s;
+    width: 100%;
+    box-sizing: border-box;
 }
 .btn-tg:hover { background: #B0706A; }
+.btn-tg-left { display: flex; align-items: center; gap: 10px; }
+.btn-tg-circle {
+    width: 34px;
+    height: 34px;
+    background: rgba(255,255,255,0.22);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.reviews-quote-bar {
+    margin-top: 48px;
+    background: #F5EAE8;
+    border-radius: 24px;
+    padding: 30px 48px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+.reviews-quote-bar-lotus { flex-shrink: 0; color: #C4847C; opacity: 0.7; }
+.reviews-quote-text p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(18px, 2vw, 24px);
+    color: #3D2424;
+    margin: 0 0 4px;
+    font-weight: 600;
+}
+.reviews-quote-text em {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(16px, 1.8vw, 21px);
+    color: #C4847C;
+}
 
 /* ── PRICES ── */
 .prices-section { background: #FAF6F4; }
@@ -955,23 +1024,57 @@ footer a:hover { color: #fff; }
 <!-- REVIEWS -->
 <section id="reviews" class="reviews-section">
 <div class="container">
-    <h2>Что говорят мои клиенты</h2>
+    <div class="reviews-header">
+        <span class="sec-label">Отзывы</span>
+        <div class="reviews-header-lotus"><svg width="26" height="30" viewBox="0 0 36 40" fill="currentColor"><path d="M18 37C18 37 3 28 4 15C10 20 16 27 18 37Z" opacity="0.5"/><path d="M18 37C18 37 33 28 32 15C26 20 20 27 18 37Z" opacity="0.5"/><path d="M18 37C18 37 9 25 9 11C13 17 17 25 18 37Z" opacity="0.82"/><path d="M18 37C18 37 27 25 27 11C23 17 19 25 18 37Z" opacity="0.82"/><path d="M18 37C15.5 23 17 4 18 4C19 4 20.5 23 18 37Z"/></svg></div>
+        <h2 class="reviews-h2">Что говорят мои клиенты</h2>
+    </div>
     <div class="reviews-inner">
         <div class="text-reviews">
             <div class="review-card">
-                <span class="q-icon">❝</span>
-                <span class="r-text">Была ужасная боль в спине и постоянные скандалы с мужем. После 3 сеансов боль ушла, и я поняла, откуда вообще всё взялось. Теперь мы с мужем разговариваем совсем по-другому.</span>
-                <span class="r-author">Мария, 38 лет</span>
+                <div class="r-head">
+                    <div class="r-photo"><svg width="48" height="48" viewBox="0 0 50 50" fill="none"><circle cx="25" cy="20" r="9" fill="#C4847C" opacity="0.45"/><path d="M8 50c0-9.4 7.6-17 17-17s17 7.6 17 17" fill="#C4847C" opacity="0.35"/></svg></div>
+                    <span class="r-quote-icon">"</span>
+                </div>
+                <p class="r-text">Была постоянная боль в спине и шее, из-за этого не могла полноценно жить и работать. После 3 сеансов боль ушла на 80%, ушло напряжение и тревога. Я наконец почувствовала лёгкость!</p>
+                <strong class="r-author">Мария, 38 лет</strong>
+                <span class="r-role">Дизайнер</span>
             </div>
             <div class="review-card">
-                <span class="q-icon">❝</span>
-                <span class="r-text">Мучила тревога и панические атаки — лекарства не помогали. После терапии ушла тревога, появились спокойствие и уверенность в себе. Как будто заново родилась.</span>
-                <span class="r-author">Елена, 45 лет</span>
+                <div class="r-head">
+                    <div class="r-photo"><svg width="48" height="48" viewBox="0 0 50 50" fill="none"><circle cx="25" cy="20" r="9" fill="#C4847C" opacity="0.45"/><path d="M8 50c0-9.4 7.6-17 17-17s17 7.6 17 17" fill="#C4847C" opacity="0.35"/></svg></div>
+                    <span class="r-quote-icon">"</span>
+                </div>
+                <p class="r-text">Долгое время были проблемы в отношениях с мужем, постоянные скандалы и обиды. Мы разобрались с причинами, я поняла себя и его. Сейчас у нас гармония и взаимопонимание.</p>
+                <strong class="r-author">Елена, 45 лет</strong>
+                <span class="r-role">Предприниматель</span>
             </div>
             <div class="review-card">
-                <span class="q-icon">❝</span>
-                <span class="r-text">Были проблемы с женским здоровьем и неприятием в отношениях. Благодаря работе с телом и родовыми программами всё наладилось. Спасибо за новую меня!</span>
-                <span class="r-author">Анастасия, 32 года</span>
+                <div class="r-head">
+                    <div class="r-photo"><svg width="48" height="48" viewBox="0 0 50 50" fill="none"><circle cx="25" cy="20" r="9" fill="#C4847C" opacity="0.45"/><path d="M8 50c0-9.4 7.6-17 17-17s17 7.6 17 17" fill="#C4847C" opacity="0.35"/></svg></div>
+                    <span class="r-quote-icon">"</span>
+                </div>
+                <p class="r-text">Были проблемы по женскому здоровью и чувство опустошения. После терапии вернулась энергия, наладилось самочувствие и уверенность в себе. Спасибо за бережный и глубокий подход!</p>
+                <strong class="r-author">Анастасия, 32 года</strong>
+                <span class="r-role">Маркетолог</span>
+            </div>
+            <div class="review-card">
+                <div class="r-head">
+                    <div class="r-photo"><svg width="48" height="48" viewBox="0 0 50 50" fill="none"><circle cx="25" cy="20" r="9" fill="#C4847C" opacity="0.45"/><path d="M8 50c0-9.4 7.6-17 17-17s17 7.6 17 17" fill="#C4847C" opacity="0.35"/></svg></div>
+                    <span class="r-quote-icon">"</span>
+                </div>
+                <p class="r-text">Обратилась с сильной тревогой и паническими атаками. После сеансов стало спокойно внутри, ушли страхи и зажимы в теле. Будто заново родилась!</p>
+                <strong class="r-author">Ирина, 41 год</strong>
+                <span class="r-role">Преподаватель</span>
+            </div>
+            <div class="review-card">
+                <div class="r-head">
+                    <div class="r-photo"><svg width="48" height="48" viewBox="0 0 50 50" fill="none"><circle cx="25" cy="20" r="9" fill="#C4847C" opacity="0.45"/><path d="M8 50c0-9.4 7.6-17 17-17s17 7.6 17 17" fill="#C4847C" opacity="0.35"/></svg></div>
+                    <span class="r-quote-icon">"</span>
+                </div>
+                <p class="r-text">У сына (13 лет) были проблемы с самооценкой и агрессией. После работы с вами он стал спокойнее, увереннее, улучшились отношения в семье. Огромное спасибо!</p>
+                <strong class="r-author">Ольга, 39 лет</strong>
+                <span class="r-role">Мама подростка</span>
             </div>
         </div>
         <div class="voice-reviews">
@@ -979,19 +1082,29 @@ footer a:hover { color: #fff; }
             <div class="audio-item">
                 <div class="play-btn"></div>
                 <div class="waveform" id="w1"></div>
-                <span class="audio-time">1:23</span>
+                <span class="audio-time">1:34</span>
             </div>
             <div class="audio-item">
                 <div class="play-btn"></div>
                 <div class="waveform" id="w2"></div>
-                <span class="audio-time">2:05</span>
+                <span class="audio-time">2:08</span>
             </div>
             <div class="audio-item">
                 <div class="play-btn"></div>
                 <div class="waveform" id="w3"></div>
-                <span class="audio-time">1:48</span>
+                <span class="audio-time">1:52</span>
             </div>
-            <a href="https://t.me/innaborisova_therapy" class="btn-tg" style="display:inline-flex;align-items:center;gap:8px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>Больше отзывов в Telegram</a>
+            <a href="https://t.me/innaborisova_therapy" class="btn-tg">
+                <span class="btn-tg-left"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg>Больше отзывов в Telegram</span>
+                <span class="btn-tg-circle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+            </a>
+        </div>
+    </div>
+    <div class="reviews-quote-bar">
+        <div class="reviews-quote-bar-lotus"><svg width="60" height="68" viewBox="0 0 36 40" fill="#C4847C"><path d="M18 37C18 37 3 28 4 15C10 20 16 27 18 37Z" opacity="0.5"/><path d="M18 37C18 37 33 28 32 15C26 20 20 27 18 37Z" opacity="0.5"/><path d="M18 37C18 37 9 25 9 11C13 17 17 25 18 37Z" opacity="0.82"/><path d="M18 37C18 37 27 25 27 11C23 17 19 25 18 37Z" opacity="0.82"/><path d="M18 37C15.5 23 17 4 18 4C19 4 20.5 23 18 37Z"/></svg></div>
+        <div class="reviews-quote-text">
+            <p>Каждая история — это путь к себе.</p>
+            <em>Я благодарна своим клиентам за доверие и возможность помогать!</em>
         </div>
     </div>
 </div>
