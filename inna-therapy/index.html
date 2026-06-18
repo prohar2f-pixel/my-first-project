@@ -345,40 +345,65 @@ nav {
 
 /* ── STEPS ── */
 .steps-section { background: #FAF6F4; }
+.steps-header { text-align: center; margin-bottom: 48px; }
+.steps-header .sec-label { display: block; margin-bottom: 10px; }
+.steps-header-lotus { display: flex; justify-content: center; margin: 10px 0 18px; color: #C4847C; opacity: 0.65; }
+.steps-h2 { font-size: clamp(28px, 3.2vw, 42px); margin: 0; }
 .steps-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 14px;
+    gap: 0;
+    position: relative;
+    align-items: start;
+}
+.steps-grid::before {
+    content: '';
+    position: absolute;
+    top: 44px;
+    left: 10%;
+    right: 10%;
+    height: 0;
+    border-top: 2px dashed rgba(196,132,124,0.35);
+    z-index: 0;
 }
 .step-card {
-    background: #fff;
-    padding: 28px 16px 22px;
-    border-radius: 20px;
     text-align: center;
+    padding: 0 10px 24px;
+    position: relative;
+    z-index: 1;
 }
 .step-icon {
-    width: 56px;
-    height: 56px;
+    width: 90px;
+    height: 90px;
     background: #F5EAE8;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 22px;
-    margin: 0 auto 12px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
 }
-.step-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 30px;
-    font-weight: 600;
-    color: #C4847C;
-    line-height: 1;
-    margin-bottom: 8px;
+.step-num-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #C4847C;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'Nunito', sans-serif;
+    margin: 8px auto 16px;
 }
 .step-card h3 {
     font-size: 14px;
+    font-weight: 700;
     margin-bottom: 8px;
     line-height: 1.3;
+    color: #3D2424;
 }
 .step-card p {
     font-size: 12px;
@@ -386,13 +411,27 @@ nav {
     margin: 0;
     line-height: 1.6;
 }
+.steps-result-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    margin-top: 44px;
+    background: #F5EAE8;
+    border-radius: 20px;
+    padding: 20px 36px;
+}
 .steps-result {
-    text-align: center;
-    margin-top: 32px;
+    font-size: 17px;
+    color: #3D2424;
+    margin: 0;
+    font-family: 'Nunito', sans-serif;
+}
+.steps-result em {
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
     font-size: 20px;
-    color: #3D2424;
+    color: #C4847C;
 }
 
 /* ── REVIEWS ── */
@@ -869,40 +908,47 @@ footer a:hover { color: #fff; }
 <!-- STEPS -->
 <section id="steps" class="steps-section">
 <div class="container">
-    <h2>Как проходит сеанс</h2>
+    <div class="steps-header">
+        <span class="sec-label">Процесс</span>
+        <div class="steps-header-lotus"><svg width="26" height="30" viewBox="0 0 36 40" fill="currentColor"><path d="M18 37C18 37 3 28 4 15C10 20 16 27 18 37Z" opacity="0.5"/><path d="M18 37C18 37 33 28 32 15C26 20 20 27 18 37Z" opacity="0.5"/><path d="M18 37C18 37 9 25 9 11C13 17 17 25 18 37Z" opacity="0.82"/><path d="M18 37C18 37 27 25 27 11C23 17 19 25 18 37Z" opacity="0.82"/><path d="M18 37C15.5 23 17 4 18 4C19 4 20.5 23 18 37Z"/></svg></div>
+        <h2 class="steps-h2">Как проходит сеанс</h2>
+    </div>
     <div class="steps-grid">
         <div class="step-card">
-            <div class="step-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></div>
-            <div class="step-num">1</div>
+            <div class="step-icon"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></div>
+            <div class="step-num-badge">1</div>
             <h3>Диагностика</h3>
             <p>Понимаем, откуда растут ноги проблемы — физическая боль, эмоциональные блоки, родовые программы</p>
         </div>
         <div class="step-card">
-            <div class="step-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 00-2-2 2 2 0 00-2 2"/><path d="M14 10V4a2 2 0 00-2-2 2 2 0 00-2 2v2"/><path d="M10 10.5V6a2 2 0 00-2-2 2 2 0 00-2 2v8"/><path d="M18 8a2 2 0 114 0v6a8 8 0 01-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 012.83-2.82L7 15"/></svg></div>
-            <div class="step-num">2</div>
+            <div class="step-icon"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 00-2-2 2 2 0 00-2 2"/><path d="M14 10V4a2 2 0 00-2-2 2 2 0 00-2 2v2"/><path d="M10 10.5V6a2 2 0 00-2-2 2 2 0 00-2 2v8"/><path d="M18 8a2 2 0 114 0v6a8 8 0 01-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 012.83-2.82L7 15"/></svg></div>
+            <div class="step-num-badge">2</div>
             <h3>Глубокий мягкий массаж</h3>
             <p>Убираем напряжение из всех тканей тела — мышцы, связки и фасции расслабляются</p>
         </div>
         <div class="step-card">
-            <div class="step-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 017 4.5v0A2.5 2.5 0 014.5 7v0a2.5 2.5 0 000 5v0A2.5 2.5 0 017 14.5v0A2.5 2.5 0 009.5 17H12"/><path d="M14.5 2A2.5 2.5 0 0117 4.5v0A2.5 2.5 0 0119.5 7v0a2.5 2.5 0 010 5v0A2.5 2.5 0 0117 14.5v0A2.5 2.5 0 0114.5 17H12"/><path d="M12 17v4"/><path d="M9 21h6"/><path d="M12 12v-2"/><path d="M12 7v1"/></svg></div>
-            <div class="step-num">3</div>
+            <div class="step-icon"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 017 4.5v0A2.5 2.5 0 014.5 7v0a2.5 2.5 0 000 5v0A2.5 2.5 0 017 14.5v0A2.5 2.5 0 009.5 17H12"/><path d="M14.5 2A2.5 2.5 0 0117 4.5v0A2.5 2.5 0 0119.5 7v0a2.5 2.5 0 010 5v0A2.5 2.5 0 0117 14.5v0A2.5 2.5 0 0114.5 17H12"/><path d="M12 17v4"/><path d="M9 21h6"/><path d="M12 12v-2"/><path d="M12 7v1"/></svg></div>
+            <div class="step-num-badge">3</div>
             <h3>Работа с нейросоматикой</h3>
             <p>Меняем мышление, раскрываем внутренние блоки — страхи и тревоги теряют власть</p>
         </div>
         <div class="step-card">
-            <div class="step-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.59 4.59A2 2 0 1111 8H2"/><path d="M12.42 19.42A2 2 0 1014 16H2"/><path d="M17.73 7.73A2.5 2.5 0 1119.5 12H2"/></svg></div>
-            <div class="step-num">4</div>
+            <div class="step-icon"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v10"/><path d="M6 8C4 9.5 3 11 3 13c0 3 2 5.5 5 5.5h1V10l-1-1C7.5 8.5 6.5 7.5 6 8z"/><path d="M18 8c2 1.5 3 3 3 5 0 3-2 5.5-5 5.5h-1V10l1-1c.5-.5 1.5-1.5 2-1z"/></svg></div>
+            <div class="step-num-badge">4</div>
             <h3>Выравнивание диафрагмы</h3>
             <p>Восстанавливаем свободное дыхание — появляется лёгкость и ощущение пространства</p>
         </div>
         <div class="step-card">
-            <div class="step-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c0 4-3 6-3 6s3 1 3 5c0-4 3-5 3-5s-3-2-3-6z"/><path d="M2 12c4 0 6-3 6-3s1 3 5 3c-4 0-5 3-5 3s-1-3-6-3z"/><path d="M22 12c-4 0-6-3-6-3s-1 3-5 3c4 0 5 3 5 3s1-3 6-3z"/><circle cx="12" cy="12" r="1.5" fill="#C4847C" stroke="none"/></svg></div>
-            <div class="step-num">5</div>
-            <h3>Матрица судьбы</h3>
+            <div class="step-icon"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="2" x2="22" y1="12" y2="12"/><line x1="12" x2="12" y1="2" y2="22"/><path d="m20 16-4-4 4-4"/><path d="m4 8 4 4-4 4"/><path d="m16 4-4 4-4-4"/><path d="m8 20 4-4 4 4"/></svg></div>
+            <div class="step-num-badge">5</div>
+            <h3>Раскрытие матрицы судьбы</h3>
             <p>Видим родовые программы, которые мешают достичь целей, и начинаем их менять</p>
         </div>
     </div>
-    <p class="steps-result">Результат: ясность, лёгкость, свобода и возможность достичь желаемого</p>
+    <div class="steps-result-row">
+        <svg width="28" height="32" viewBox="0 0 36 40" fill="#C4847C"><path d="M18 37C18 37 3 28 4 15C10 20 16 27 18 37Z" opacity="0.5"/><path d="M18 37C18 37 33 28 32 15C26 20 20 27 18 37Z" opacity="0.5"/><path d="M18 37C18 37 9 25 9 11C13 17 17 25 18 37Z" opacity="0.82"/><path d="M18 37C18 37 27 25 27 11C23 17 19 25 18 37Z" opacity="0.82"/><path d="M18 37C15.5 23 17 4 18 4C19 4 20.5 23 18 37Z"/></svg>
+        <p class="steps-result"><strong>Результат:</strong> <em>ясность, лёгкость, свобода и возможность достичь желаемого</em></p>
+    </div>
 </div>
 </section>
 
