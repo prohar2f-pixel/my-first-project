@@ -616,35 +616,109 @@ nav {
 
 /* ── PRICES ── */
 .prices-section { background: #FAF6F4; }
+.prices-header { text-align: center; margin-bottom: 48px; }
+.prices-header .sec-label { display: block; margin-bottom: 10px; }
+.prices-header-lotus { display: flex; justify-content: center; margin: 10px 0 18px; color: #C4847C; opacity: 0.65; }
+.prices-h2 { font-size: clamp(28px, 3.5vw, 52px); margin: 0; }
 .prices-grid {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
 }
 .price-card {
     background: #fff;
-    padding: 20px 12px;
-    border-radius: 16px;
+    padding: 26px 16px 20px;
+    border-radius: 20px;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    box-shadow: 0 2px 12px rgba(196,132,124,0.07);
     transition: box-shadow 0.2s, transform 0.15s;
 }
 .price-card:hover {
-    box-shadow: 0 6px 24px rgba(196,132,124,0.16);
+    box-shadow: 0 6px 24px rgba(196,132,124,0.14);
     transform: translateY(-3px);
 }
-.p-icon { display:flex; align-items:center; justify-content:center; height:32px; margin-bottom:10px; }
-.price-card h3 { font-size: 13px; margin-bottom: 6px; line-height: 1.35; }
-.p-desc { font-size: 11px; color: #7A5555; line-height: 1.5; margin-bottom: 12px; flex: 1; }
+.p-icon {
+    width: 82px;
+    height: 82px;
+    background: #F5EAE8;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    flex-shrink: 0;
+}
+.price-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; line-height: 1.3; color: #3D2424; }
+.p-desc { font-size: 12.5px; color: #7A5555; line-height: 1.55; margin-bottom: 16px; flex: 1; }
 .p-amount {
+    display: block;
+    width: 100%;
+    background: #FDF0ED;
+    border: 1.5px solid #F0DEDA;
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: 19px;
+    font-weight: 800;
+    color: #3D2424;
+    font-family: 'Nunito', sans-serif;
+    box-sizing: border-box;
+    text-align: center;
+}
+.prices-banner {
+    margin-top: 16px;
+    border-radius: 20px;
+    background: linear-gradient(108deg, #EDD5C0 0%, #D9B89A 38%, #C8A48A 65%, #BF9C84 100%);
+    padding: 40px 56px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+}
+.prices-banner-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+.prices-banner-item .p-icon {
+    background: rgba(255,255,255,0.28);
+    margin: 0 0 14px;
+}
+.prices-banner-item h3 {
+    font-size: clamp(20px, 2.2vw, 26px);
+    font-weight: 700;
+    color: #3D2424;
+    margin: 0;
     font-family: 'Cormorant Garamond', serif;
+}
+.prices-banner-item .p-desc {
+    color: #5C3F3F;
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+.prices-banner-item .p-amount {
+    width: auto;
+    display: inline-block;
+    background: rgba(255,255,255,0.28);
+    border-color: rgba(255,255,255,0.45);
     font-size: 20px;
-    font-weight: 600;
-    color: #C4847C;
-    line-height: 1.2;
+}
+.prices-footer-quote {
+    margin-top: 16px;
+    background: #F5EAE8;
+    border-radius: 20px;
+    padding: 28px 64px;
+    text-align: center;
+}
+.prices-footer-quote p {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(16px, 1.8vw, 21px);
+    color: #5C3F3F;
+    margin: 0;
+    line-height: 1.6;
 }
 
 /* ── OFFERS ── */
@@ -1113,50 +1187,59 @@ footer a:hover { color: #fff; }
 <!-- PRICES -->
 <section id="prices" class="prices-section">
 <div class="container">
-    <h2>Выберите подходящий вам курс</h2>
+    <div class="prices-header">
+        <span class="sec-label">Услуги и цены</span>
+        <div class="prices-header-lotus"><svg width="26" height="30" viewBox="0 0 36 40" fill="currentColor"><path d="M18 37C18 37 3 28 4 15C10 20 16 27 18 37Z" opacity="0.5"/><path d="M18 37C18 37 33 28 32 15C26 20 20 27 18 37Z" opacity="0.5"/><path d="M18 37C18 37 9 25 9 11C13 17 17 25 18 37Z" opacity="0.82"/><path d="M18 37C18 37 27 25 27 11C23 17 19 25 18 37Z" opacity="0.82"/><path d="M18 37C15.5 23 17 4 18 4C19 4 20.5 23 18 37Z"/></svg></div>
+        <h2 class="prices-h2">Выберите подходящий вам курс</h2>
+    </div>
     <div class="prices-grid">
         <div class="price-card">
-            <div class="p-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></div>
+            <div class="p-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></div>
             <h3>Пробная диагностика</h3>
             <p class="p-desc">20 минут консультации и первичный разбор</p>
             <div class="p-amount">1 500 ₽</div>
         </div>
         <div class="price-card">
-            <div class="p-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg></div>
+            <div class="p-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 00-2-2 2 2 0 00-2 2"/><path d="M14 10V4a2 2 0 00-2-2 2 2 0 00-2 2v2"/><path d="M10 10.5V6a2 2 0 00-2-2 2 2 0 00-2 2v8"/><path d="M18 8a2 2 0 114 0v6a8 8 0 01-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 012.83-2.82L7 15"/></svg></div>
             <h3>1 сеанс</h3>
             <p class="p-desc">Полный сеанс терапии</p>
             <div class="p-amount">4 000 ₽</div>
         </div>
         <div class="price-card">
-            <div class="p-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 014 13c0-4 3-8 9-10 0 6-1 10-5 12"/><path d="M20 8c0 7-7 13-9 13"/></svg></div>
+            <div class="p-icon"><svg width="36" height="40" viewBox="0 0 36 40" fill="#C4847C"><path d="M18 37C18 37 3 28 4 15C10 20 16 27 18 37Z" opacity="0.5"/><path d="M18 37C18 37 33 28 32 15C26 20 20 27 18 37Z" opacity="0.5"/><path d="M18 37C18 37 9 25 9 11C13 17 17 25 18 37Z" opacity="0.82"/><path d="M18 37C18 37 27 25 27 11C23 17 19 25 18 37Z" opacity="0.82"/><path d="M18 37C15.5 23 17 4 18 4C19 4 20.5 23 18 37Z"/></svg></div>
             <h3>3 сеанса</h3>
             <p class="p-desc">3 полных сеанса + массаж живота</p>
             <div class="p-amount">12 000 ₽</div>
         </div>
         <div class="price-card">
-            <div class="p-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c0 4-3 6-3 6s3 1 3 5c0-4 3-5 3-5s-3-2-3-6z"/><path d="M2 12c4 0 6-3 6-3s1 3 5 3c-4 0-5 3-5 3s-1-3-6-3z"/><path d="M22 12c-4 0-6-3-6-3s-1 3-5 3c4 0 5 3 5 3s1-3 6-3z"/><circle cx="12" cy="12" r="1.5" fill="#C4847C" stroke="none"/></svg></div>
+            <div class="p-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="3"/><path d="M6 21v-2a6 6 0 0112 0v2"/><path d="M19 7l1 1-1 1-1-1zM19 11l1 1-1 1-1-1zM5 7l1 1-1 1-1-1zM5 11l1 1-1 1-1-1z"/></svg></div>
             <h3>4 сеанса</h3>
-            <p class="p-desc">4 сеанса + массаж живота (для опущения органов)</p>
+            <p class="p-desc">4 полных сеанса + массаж живота (для опущения органов или надрыва пупка)</p>
             <div class="p-amount">16 000 ₽</div>
         </div>
         <div class="price-card">
-            <div class="p-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>
+            <div class="p-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg></div>
             <h3>5 сеансов</h3>
-            <p class="p-desc">5 сеансов + мини разбор матрицы судьбы</p>
+            <p class="p-desc">5 полных сеансов + мини разбор матрицы судьбы</p>
             <div class="p-amount">20 000 ₽</div>
         </div>
-        <div class="price-card">
-            <div class="p-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12"/><path d="M12 12C12 7 8 4 8 4s0 4 4 8"/><path d="M12 12C12 7 16 4 16 4s0 4-4 8"/><path d="M12 12C7 12 4 8 4 8s4 0 8 4"/><path d="M12 12C17 12 20 8 20 8s-4 0-8 4"/></svg></div>
+    </div>
+    <div class="prices-banner">
+        <div class="prices-banner-item">
+            <div class="p-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 00-2-2 2 2 0 00-2 2"/><path d="M14 10V4a2 2 0 00-2-2 2 2 0 00-2 2v2"/><path d="M10 10.5V6a2 2 0 00-2-2 2 2 0 00-2 2v8"/><path d="M18 8a2 2 0 114 0v6a8 8 0 01-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 012.83-2.82L7 15"/><path d="M12 2.5l.7 2.1A1.5 1.5 0 0014 6a1.5 1.5 0 00-1.3.8L12 9"/></svg></div>
             <h3>Правка живота</h3>
-            <p class="p-desc">Масляное выглаживание для женщин</p>
+            <p class="p-desc">Отдельная услуга<br>(масляное выглаживание)</p>
             <div class="p-amount">2 500 ₽</div>
         </div>
-        <div class="price-card">
-            <div class="p-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg></div>
-            <h3>Подарочный сертификат</h3>
-            <p class="p-desc">Подарок для близких</p>
-            <div class="p-amount" style="font-size:14px;">На любую сумму</div>
+        <div class="prices-banner-item">
+            <div class="p-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg></div>
+            <h3>Дарочный сертификат</h3>
+            <p class="p-desc">Подарок для близких<br>на любую сумму</p>
+            <div class="p-amount">На любую сумму</div>
         </div>
+    </div>
+    <div class="prices-footer-quote">
+        <p>Каждый курс — это индивидуальный подход и бережная работа с причиной проблемы,<br>чтобы вы чувствовали лёгкость, уверенность и радость жизни.</p>
     </div>
 </div>
 </section>
