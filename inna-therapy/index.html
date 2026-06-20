@@ -40,25 +40,18 @@ nav {
     z-index: 100;
     background: #fff;
     box-shadow: 0 2px 16px rgba(196,132,124,0.1);
-}
-.nav-logo-row {
-    display: block;
-    width: 100%;
-    text-align: center;
-    padding: 12px 0 8px;
-    border-bottom: 1px solid rgba(196,132,124,0.12);
-}
-.nav-logo-row img {
-    height: 72px;
-    width: auto;
-    display: inline-block;
+    padding: 8px 0;
 }
 .nav-inner {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 24px;
-    padding: 8px 0;
+    gap: 32px;
+}
+.nav-logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    flex-shrink: 0;
 }
 .nav-links {
     display: flex;
@@ -66,12 +59,13 @@ nav {
     list-style: none;
     margin: 0;
     padding: 0;
+    flex: 1;
     justify-content: center;
 }
 .nav-links a {
     text-decoration: none;
     color: #5C3F3F;
-    font-size: 13px;
+    font-size: 14px;
     transition: color 0.2s;
     white-space: nowrap;
 }
@@ -1154,11 +1148,11 @@ footer { background: #FAF6F4; padding: 20px 0; border-top: 1px solid #F0DEDA; }
 
 <!-- NAV -->
 <nav>
-<a href="#" class="nav-logo-row">
-    <img src="images/logo.png" alt="Ladanie">
-</a>
 <div class="container">
 <div class="nav-inner">
+    <a href="#" class="nav-logo">
+        <img src="images/logo.png" alt="Ladanie" style="height:72px; width:auto;">
+    </a>
     <ul class="nav-links">
         <li><a href="#about">Обо мне</a></li>
         <li><a href="#steps">Как проходит сеанс</a></li>
