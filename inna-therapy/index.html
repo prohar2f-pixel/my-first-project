@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Инна — Комплексная телесная терапия</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -1323,7 +1324,7 @@ footer { background: #FAF6F4; padding: 20px 0; border-top: 1px solid #F0DEDA; }
         <h2 class="reviews-h2">Что говорят мои клиенты</h2>
     </div>
     <div class="reviews-inner">
-        <div class="text-reviews">
+        <div class="text-reviews" id="text-reviews">
             <div class="review-card">
                 <div class="r-head">
                     <div class="r-photo"><svg width="48" height="48" viewBox="0 0 50 50" fill="none"><circle cx="25" cy="20" r="9" fill="#C4847C" opacity="0.45"/><path d="M8 50c0-9.4 7.6-17 17-17s17 7.6 17 17" fill="#C4847C" opacity="0.35"/></svg></div>
@@ -1387,7 +1388,7 @@ footer { background: #FAF6F4; padding: 20px 0; border-top: 1px solid #F0DEDA; }
                 <div class="waveform" id="w3"></div>
                 <span class="audio-time">1:52</span>
             </div>
-            <a href="https://t.me/innaborisova_therapy" class="btn-tg">
+            <a href="https://t.me/innaborisova_therapy" class="btn-tg" data-contact="telegram">
                 <span class="btn-tg-left"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg>Больше отзывов в Telegram</span>
                 <span class="btn-tg-circle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
             </a>
@@ -1411,7 +1412,7 @@ footer { background: #FAF6F4; padding: 20px 0; border-top: 1px solid #F0DEDA; }
         <div class="prices-header-lotus"><svg width="26" height="30" viewBox="0 0 36 40" fill="currentColor"><path d="M18 37C18 37 3 28 4 15C10 20 16 27 18 37Z" opacity="0.5"/><path d="M18 37C18 37 33 28 32 15C26 20 20 27 18 37Z" opacity="0.5"/><path d="M18 37C18 37 9 25 9 11C13 17 17 25 18 37Z" opacity="0.82"/><path d="M18 37C18 37 27 25 27 11C23 17 19 25 18 37Z" opacity="0.82"/><path d="M18 37C15.5 23 17 4 18 4C19 4 20.5 23 18 37Z"/></svg></div>
         <h2 class="prices-h2">Выберите подходящий вам курс</h2>
     </div>
-    <div class="prices-grid">
+    <div class="prices-grid" id="prices-grid">
         <div class="price-card">
             <div class="p-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#C4847C" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></div>
             <h3>Пробная диагностика</h3>
@@ -1552,7 +1553,7 @@ footer { background: #FAF6F4; padding: 20px 0; border-top: 1px solid #F0DEDA; }
         <h2 class="location-h2">Где я принимаю</h2>
         <p class="location-subtitle">Выбирайте удобное для вас место. В каждом кабинете — уютная атмосфера и забота о вашем комфорте.</p>
     </div>
-    <div class="location-grid">
+    <div class="location-grid" id="location-grid">
         <div class="location-card">
             <div class="loc-photo"><img src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?q=80&w=800" alt="Салон Истринская"></div>
             <div class="loc-content">
@@ -1622,10 +1623,10 @@ footer { background: #FAF6F4; padding: 20px 0; border-top: 1px solid #F0DEDA; }
             </div>
             <h3>1. Есть вопросы</h3>
             <p class="o-sub">Напишите мне в Telegram или MAX — отвечу в течение 24 часов и помогу разобраться</p>
-            <a href="https://t.me/innaborisova_therapy" class="opt-btn">У МЕНЯ ЕСТЬ ВОПРОС</a>
+            <a href="https://t.me/innaborisova_therapy" class="opt-btn" data-contact="telegram">У МЕНЯ ЕСТЬ ВОПРОС</a>
             <p class="o-contact-label">Свяжитесь удобным способом:</p>
             <div class="contact-links">
-                <a href="https://t.me/innaborisova_therapy" class="contact-link">
+                <a href="https://t.me/innaborisova_therapy" class="contact-link" data-contact="telegram">
                     <div class="contact-link-icon" style="background:#2AABEE;">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
                     </div>
@@ -1634,7 +1635,7 @@ footer { background: #FAF6F4; padding: 20px 0; border-top: 1px solid #F0DEDA; }
                         <span class="contact-link-val">@innaborisova_therapy</span>
                     </div>
                 </a>
-                <a href="https://max.ru/join/i1C_POb-7DKMmllA3l9MRT-gtDn4qeQYvaYgkNUHDxM" class="contact-link">
+                <a href="https://max.ru/join/i1C_POb-7DKMmllA3l9MRT-gtDn4qeQYvaYgkNUHDxM" class="contact-link" data-contact="max">
                     <div class="contact-link-icon" style="background:#5B5EA6;">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M20 2H4a2 2 0 00-2 2v18l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2z"/></svg>
                     </div>
@@ -1655,7 +1656,7 @@ footer { background: #FAF6F4; padding: 20px 0; border-top: 1px solid #F0DEDA; }
             <h3>2. Хочу попробовать</h3>
             <div class="opt-lotus"><svg width="20" height="23" viewBox="0 0 36 40" fill="currentColor"><path d="M18 37C18 37 3 28 4 15C10 20 16 27 18 37Z" opacity="0.5"/><path d="M18 37C18 37 33 28 32 15C26 20 20 27 18 37Z" opacity="0.5"/><path d="M18 37C18 37 9 25 9 11C13 17 17 25 18 37Z" opacity="0.82"/><path d="M18 37C18 37 27 25 27 11C23 17 19 25 18 37Z" opacity="0.82"/><path d="M18 37C15.5 23 17 4 18 4C19 4 20.5 23 18 37Z"/></svg></div>
             <p class="o-sub">Забронируйте место и получите скидку на первый сеанс — почувствуйте результат</p>
-            <a href="https://t.me/innaborisova_therapy" class="opt-btn">ПРЕДОПЛАТА 1 000 ₽</a>
+            <a href="#" class="opt-btn" data-contact="prepay">ПРЕДОПЛАТА 1 000 ₽</a>
             <p class="o-pay-label">Оплата предоплаты:</p>
             <div class="pay-card">
                 <div class="pay-check">
@@ -1736,6 +1737,75 @@ const waves = [[4,7,10,14,18,22,20,16,12,8,11,15,21,17,13,9,7,11,15,19,23,19,15,
         el.appendChild(s);
     });
 });
+
+// Загрузка content.json и обновление динамических элементов
+fetch('/content.json')
+  .then(r => r.json())
+  .then(data => {
+    const c = data.contacts;
+
+    // Обновляем все ссылки по data-contact
+    document.querySelectorAll('[data-contact]').forEach(el => {
+      const key = el.getAttribute('data-contact');
+      if (key === 'telegram' && c.telegram) el.href = c.telegram;
+      if (key === 'max' && c.max) el.href = c.max;
+      if (key === 'prepay' && c.prepay_link) el.href = c.prepay_link;
+    });
+
+    // Обновляем телефонный номер
+    document.querySelectorAll('[data-contact="phone"]').forEach(el => {
+      if (c.phone_display) el.textContent = c.phone_display;
+      if (c.phone) el.href = 'tel:' + c.phone;
+    });
+
+    // Перерисовываем прайс
+    const pricesGrid = document.getElementById('prices-grid');
+    if (pricesGrid && data.prices) {
+      pricesGrid.innerHTML = data.prices.map(p => `
+        <div class="price-card">
+          <div class="price-icon">${p.icon}</div>
+          <div class="price-name">${p.name}</div>
+          <div class="price-desc">${p.desc}</div>
+          <div class="price-amount">${p.amount}</div>
+        </div>`).join('');
+    }
+
+    // Перерисовываем текстовые отзывы
+    const reviewsGrid = document.getElementById('text-reviews');
+    if (reviewsGrid && data.reviews) {
+      reviewsGrid.innerHTML = data.reviews.map(r => `
+        <div class="review-card">
+          <blockquote class="quote-block">${r.text}</blockquote>
+          <div class="review-author">${r.author}</div>
+        </div>`).join('');
+    }
+
+    // Перерисовываем локации
+    const locationGrid = document.getElementById('location-grid');
+    if (locationGrid && data.locations) {
+      locationGrid.innerHTML = data.locations.map(l => `
+        <div class="location-card">
+          <img src="${l.photo}" alt="${l.name}" class="location-photo">
+          <div class="location-info">
+            <div class="location-name">${l.name}</div>
+            <div class="location-sub">${l.sub}</div>
+            <div class="location-address">${l.address}</div>
+          </div>
+        </div>`).join('');
+    }
+  })
+  .catch(() => {}); // fallback — статичные данные из HTML остаются
+
+// Netlify Identity — редирект после логина в /admin
+if (window.netlifyIdentity) {
+  window.netlifyIdentity.on('init', user => {
+    if (!user) {
+      window.netlifyIdentity.on('login', () => {
+        document.location.href = '/admin/';
+      });
+    }
+  });
+}
 </script>
 </body>
 </html>

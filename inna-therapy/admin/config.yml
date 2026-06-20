@@ -1,0 +1,52 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: inna-therapy/images
+public_folder: /images
+
+locale: ru
+
+collections:
+  - name: content
+    label: Контент сайта
+    files:
+      - name: main
+        label: Основной контент
+        file: inna-therapy/content.json
+        format: json
+        fields:
+          - label: Контакты
+            name: contacts
+            widget: object
+            fields:
+              - { label: Телефон (для ссылки), name: phone, widget: string }
+              - { label: Телефон (для отображения), name: phone_display, widget: string }
+              - { label: Telegram (ссылка), name: telegram, widget: string }
+              - { label: MAX (ссылка), name: max, widget: string }
+              - { label: Ссылка предоплаты, name: prepay_link, widget: string }
+
+          - label: Цены
+            name: prices
+            widget: list
+            fields:
+              - { label: Иконка (эмодзи), name: icon, widget: string }
+              - { label: Название, name: name, widget: string }
+              - { label: Описание, name: desc, widget: string }
+              - { label: Стоимость, name: amount, widget: string }
+
+          - label: Отзывы
+            name: reviews
+            widget: list
+            fields:
+              - { label: Текст отзыва, name: text, widget: text }
+              - { label: Автор, name: author, widget: string }
+
+          - label: Локации
+            name: locations
+            widget: list
+            fields:
+              - { label: Название, name: name, widget: string }
+              - { label: Подпись, name: sub, widget: string }
+              - { label: Адрес, name: address, widget: string }
+              - { label: Фото (URL), name: photo, widget: image }
