@@ -1,6 +1,9 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: prohar2f-pixel/my-first-project
   branch: main
+  auth_type: pkce
+  app_id: 0v23lihQlT2BD3iXRDRY
 
 media_folder: inna-therapy/images
 public_folder: /images
