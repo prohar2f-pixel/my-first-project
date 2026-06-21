@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 :root{
   --p:#a855f7;--pd:#7c3aed;--pb:#c084fc;
   --bg:#0a0a0a;--bg2:#0d0d14;
@@ -511,6 +512,45 @@ footer{padding:52px 0 36px;text-align:center}
   .cta-feats{padding:20px 16px}
 }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Александр Прохоров",
+  "jobTitle": "Веб-разработчик и специалист по нейросетям",
+  "description": "Создаю современные сайты для бизнеса и внедряю нейросети. Лендинги, корпоративные сайты, интернет-магазины, Telegram-боты и AEO-оптимизация. Работаю под ключ: дизайн, разработка, запуск.",
+  "url": "https://aiprohar.ru/",
+  "image": "https://aiprohar.ru/assets/photo.jpg",
+  "sameAs": [
+    "https://t.me/alex_prohar",
+    "https://max.ru/join/Dqgo_3h6X9TPo-"
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "LV"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "sales",
+    "availableLanguage": "Russian",
+    "url": "https://t.me/alex_prohar"
+  },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Услуги веб-разработки и ИИ",
+    "itemListElement": [
+      {"@type":"Offer","name":"Сайт-визитка","price":"30000","priceCurrency":"RUB","description":"1–3 страницы, уникальный дизайн, адаптив, форма обратной связи, базовое SEO. Срок: 5–7 дней."},
+      {"@type":"Offer","name":"Лендинг","price":"50000","priceCurrency":"RUB","description":"Продающая одностраничная страница с акцентом на конверсию и заявки. Срок: 7–14 дней."},
+      {"@type":"Offer","name":"Корпоративный сайт","price":"90000","priceCurrency":"RUB","description":"5–10 страниц, каталог услуг, интеграции с CRM, SEO-оптимизация. Срок: 14–30 дней."},
+      {"@type":"Offer","name":"Интернет-магазин","price":"150000","priceCurrency":"RUB","description":"Каталог с фильтрами, корзина, онлайн-оплата, личный кабинет. Срок: от 30 дней."},
+      {"@type":"Offer","name":"Telegram-бот","price":"25000","priceCurrency":"RUB","description":"Автоматизация продаж, поддержки или сбора заявок. Срок: 5–10 дней."},
+      {"@type":"Offer","name":"ИИ-интеграция","price":"20000","priceCurrency":"RUB","description":"ИИ-чат на сайте, автогенерация контента, анализ данных на базе нейросетей."},
+      {"@type":"Offer","name":"AEO-оптимизация","price":"5000","priceCurrency":"RUB","description":"Настройка сайта для ИИ-поисковиков: ChatGPT, Perplexity, Claude. Срок: 1–2 дня."}
+    ]
+  },
+  "knowsAbout": ["HTML", "CSS", "JavaScript", "Python", "Telegram-боты", "aiogram", "Claude API", "Figma", "WordPress", "Tilda", "SEO", "AEO", "Cloudflare Workers"]
+}
+</script>
 </head>
 <body>
 
@@ -544,8 +584,9 @@ footer{padding:52px 0 36px;text-align:center}
   <!-- content -->
   <div class="hero-content">
     <div class="hero-tag">Сайты для бизнеса + нейросети</div>
-    <div class="hn1">Александр</div>
-    <div class="hn2">Прохоров</div>
+    <h1 class="sr-only">Александр Прохоров — Веб-разработчик и специалист по нейросетям</h1>
+    <div class="hn1" aria-hidden="true">Александр</div>
+    <div class="hn2" aria-hidden="true">Прохоров</div>
     <div class="hero-hr"></div>
     <div class="hero-tl">Без лишних слов.<br>Просто <span>результат.</span></div>
     <p class="hero-desc">Создаю современные сайты для бизнеса и внедряю нейросети, чтобы вы получали больше клиентов, прибыли и свободного времени.</p>
@@ -602,7 +643,7 @@ footer{padding:52px 0 36px;text-align:center}
 
   <div class="wrap" style="position:relative;z-index:2">
     <div class="sec-label fi">Что я делаю</div>
-    <h2 class="sec-h fi">Решения, которые<br>работают на <span>ваш бизнес</span></h2>
+    <h2 class="sec-h fi">Решения, которые <br>работают на <span>ваш бизнес</span></h2>
     <p class="sec-sub fi">Создаю современные инструменты, которые приводят клиентов,<br>увеличивают прибыль и экономят ваше время.</p>
     <div class="srv-grid">
 
@@ -716,7 +757,7 @@ footer{padding:52px 0 36px;text-align:center}
 
   <div class="wrap" style="position:relative;z-index:2">
     <div class="sec-label fi">Почему мне доверяют</div>
-    <h2 class="sec-h fi" style="font-size:clamp(2.4rem,4.8vw,3.8rem)">Подход, на который<br>можно <span style="font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.02em">положиться</span></h2>
+    <h2 class="sec-h fi" style="font-size:clamp(2.4rem,4.8vw,3.8rem)">Подход, на который <br>можно<span style="font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.02em">положиться</span></h2>
     <p class="sec-sub fi">Работаю честно, на результат и в долгую.<br>За каждым проектом — внимание к деталям и ответственность.</p>
     <div class="trust-grid">
 
@@ -968,7 +1009,7 @@ footer{padding:52px 0 36px;text-align:center}
         </h2>
         <p class="price-sub fi">Фиксированные цены, никаких скрытых платежей.<br>По мере роста портфолио цены <a href="#">будут обновляться</a>.</p>
       </div>
-      <div class="price-gear fi"><img src="assets/5.png" alt="" style="width:300px;height:300px;object-fit:contain;margin-right:-60px"></div>
+      <div class="price-gear fi"><img src="assets/5.png" alt="Иконка раздела цен на услуги" style="width:300px;height:300px;object-fit:contain;margin-right:-60px"></div>
     </div>
 
     <div class="price-grid">
@@ -976,7 +1017,7 @@ footer{padding:52px 0 36px;text-align:center}
       <div class="card price-card fi">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px">
           <div class="price-name" style="margin-bottom:0">Сайт-визитка</div>
-          <img src="assets/6.png" alt="" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
+          <img src="assets/6.png" alt="Иконка сайта-визитки" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
         </div>
         <div class="price-desc">Для специалистов, самозанятых и небольших компаний</div>
         <div class="price-amount">30 000 <span>₽</span></div>
@@ -996,7 +1037,7 @@ footer{padding:52px 0 36px;text-align:center}
         <div class="price-badge">ПОПУЛЯРНОЕ</div>
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px">
           <div class="price-name" style="margin-bottom:0">Лендинг</div>
-          <img src="assets/7.png" alt="" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
+          <img src="assets/7.png" alt="Иконка лендинга" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
         </div>
         <div class="price-desc">Продающая страница с акцентом на конверсию и заявки</div>
         <div class="price-amount">50 000 <span>₽</span></div>
@@ -1015,7 +1056,7 @@ footer{padding:52px 0 36px;text-align:center}
       <div class="card price-card fi">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px">
           <div class="price-name" style="margin-bottom:0">Корпоративный сайт</div>
-          <img src="assets/8.png" alt="" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
+          <img src="assets/8.png" alt="Иконка корпоративного сайта" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
         </div>
         <div class="price-desc">Полноценный сайт для бизнеса с несколькими разделами</div>
         <div class="price-amount">90 000 <span>₽</span></div>
@@ -1034,7 +1075,7 @@ footer{padding:52px 0 36px;text-align:center}
       <div class="card price-card fi">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px">
           <div class="price-name" style="margin-bottom:0">Интернет-магазин</div>
-          <img src="assets/9.png" alt="" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
+          <img src="assets/9.png" alt="Иконка интернет-магазина" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
         </div>
         <div class="price-desc">Полноценный магазин с каталогом, корзиной и оплатой</div>
         <div class="price-amount">от 150 000 <span>₽</span></div>
@@ -1053,7 +1094,7 @@ footer{padding:52px 0 36px;text-align:center}
       <div class="card price-card fi">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px">
           <div class="price-name" style="margin-bottom:0">Telegram-бот</div>
-          <img src="assets/10.png" alt="" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
+          <img src="assets/10.png" alt="Иконка Telegram-бота" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
         </div>
         <div class="price-desc">Автоматизация продаж, поддержки или сбора заявок</div>
         <div class="price-amount">от 25 000 <span>₽</span></div>
@@ -1072,7 +1113,7 @@ footer{padding:52px 0 36px;text-align:center}
       <div class="card price-card fi">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px">
           <div class="price-name" style="margin-bottom:0">ИИ-интеграция</div>
-          <img src="assets/11.png" alt="" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
+          <img src="assets/11.png" alt="Иконка ИИ-интеграции" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
         </div>
         <div class="price-desc">Нейросети в ваш сайт или бизнес-процесс</div>
         <div class="price-amount">от 20 000 <span>₽</span></div>
@@ -1263,7 +1304,7 @@ footer{padding:52px 0 36px;text-align:center}
     <div id="formWrap">
       <div class="modal-title">Оставить заявку</div>
       <div class="modal-sub">Свяжусь в течение часа и обсудим детали проекта</div>
-      <form id="orderForm">
+      <form id="orderForm" method="post">
         <div class="form-group"><label>Ваше имя *</label><input type="text" id="fname" placeholder="Александр" required></div>
         <div class="form-group"><label>Телефон / Telegram *</label><input type="text" id="fphone" placeholder="+7 999 123 45 67 или @username" required></div>
         <div class="form-group"><label>Эл. почта</label><input type="email" id="femail" placeholder="example@mail.com"></div>
