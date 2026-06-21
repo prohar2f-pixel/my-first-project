@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Вход — AI Генератор</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0f0f13; color: #e8e8f0; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+  .card { background: #15151f; border: 1px solid #2a2a40; border-radius: 16px; padding: 40px; width: 360px; }
+  h1 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+  .sub { font-size: 14px; color: #666; margin-bottom: 32px; }
+  label { display: block; font-size: 12px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  input { width: 100%; background: #0f0f13; border: 1px solid #2a2a40; border-radius: 8px; color: #e8e8f0; font-size: 14px; padding: 10px 14px; outline: none; margin-bottom: 20px; font-family: inherit; }
+  input:focus { border-color: #7c6af7; }
+  button { width: 100%; background: linear-gradient(135deg, #7c6af7, #a855f7); color: #fff; border: none; border-radius: 10px; padding: 13px; font-size: 15px; font-weight: 700; cursor: pointer; }
+  .error { color: #f87171; font-size: 13px; margin-top: 14px; text-align: center; display: none; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>AI Генератор</h1>
+  <p class="sub">Войдите чтобы начать генерировать</p>
+  <label>Логин</label>
+  <input type="text" id="username" placeholder="Ваш логин">
+  <label>Пароль</label>
+  <input type="password" id="password" placeholder="Пароль">
+  <button onclick="login()">Войти</button>
+  <div class="error" id="err">Неверный логин или пароль</div>
+</div>
+<script>
+  const API = 'REPLACE_WITH_RAILWAY_URL';
+
+  if (localStorage.getItem('token')) location.href = 'index.html';
+
+  async function login() {
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    const resp = await fetch(`${API}/api/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password }),
+    });
+    if (!resp.ok) {
+      document.getElementById('err').style.display = 'block';
+      return;
+    }
+    const data = await resp.json();
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('username', data.username);
+    localStorage.setItem('is_admin', data.is_admin);
+    localStorage.setItem('credits', data.credits);
+    location.href = data.is_admin ? 'admin.html' : 'index.html';
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
+</script>
+</body>
+</html>

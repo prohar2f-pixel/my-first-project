@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Генератор изображений</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0f0f13; color: #e8e8f0; min-height: 100vh; }
+  .header { display: flex; align-items: center; justify-content: space-between; padding: 16px 28px; border-bottom: 1px solid #1e1e2e; }
+  .logo { font-size: 17px; font-weight: 700; }
+  .logo span { color: #7c6af7; }
+  .user-info { display: flex; align-items: center; gap: 12px; font-size: 13px; color: #888; }
+  .credits-badge { background: #1a1a2e; border: 1px solid #2a2a40; border-radius: 20px; padding: 5px 12px; color: #e8e8f0; }
+  .credits-badge span { color: #7c6af7; font-weight: 700; }
+  .btn-logout { background: none; border: 1px solid #2a2a40; border-radius: 6px; padding: 5px 12px; color: #666; cursor: pointer; font-size: 12px; }
+  .layout { display: grid; grid-template-columns: 300px 1fr; height: calc(100vh - 57px); }
+  .panel-left { border-right: 1px solid #1e1e2e; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
+  .field-group { display: flex; flex-direction: column; gap: 6px; }
+  label { font-size: 11px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+  textarea, select { background: #15151f; border: 1px solid #2a2a40; border-radius: 8px; color: #e8e8f0; font-size: 13px; padding: 10px 12px; outline: none; font-family: inherit; width: 100%; }
+  textarea { resize: none; line-height: 1.5; }
+  textarea:focus, select:focus { border-color: #7c6af7; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .range-row { display: flex; align-items: center; gap: 8px; }
+  input[type="range"] { flex: 1; accent-color: #7c6af7; }
+  .rval { font-size: 13px; color: #7c6af7; font-weight: 700; min-width: 28px; text-align: right; }
+  .btn-gen { background: linear-gradient(135deg, #7c6af7, #a855f7); color: #fff; border: none; border-radius: 10px; padding: 13px; font-size: 14px; font-weight: 700; cursor: pointer; width: 100%; }
+  .btn-gen:disabled { opacity: 0.4; cursor: not-allowed; }
+  .panel-right { display: flex; flex-direction: column; background: #0b0b10; }
+  .tabs { display: flex; border-bottom: 1px solid #1e1e2e; padding: 0 20px; }
+  .tab { padding: 13px 18px; font-size: 13px; color: #555; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+  .tab.active { color: #e8e8f0; border-color: #7c6af7; }
+  .pane { display: none; flex: 1; overflow-y: auto; padding: 20px; }
+  .pane.active { display: block; }
+  .spinner-wrap { display: flex; align-items: center; gap: 10px; background: #15151f; border: 1px solid #2a2a40; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+  .spinner { width: 18px; height: 18px; border: 2px solid #2a2a40; border-top-color: #7c6af7; border-radius: 50%; animation: spin 0.7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .img-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+  .img-wrap { border-radius: 10px; overflow: hidden; background: #15151f; border: 1px solid #1e1e2e; }
+  .img-wrap img { width: 100%; display: block; }
+  .img-footer { padding: 8px 10px; display: flex; gap: 6px; }
+  .btn-dl, .btn-reuse { flex: 1; background: #1e1e2e; border: none; border-radius: 6px; padding: 6px; font-size: 11px; color: #aaa; cursor: pointer; }
+  .btn-dl:hover, .btn-reuse:hover { background: #2a2a40; color: #fff; }
+  .hist-item { display: flex; gap: 12px; align-items: center; padding: 12px; background: #15151f; border: 1px solid #1e1e2e; border-radius: 10px; margin-bottom: 8px; cursor: pointer; }
+  .hist-thumb { width: 48px; height: 48px; border-radius: 6px; object-fit: cover; background: #1a1a2e; flex-shrink: 0; }
+  .hist-text { flex: 1; min-width: 0; }
+  .hist-prompt { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hist-date { font-size: 11px; color: #555; margin-top: 3px; }
+  .empty { color: #555; font-size: 14px; text-align: center; padding: 40px; }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="logo">pixel<span>AI</span></div>
+  <div class="user-info">
+    <div class="credits-badge">Кредитов: <span id="credits-count">—</span></div>
+    <button class="btn-logout" onclick="logout()">Выйти</button>
+  </div>
+</div>
+<div class="layout">
+  <div class="panel-left">
+    <div class="field-group">
+      <label>Промпт</label>
+      <textarea id="prompt" rows="5" placeholder="Опиши что хочешь..."></textarea>
+    </div>
+    <div class="field-group">
+      <label>Негативный промпт</label>
+      <textarea id="neg" rows="3" placeholder="Что исключить...">blurry, low quality, deformed</textarea>
+    </div>
+    <div class="grid-2">
+      <div class="field-group">
+        <label>Размер</label>
+        <select id="size">
+          <option value="1024,1024">1024x1024</option>
+          <option value="1920,1080">1920x1080</option>
+          <option value="1080,1920">1080x1920</option>
+          <option value="768,1344">768x1344</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label>Кол-во</label>
+        <select id="count">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="4">4</option>
+        </select>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>CFG Scale</label>
+      <div class="range-row">
+        <input type="range" id="cfg" min="1" max="20" value="7" oninput="document.getElementById('cfg-v').textContent=this.value">
+        <div class="rval" id="cfg-v">7</div>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Steps</label>
+      <div class="range-row">
+        <input type="range" id="steps" min="10" max="50" value="28" oninput="document.getElementById('steps-v').textContent=this.value">
+        <div class="rval" id="steps-v">28</div>
+      </div>
+    </div>
+    <button class="btn-gen" id="gen-btn" onclick="generate()">&#10022; Сгенерировать</button>
+  </div>
+  <div class="panel-right">
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('result')">Результат</div>
+      <div class="tab" onclick="switchTab('history')">История</div>
+      <div class="tab" onclick="switchTab('gallery')">Галерея</div>
+    </div>
+    <div class="pane active" id="pane-result">
+      <div class="img-grid" id="result-grid"></div>
+    </div>
+    <div class="pane" id="pane-history">
+      <div id="history-list"><div class="empty">История пуста</div></div>
+    </div>
+    <div class="pane" id="pane-gallery">
+      <div class="img-grid" id="gallery-grid"></div>
+    </div>
+  </div>
+</div>
+<script>
+  const API = 'REPLACE_WITH_RAILWAY_URL';
+  const token = localStorage.getItem('token');
+  if (!token) location.href = 'login.html';
+
+  document.getElementById('credits-count').textContent = localStorage.getItem('credits') || '0';
+
+  function logout() {
+    localStorage.clear();
+    location.href = 'login.html';
+  }
+
+  function switchTab(name) {
+    document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', ['result','history','gallery'][i] === name));
+    document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
+    document.getElementById(`pane-${name}`).classList.add('active');
+    if (name === 'history') loadHistory();
+    if (name === 'gallery') loadGallery();
+  }
+
+  function imgCard(url, prompt) {
+    return `<div class="img-wrap">
+      <img src="${url}" alt="${prompt}" loading="lazy">
+      <div class="img-footer">
+        <button class="btn-dl" onclick="download('${url}')">&#8595; Скачать</button>
+        <button class="btn-reuse" onclick="reusePrompt('${prompt.replace(/'/g,"\\'")}')">&#8635; Повтор</button>
+      </div>
+    </div>`;
+  }
+
+  async function generate() {
+    const prompt = document.getElementById('prompt').value.trim();
+    if (!prompt) return;
+    const [width, height] = document.getElementById('size').value.split(',').map(Number);
+    const count = Number(document.getElementById('count').value);
+
+    const btn = document.getElementById('gen-btn');
+    btn.disabled = true;
+    btn.textContent = 'Генерирую...';
+
+    const grid = document.getElementById('result-grid');
+    grid.innerHTML = '<div class="spinner-wrap"><div class="spinner"></div><span style="color:#888;font-size:13px">Генерирую изображения...</span></div>';
+    switchTab('result');
+
+    const resp = await fetch(`${API}/api/generate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({
+        prompt,
+        negative_prompt: document.getElementById('neg').value,
+        width, height, count,
+        cfg_scale: Number(document.getElementById('cfg').value),
+        steps: Number(document.getElementById('steps').value),
+      }),
+    });
+
+    btn.disabled = false;
+    btn.textContent = '✦ Сгенерировать';
+
+    if (!resp.ok) {
+      const err = await resp.json();
+      grid.innerHTML = `<div class="empty" style="color:#f87171">${err.detail || 'Ошибка генерации'}</div>`;
+      return;
+    }
+
+    const data = await resp.json();
+    localStorage.setItem('credits', data.credits);
+    document.getElementById('credits-count').textContent = data.credits;
+    grid.innerHTML = data.image_urls.map(url => imgCard(url, prompt)).join('');
+  }
+
+  async function loadHistory() {
+    const resp = await fetch(`${API}/api/history`, { headers: { 'Authorization': `Bearer ${token}` } });
+    const items = await resp.json();
+    const el = document.getElementById('history-list');
+    if (!items.length) { el.innerHTML = '<div class="empty">История пуста</div>'; return; }
+    el.innerHTML = items.map(g => `
+      <div class="hist-item" onclick="reusePrompt('${g.prompt.replace(/'/g,"\\'")}')">
+        <img class="hist-thumb" src="${g.image_urls[0] || ''}" alt="">
+        <div class="hist-text">
+          <div class="hist-prompt">${g.prompt}</div>
+          <div class="hist-date">${new Date(g.created_at).toLocaleString('ru')}</div>
+        </div>
+      </div>`).join('');
+  }
+
+  async function loadGallery() {
+    const resp = await fetch(`${API}/api/gallery`, { headers: { 'Authorization': `Bearer ${token}` } });
+    const data = await resp.json();
+    const grid = document.getElementById('gallery-grid');
+    if (!data.images.length) { grid.innerHTML = '<div class="empty">Галерея пуста</div>'; return; }
+    grid.innerHTML = data.images.map(url => `
+      <div class="img-wrap">
+        <img src="${url}" loading="lazy">
+        <div class="img-footer"><button class="btn-dl" onclick="download('${url}')">&#8595; Скачать</button></div>
+      </div>`).join('');
+  }
+
+  function reusePrompt(prompt) {
+    document.getElementById('prompt').value = prompt;
+    switchTab('result');
+  }
+
+  function download(url) {
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'image.webp';
+    a.click();
+  }
+</script>
+</body>
+</html>
