@@ -1,7 +1,7 @@
 import os
 from jose import jwt, JWTError
 from passlib.context import CryptContext
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 SECRET_KEY = os.getenv("JWT_SECRET", "dev-secret")
 ALGORITHM = "HS256"
@@ -22,7 +22,7 @@ def create_token(user_id: int, is_admin: bool) -> str:
     payload = {
         "sub": str(user_id),
         "is_admin": is_admin,
-        "exp": datetime.utcnow() + timedelta(hours=TOKEN_EXPIRE_HOURS),
+        "exp": datetime.now(timezone.utc) + timedelta(hours=TOKEN_EXPIRE_HOURS),
     }
     return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
 
