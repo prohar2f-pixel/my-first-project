@@ -70,6 +70,48 @@ nav {
     white-space: nowrap;
 }
 .nav-links a:hover { color: #E879A0; }
+.burger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 6px;
+    margin-left: auto;
+    background: none;
+    border: none;
+}
+.burger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: #2D2D2D;
+    border-radius: 2px;
+    transition: all 0.25s;
+}
+.burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.burger.open span:nth-child(2) { opacity: 0; }
+.burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+@media (max-width: 900px) {
+    .burger { display: flex; }
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #fff;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 16px 24px 20px;
+        gap: 0;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        z-index: 99;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links li { width: 100%; }
+    .nav-links a { display: block; padding: 12px 0; border-bottom: 1px solid #f0e8ec; font-size: 16px; }
+    .nav-inner { position: relative; }
+}
 
 /* ── BUTTONS ── */
 .btn {
@@ -1174,7 +1216,7 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
     <a href="#" class="nav-logo">
         <img src="images/logo.png" alt="Ladanie" style="height:52px; width:auto;">
     </a>
-    <ul class="nav-links">
+    <ul class="nav-links" id="nav-links">
         <li><a href="#about">Обо мне</a></li>
         <li><a href="#steps">Как проходит сеанс</a></li>
         <li><a href="#reviews">Отзывы</a></li>
@@ -1183,6 +1225,9 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
         <li><a href="#contacts">Контакты</a></li>
     </ul>
     <a href="#options" class="btn">Записаться</a>
+    <button class="burger" id="burger" aria-label="Меню">
+        <span></span><span></span><span></span>
+    </button>
 </div>
 </div>
 </nav>
@@ -1817,6 +1862,18 @@ fetch('/content.json')
     }
   })
   .catch(() => {}); // fallback — статичные данные из HTML остаются
+
+// Бургер-меню
+const burger = document.getElementById('burger');
+const navLinks = document.getElementById('nav-links');
+burger.addEventListener('click', () => {
+    burger.classList.toggle('open');
+    navLinks.classList.toggle('open');
+});
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    burger.classList.remove('open');
+    navLinks.classList.remove('open');
+}));
 
 // Netlify Identity — редирект после логина в /admin
 if (window.netlifyIdentity) {
