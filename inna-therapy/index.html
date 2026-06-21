@@ -1145,6 +1145,22 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
     .steps-grid { grid-template-columns: 1fr; }
     .prices-grid { grid-template-columns: 1fr 1fr; }
     .offer-variants { grid-template-columns: 1fr; }
+
+    /* Аудио — не вылезает за экран */
+    .voice-reviews { padding: 16px; overflow: hidden; }
+    .audio-item { overflow: hidden; min-width: 0; }
+    .waveform { min-width: 0; }
+
+    /* Градиентные плашки — в колонку */
+    .prices-banner { grid-template-columns: 1fr; padding: 28px 24px; gap: 28px; }
+    .prices-banner-item .p-amount { font-size: 16px; white-space: nowrap; }
+
+    /* Акции — футер в колонку */
+    .offers-footer { grid-template-columns: 1fr; }
+    .offers-footer-item:not(:last-child) { border-right: none; border-bottom: 1px solid rgba(232,121,160,0.22); }
+
+    /* Общий overflow страницы */
+    body { overflow-x: hidden; }
 }
 </style>
 </head>
