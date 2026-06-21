@@ -8,8 +8,7 @@ from pydantic import BaseModel
 from database import get_db, engine
 from models import Base, User, Generation
 from auth import hash_password, verify_password, create_token, decode_token
-
-CREDITS_PER_IMAGE = 1
+from runware import generate_images, CREDITS_PER_IMAGE
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -72,11 +71,49 @@ def login(req: LoginRequest, db: Session = Depends(get_db)):
         "credits": user.credits,
     }
 
-# --- Placeholder routes (filled in later tasks) ---
+# --- Generate ---
+
+class GenerateRequest(BaseModel):
+    prompt: str
+    negative_prompt: str = ""
+    width: int = 1024
+    height: int = 1024
+    count: int = 1
+    cfg_scale: float = 7.0
+    steps: int = 28
 
 @app.post("/api/generate")
-async def generate_placeholder():
-    raise HTTPException(status_code=501, detail="Not implemented")
+async def generate(req: GenerateRequest, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    if not user.is_admin:
+        cost = req.count * CREDITS_PER_IMAGE
+        if user.credits < cost:
+            raise HTTPException(status_code=402, detail="Insufficient credits")
+
+    image_urls = await generate_images(
+        prompt=req.prompt,
+        negative_prompt=req.negative_prompt,
+        width=req.width,
+        height=req.height,
+        count=req.count,
+        cfg_scale=req.cfg_scale,
+        steps=req.steps,
+    )
+
+    if not user.is_admin:
+        user.credits -= req.count * CREDITS_PER_IMAGE
+
+    gen = Generation(
+        user_id=user.id,
+        prompt=req.prompt,
+        negative_prompt=req.negative_prompt,
+        settings={"width": req.width, "height": req.height, "cfg_scale": req.cfg_scale, "steps": req.steps},
+        image_urls=image_urls,
+    )
+    db.add(gen)
+    db.commit()
+    db.refresh(gen)
+
+    return {"id": gen.id, "image_urls": image_urls, "credits": user.credits}
 
 @app.get("/api/history")
 def history_placeholder(user: User = Depends(get_current_user)):
