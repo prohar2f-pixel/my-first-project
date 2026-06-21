@@ -116,21 +116,71 @@ async def generate(req: GenerateRequest, user: User = Depends(get_current_user),
     return {"id": gen.id, "image_urls": image_urls, "credits": user.credits}
 
 @app.get("/api/history")
-def history_placeholder(user: User = Depends(get_current_user)):
-    return []
+def get_history(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    gens = (
+        db.query(Generation)
+        .filter(Generation.user_id == user.id)
+        .order_by(Generation.created_at.desc())
+        .limit(50)
+        .all()
+    )
+    return [
+        {
+            "id": g.id,
+            "prompt": g.prompt,
+            "image_urls": g.image_urls,
+            "settings": g.settings,
+            "created_at": g.created_at.isoformat(),
+        }
+        for g in gens
+    ]
 
 @app.get("/api/gallery")
-def gallery_placeholder(user: User = Depends(get_current_user)):
-    return {"images": []}
+def get_gallery(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    gens = (
+        db.query(Generation)
+        .filter(Generation.user_id == user.id)
+        .order_by(Generation.created_at.desc())
+        .all()
+    )
+    return {"images": [url for g in gens for url in g.image_urls]}
+
+class CreateUserRequest(BaseModel):
+    username: str
+    password: str
+    credits: int = 0
 
 @app.post("/api/admin/users")
-def admin_users_placeholder(admin: User = Depends(require_admin)):
-    raise HTTPException(status_code=501, detail="Not implemented")
+def create_user(req: CreateUserRequest, admin: User = Depends(require_admin), db: Session = Depends(get_db)):
+    if db.query(User).filter(User.username == req.username).first():
+        raise HTTPException(status_code=400, detail="Username already exists")
+    user = User(
+        username=req.username,
+        password_hash=hash_password(req.password),
+        credits=req.credits,
+        is_admin=False,
+    )
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return {"id": user.id, "username": user.username, "credits": user.credits}
+
+class UpdateCreditsRequest(BaseModel):
+    credits: int
 
 @app.put("/api/admin/users/{user_id}/credits")
-def admin_credits_placeholder(user_id: int, admin: User = Depends(require_admin)):
-    raise HTTPException(status_code=501, detail="Not implemented")
+def update_credits(user_id: int, req: UpdateCreditsRequest, admin: User = Depends(require_admin), db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    user.credits = req.credits
+    db.commit()
+    return {"id": user.id, "username": user.username, "credits": user.credits}
 
 @app.get("/api/admin/users")
-def admin_list_placeholder(admin: User = Depends(require_admin)):
-    return []
+def list_users(admin: User = Depends(require_admin), db: Session = Depends(get_db)):
+    users = db.query(User).filter(User.is_admin == False).all()
+    return [
+        {"id": u.id, "username": u.username, "credits": u.credits, "created_at": u.created_at.isoformat()}
+        for u in users
+    ]
