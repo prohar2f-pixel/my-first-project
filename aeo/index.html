@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AEO + SEO аудит сайта — проверьте видимость в ChatGPT и Perplexity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&display=swap" rel="stylesheet">
+<meta name="description" content="Бесплатный аудит сайта: скорость, SEO, безопасность и видимость в ИИ-поисковиках (ChatGPT, Perplexity). Единственный инструмент с AEO-проверкой.">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #060d1f;
+  color: #e2e8f0;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+h1, h2, .score-circle .grade, .card-score {
+  font-family: 'Bricolage Grotesque', sans-serif;
+}
+
+.page { max-width: 900px; margin: 0 auto; padding: 0 20px 80px; }
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 64px 0 48px;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(168,85,247,.15);
+  border: 1px solid rgba(168,85,247,.3);
+  color: #c084fc;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 100px;
+  margin-bottom: 24px;
+}
+.hero h1 {
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 16px;
+  color: #f1f5f9;
+  text-wrap: balance;
+}
+.hero p {
+  font-size: 17px;
+  color: #94a3b8;
+  max-width: 560px;
+  margin: 0 auto 40px;
+}
+
+/* ── Form ── */
+.form-wrap {
+  display: flex;
+  gap: 12px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+.url-input {
+  flex: 1;
+  background: #0f1a2e;
+  border: 1.5px solid #1e3a5f;
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-size: 15px;
+  color: #e2e8f0;
+  outline: none;
+  transition: border-color .2s;
+}
+.url-input::placeholder { color: #475569; }
+.url-input:focus { border-color: #6366f1; }
+.btn-audit {
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 28px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity .2s, transform .1s;
+}
+.btn-audit:hover { opacity: .9; }
+.btn-audit:active { transform: scale(.98); }
+.btn-audit:disabled { opacity: .5; cursor: not-allowed; }
+
+.form-hint {
+  text-align: center;
+  color: #475569;
+  font-size: 13px;
+  margin-top: 12px;
+}
+
+/* ── Progress ── */
+#progress { display: none; margin-top: 48px; }
+.progress-wrap {
+  background: #0f1a2e;
+  border: 1px solid #1e3a5f;
+  border-radius: 16px;
+  padding: 36px;
+  text-align: center;
+}
+.progress-spinner {
+  width: 48px; height: 48px;
+  border: 3px solid #1e3a5f;
+  border-top-color: #6366f1;
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+  margin: 0 auto 24px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.progress-step {
+  font-size: 16px;
+  color: #cbd5e1;
+  margin-bottom: 8px;
+}
+.progress-sub {
+  font-size: 13px;
+  color: #475569;
+}
+.progress-bar-wrap {
+  background: #1e3a5f;
+  border-radius: 100px;
+  height: 4px;
+  margin-top: 24px;
+  overflow: hidden;
+}
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #6366f1, #a855f7);
+  border-radius: 100px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1s ease;
+}
+
+/* ── Results ── */
+#results { display: none; margin-top: 48px; }
+
+.score-hero {
+  background: linear-gradient(135deg, #0f1a2e, #1a0f2e);
+  border: 1px solid #2d1f5e;
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+.score-circle {
+  width: 110px; height: 110px;
+  border-radius: 50%;
+  border: 4px solid currentColor;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  margin: 0 auto 20px;
+  font-weight: 800;
+}
+.score-circle .grade { font-size: 36px; line-height: 1; }
+.score-circle .avg { font-size: 14px; opacity: .8; }
+.express-summary {
+  color: #cbd5e1;
+  font-size: 15px;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.section-title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #475569;
+  margin: 32px 0 16px;
+}
+
+/* ── Priority chips ── */
+.priorities {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+.priority-chip {
+  background: rgba(239,68,68,.12);
+  border: 1px solid rgba(239,68,68,.3);
+  color: #fca5a5;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 5px 14px;
+  border-radius: 100px;
+}
+
+/* ── Criteria grid ── */
+.criteria-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+.criterion-card {
+  background: #0f1a2e;
+  border: 1px solid #1e3a5f;
+  border-radius: 14px;
+  padding: 20px;
+  transition: border-color .2s;
+}
+.criterion-card:hover { border-color: #2d4a7f; }
+.criterion-card.is-aeo {
+  background: linear-gradient(135deg, #130a24, #1a0f2e);
+  border-color: rgba(168,85,247,.4);
+}
+.criterion-card.is-priority { border-color: rgba(239,68,68,.4); }
+
+.card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.card-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.aeo-badge {
+  background: rgba(168,85,247,.2);
+  color: #c084fc;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  padding: 2px 8px;
+  border-radius: 100px;
+  text-transform: uppercase;
+}
+.card-score {
+  font-size: 22px;
+  font-weight: 800;
+}
+.card-score span { font-size: 13px; font-weight: 400; opacity: .5; }
+
+.score-bar-wrap {
+  background: #1e3a5f;
+  border-radius: 100px;
+  height: 3px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.score-bar { height: 100%; border-radius: 100px; }
+
+.card-problem { font-size: 13px; color: #cbd5e1; margin-bottom: 10px; line-height: 1.5; }
+
+.card-rec-toggle {
+  font-size: 12px;
+  color: #6366f1;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.card-rec {
+  display: none;
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 8px;
+  line-height: 1.6;
+  background: rgba(99,102,241,.06);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+/* ── CTA ── */
+.cta-block {
+  background: linear-gradient(135deg, #0f1a2e, #130a24);
+  border: 1px solid rgba(168,85,247,.3);
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+  margin-top: 40px;
+}
+.cta-block h2 { font-size: 22px; font-weight: 700; margin-bottom: 12px; }
+.cta-block p { color: #94a3b8; font-size: 15px; margin-bottom: 24px; }
+.btn-tg {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #2d6cdf;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 12px;
+  padding: 14px 28px;
+  font-size: 15px;
+  font-weight: 600;
+  transition: opacity .2s;
+}
+.btn-tg:hover { opacity: .9; }
+
+.error-msg {
+  background: rgba(239,68,68,.1);
+  border: 1px solid rgba(239,68,68,.3);
+  color: #fca5a5;
+  border-radius: 12px;
+  padding: 16px 20px;
+  text-align: center;
+  margin-top: 24px;
+  display: none;
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-badge">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#c084fc" stroke-width="1.5"/><path d="M6 4v2.5L7.5 8" stroke="#c084fc" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Единственный аудит с AEO-проверкой
+    </div>
+    <h1>Проверьте сайт на готовность<br>к эпохе ИИ-поиска</h1>
+    <p>SEO, скорость, безопасность — и главное: увидят ли ваш сайт ChatGPT, Perplexity и Яндекс ИИ</p>
+
+    <div class="form-wrap">
+      <input class="url-input" id="urlInput" type="text" placeholder="https://example.com" autocomplete="off">
+      <button class="btn-audit" id="auditBtn" onclick="startAudit()">Проверить</button>
+    </div>
+    <div class="form-hint">Бесплатно · Занимает ~60 секунд · 11 критериев</div>
+  </div>
+
+  <!-- Error -->
+  <div class="error-msg" id="errorMsg"></div>
+
+  <!-- Progress -->
+  <div id="progress">
+    <div class="progress-wrap">
+      <div class="progress-spinner"></div>
+      <div class="progress-step" id="progressStep">Загружаю страницу...</div>
+      <div class="progress-sub" id="progressSub">Ищу заголовки, SEO-теги, формы, CTA-кнопки</div>
+      <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div id="results"></div>
+
+</div>
+
+<script>
+// ── Замени на свой URL Railway после деплоя ──
+const API = 'https://YOUR-APP.up.railway.app';
+
+const STEPS = [
+  { step: 'Загружаю страницу...', sub: 'Ищу заголовки, SEO-теги, формы, CTA-кнопки', pct: 8, dur: 7000 },
+  { step: 'Проверяю скорость (PageSpeed)...', sub: 'Google анализирует мобильную версию — до 40 сек', pct: 30, dur: 35000 },
+  { step: 'Проверяю SSL-сертификат...', sub: 'Проверяю безопасность соединения', pct: 75, dur: 3000 },
+  { step: 'ИИ анализирует контент...', sub: 'Claude читает страницу и формирует оценки', pct: 90, dur: 20000 },
+];
+
+let stepTimer = null;
+
+function scoreColor(s) {
+  if (s >= 8) return '#22c55e';
+  if (s >= 5) return '#f59e0b';
+  return '#ef4444';
+}
+
+function showError(msg) {
+  const el = document.getElementById('errorMsg');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function hideError() {
+  document.getElementById('errorMsg').style.display = 'none';
+}
+
+function startAudit() {
+  const raw = document.getElementById('urlInput').value.trim();
+  if (!raw) { showError('Введите ссылку на сайт'); return; }
+  let url = raw;
+  if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+
+  hideError();
+  document.getElementById('auditBtn').disabled = true;
+  document.getElementById('progress').style.display = 'block';
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('results').innerHTML = '';
+
+  animateProgress();
+
+  fetch(`${API}/audit`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ url }),
+    signal: AbortSignal.timeout(120000),
+  })
+  .then(r => r.json())
+  .then(data => {
+    clearTimeout(stepTimer);
+    document.getElementById('progress').style.display = 'none';
+    document.getElementById('auditBtn').disabled = false;
+    if (data.error) { showError(data.error); return; }
+    renderResults(data);
+  })
+  .catch(err => {
+    clearTimeout(stepTimer);
+    document.getElementById('progress').style.display = 'none';
+    document.getElementById('auditBtn').disabled = false;
+    showError('Не удалось получить результат. Попробуйте ещё раз.');
+  });
+}
+
+function animateProgress() {
+  let i = 0;
+  function next() {
+    if (i >= STEPS.length) return;
+    const s = STEPS[i];
+    document.getElementById('progressStep').textContent = s.step;
+    document.getElementById('progressSub').textContent = s.sub;
+    document.getElementById('progressBar').style.transform = 'scaleX(' + s.pct / 100 + ')';
+    i++;
+    stepTimer = setTimeout(next, s.dur);
+  }
+  next();
+}
+
+function renderResults(d) {
+  const avg = d.average_score;
+  const grade = d.letter_grade || '';
+  const color = scoreColor(Math.round(avg));
+  const top3 = new Set(d.top3_priority || []);
+  const express = d.express_summary || '';
+
+  // priority names
+  const prioNames = (d.scores || [])
+    .filter(s => top3.has(s.id))
+    .map(s => s.name);
+
+  let html = `
+    <div class="score-hero">
+      <div class="score-circle" style="color:${color}">
+        <div class="grade">${grade}</div>
+        <div class="avg">${avg}/10</div>
+      </div>
+      <div style="font-size:13px;color:#475569;margin-bottom:16px">${d.url} · ${d.date || ''}</div>
+      ${express ? `<div class="express-summary">${express}</div>` : ''}
+    </div>
+  `;
+
+  if (prioNames.length) {
+    html += `<div class="section-title">Исправить в первую очередь</div>
+    <div class="priorities">
+      ${prioNames.map(n => `<div class="priority-chip">! ${n}</div>`).join('')}
+    </div>`;
+  }
+
+  html += `<div class="section-title">Все критерии</div><div class="criteria-grid">`;
+
+  (d.scores || []).forEach(s => {
+    const c = scoreColor(s.score);
+    const isAeo = s.id === 11;
+    const isPrio = top3.has(s.id);
+    const pct = s.score * 10;
+    const cardClass = ['criterion-card', isAeo ? 'is-aeo' : '', isPrio ? 'is-priority' : ''].filter(Boolean).join(' ');
+
+    html += `
+      <div class="${cardClass}">
+        <div class="card-top">
+          <div class="card-name">
+            ${s.name}
+            ${isAeo ? '<span class="aeo-badge">NEW</span>' : ''}
+          </div>
+          <div class="card-score" style="color:${c}">${s.score}<span>/10</span></div>
+        </div>
+        <div class="score-bar-wrap">
+          <div class="score-bar" style="width:${pct}%;background:${c}"></div>
+        </div>
+        ${s.problem ? `<div class="card-problem">${s.problem}</div>` : ''}
+        ${s.recommendation ? `
+          <button class="card-rec-toggle" onclick="toggleRec(this)">Как исправить</button>
+          <div class="card-rec">${s.recommendation}</div>
+        ` : ''}
+      </div>
+    `;
+  });
+
+  html += `</div>`;
+
+  html += `
+    <div class="cta-block">
+      <h2>Хотите исправить найденные проблемы?</h2>
+      <p>Александр — веб-разработчик, 3 года опыта, 20+ сайтов для малого бизнеса.<br>Помогу довести ваш сайт до оценки A.</p>
+      <a class="btn-tg" href="https://t.me/prohar2f" target="_blank">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.88 14.08l-2.95-.924c-.64-.203-.654-.64.136-.953l11.57-4.461c.537-.194 1.006.131.927.506z"/></svg>
+        Написать Александру
+      </a>
+    </div>
+  `;
+
+  const el = document.getElementById('results');
+  el.innerHTML = html;
+  el.style.display = 'block';
+  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function toggleRec(btn) {
+  const rec = btn.nextElementSibling;
+  const open = rec.style.display === 'block';
+  rec.style.display = open ? 'none' : 'block';
+  btn.textContent = open ? 'Как исправить' : 'Скрыть';
+}
+
+document.getElementById('urlInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') startAudit();
+});
+</script>
+</body>
+</html>
