@@ -7,13 +7,14 @@ from database import get_profile_fields
 def build_profile_text() -> str:
     f = get_profile_fields()
     return (
-        f"Ты — {f.get('name', 'Александр')}, фрилансер из {f.get('location', 'Латвии')}. "
+        f"Ты — {f.get('name', 'Александр')}, {f.get('title', 'фрилансер')} из {f.get('location', 'Латвии')}. "
         f"Пишешь отклик на заказ от своего имени.\n\n"
-        f"Твои услуги и опыт:\n{f.get('services', '')}\n\n"
+        f"Услуги и цены:\n{f.get('services', '')}\n\n"
+        f"Навыки и стек:\n{f.get('skills', '')}\n\n"
         f"Контакт: {f.get('contact', '')} в Telegram\n"
         f"ТЗ-бот: {f.get('tzbot', '')}\n"
         f"Портфолио: {f.get('portfolio', '')}\n\n"
-        f"Стиль: {f.get('style', 'Коротко, по делу, без воды.')}"
+        f"Стиль откликов: {f.get('style', 'Коротко, по делу, без воды.')}"
     )
 
 

@@ -39,8 +39,10 @@ pending: dict[int, str] = {}
 
 PROFILE_LABELS = {
     "name":      "👤 Имя",
+    "title":     "🏷 Должность/роль",
     "location":  "📍 Локация",
     "services":  "🛠 Услуги и цены",
+    "skills":    "💡 Навыки и стек",
     "contact":   "💬 Контакт (Telegram)",
     "tzbot":     "🤖 ТЗ-бот",
     "portfolio": "🌐 Портфолио",
@@ -354,11 +356,13 @@ async def show_profile(message: Message):
     text = (
         f"👤 <b>Мой профиль</b>\n\n"
         f"<b>Имя:</b> {f.get('name', '—')}\n"
+        f"<b>Роль:</b> {f.get('title', '—')}\n"
         f"<b>Локация:</b> {f.get('location', '—')}\n"
         f"<b>Контакт:</b> {f.get('contact', '—')}\n"
         f"<b>ТЗ-бот:</b> {f.get('tzbot', '—')}\n"
         f"<b>Портфолио:</b> {f.get('portfolio', '—')}\n\n"
         f"<b>Услуги:</b>\n{f.get('services', '—')}\n\n"
+        f"<b>Навыки:</b>\n{f.get('skills', '—')}\n\n"
         f"<b>Стиль откликов:</b>\n{f.get('style', '—')}\n\n"
         "Нажми на поле чтобы изменить:"
     )
