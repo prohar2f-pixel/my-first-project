@@ -4,11 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AEO + SEO аудит сайта — проверьте видимость в ChatGPT и Perplexity</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <meta name="description" content="Бесплатный аудит сайта: скорость, SEO, безопасность и видимость в ИИ-поисковиках (ChatGPT, Perplexity). Единственный инструмент с AEO-проверкой.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Bricolage+Grotesque:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -331,9 +333,45 @@ h1, h2, .score-circle .grade, .card-score {
   margin-top: 24px;
   display: none;
 }
+
+/* ── Design system overrides ── */
+body { background: var(--bg); color: var(--text); }
+.hero h1 { font-family: 'Oswald', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: .02em; }
+.page { background: none; }
+.criterion-card { background: var(--card); border-color: var(--border); }
+.criterion-card:hover { border-color: rgba(168,85,247,.28); }
+.criterion-card.is-aeo { background: linear-gradient(135deg,rgba(88,28,135,.15),rgba(109,40,217,.08)); border-color: rgba(168,85,247,.4); }
+.score-hero { background: linear-gradient(135deg,rgba(255,255,255,.03),rgba(88,28,135,.08)); border-color: var(--border); }
+.progress-wrap { background: var(--card); border-color: var(--border); }
+.progress-bar-wrap { background: rgba(255,255,255,.08); }
+.progress-spinner { border-color: rgba(255,255,255,.08); border-top-color: var(--p); }
+.url-input { background: rgba(255,255,255,.04); border-color: rgba(168,85,247,.2); color: var(--text); }
+.url-input::placeholder { color: var(--muted); }
+.url-input:focus { border-color: var(--p); }
+.btn-audit { background: var(--p-gradient); }
+.btn-audit:hover { opacity: .88; }
+.btn-tg { background: var(--p-gradient); }
+.btn-tg:hover { opacity: .88; transform: translateY(-2px); }
+.cta-block { background: linear-gradient(135deg,rgba(255,255,255,.03),rgba(88,28,135,.08)); border-color: rgba(168,85,247,.3); }
+.section-title { color: var(--muted); }
 </style>
 </head>
 <body>
+<header class="site-header">
+  <a href="/" class="site-logo">
+    <img src="/assets/logo.png" alt="Александр Прохоров">
+  </a>
+  <nav class="site-nav" id="siteNav">
+    <a href="/">Главная</a>
+    <a href="/aeo/" class="active">Аудит</a>
+    <a href="https://aeo.aiprohar.ru/">AEO Generator</a>
+  </nav>
+  <button class="nav-toggle" id="navToggle" aria-label="Меню">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+      <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  </button>
+</header>
 <div class="page">
 
   <!-- Hero -->
@@ -530,5 +568,8 @@ document.getElementById('urlInput').addEventListener('keydown', e => {
   if (e.key === 'Enter') startAudit();
 });
 </script>
+<canvas id="smokeCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;mix-blend-mode:screen"></canvas>
+<script src="/assets/fluid.js"></script>
+<script src="/assets/site.js"></script>
 </body>
 </html>
