@@ -260,6 +260,19 @@ h1, h2, .score-circle .grade, .card-score {
 .score-bar { height: 100%; border-radius: 100px; }
 
 .card-problem { font-size: 13px; color: #cbd5e1; margin-bottom: 10px; line-height: 1.5; }
+.card-fix-btn {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #a78bfa;
+  text-decoration: none;
+  border: 1px solid rgba(167,139,250,.35);
+  border-radius: 8px;
+  padding: 5px 12px;
+  transition: background .15s;
+}
+.card-fix-btn:hover { background: rgba(167,139,250,.1); }
 
 .card-rec-toggle {
   font-size: 12px;
@@ -488,10 +501,7 @@ function renderResults(d) {
           <div class="score-bar" style="width:${pct}%;background:${c}"></div>
         </div>
         ${s.problem ? `<div class="card-problem">${s.problem}</div>` : ''}
-        ${s.recommendation ? `
-          <button class="card-rec-toggle" onclick="toggleRec(this)">Как исправить</button>
-          <div class="card-rec">${s.recommendation}</div>
-        ` : ''}
+        ${s.score < 8 ? `<a class="card-fix-btn" href="https://t.me/prohar2f" target="_blank">Получить план исправления →</a>` : ''}
       </div>
     `;
   });
@@ -515,12 +525,6 @@ function renderResults(d) {
   el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-function toggleRec(btn) {
-  const rec = btn.nextElementSibling;
-  const open = rec.style.display === 'block';
-  rec.style.display = open ? 'none' : 'block';
-  btn.textContent = open ? 'Как исправить' : 'Скрыть';
-}
 
 document.getElementById('urlInput').addEventListener('keydown', e => {
   if (e.key === 'Enter') startAudit();

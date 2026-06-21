@@ -22,7 +22,6 @@ from filters import matches
 from notifier import send_order
 from responder import generate_response
 import parsers.flru as flru
-import parsers.habr as habr
 import parsers.kwork as kwork
 import parsers.tg_channels as tg
 
