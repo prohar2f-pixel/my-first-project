@@ -11,12 +11,12 @@ SOURCE = "FL.ru"
 
 log = logging.getLogger(__name__)
 
-_opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+_no_proxy = urllib.request.ProxyHandler({})
 
 
 async def fetch() -> list[Order]:
     try:
-        feed = await asyncio.to_thread(feedparser.parse, RSS_URL, handlers=[_opener])
+        feed = await asyncio.to_thread(feedparser.parse, RSS_URL, handlers=[_no_proxy])
         orders = []
         for entry in feed.entries:
             url = entry.get("link", "")

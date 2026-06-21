@@ -6,16 +6,18 @@ from aiogram.filters import Command
 from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-from config import BOT_TOKEN, USER_ID, CHECK_INTERVAL
+from config import BOT_TOKEN, USER_ID, CHECK_INTERVAL, ANTHROPIC_API_KEY
 from database import (
     init_db, is_seen, is_seen_fingerprint, mark_seen, get_order,
     get_channels, add_channel, remove_channel,
     get_keywords, add_keyword, remove_keyword,
+    get_profile_fields, set_profile_field,
     _make_fingerprint,
 )
 
-MAX_PER_CYCLE = 5       # макс. уведомлений за одну проверку
-MIN_TEXT_LEN  = 100     # минимальная длина текста вакансии
+MAX_PER_CYCLE = 5
+MIN_TEXT_LEN  = 100
+
 from filters import matches
 from notifier import send_order
 from responder import generate_response
@@ -33,50 +35,80 @@ log = logging.getLogger(__name__)
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
-# Ждём следующее текстовое сообщение как аргумент для add/del-кнопок
 pending: dict[int, str] = {}
+
+PROFILE_LABELS = {
+    "name":      "👤 Имя",
+    "location":  "📍 Локация",
+    "services":  "🛠 Услуги и цены",
+    "contact":   "💬 Контакт (Telegram)",
+    "tzbot":     "🤖 ТЗ-бот",
+    "portfolio": "🌐 Портфолио",
+    "style":     "✍️ Стиль откликов",
+}
+
+
+# ─── Клавиатуры ────────────────────────────────────────────────────────────────
+
+def main_keyboard() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="🔍 Проверить сейчас", callback_data="check")],
+        [InlineKeyboardButton(text="✍️ Написать отклик на вакансию", callback_data="reply_manual")],
+        [
+            InlineKeyboardButton(text="📋 Ключевые слова", callback_data="keywords"),
+            InlineKeyboardButton(text="📢 Каналы", callback_data="channels"),
+        ],
+        [
+            InlineKeyboardButton(text="👤 Мой профиль", callback_data="profile"),
+            InlineKeyboardButton(text="📊 Статус", callback_data="status"),
+        ],
+    ])
 
 
 def channels_keyboard() -> InlineKeyboardMarkup:
-    buttons = [[InlineKeyboardButton(text=f"🗑 {ch}", callback_data=f"delch:{ch}")] for ch in get_channels()]
+    buttons = [
+        [InlineKeyboardButton(text=f"🗑 {ch}", callback_data=f"delch:{ch}")]
+        for ch in get_channels()
+    ]
     buttons.append([InlineKeyboardButton(text="➕ Добавить канал", callback_data="addch_prompt")])
     buttons.append([InlineKeyboardButton(text="◀️ Назад", callback_data="back")])
     return InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
 def keywords_keyboard() -> InlineKeyboardMarkup:
-    return InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="➕ Добавить слово", callback_data="addkw_prompt")],
-        [InlineKeyboardButton(text="➖ Удалить слово", callback_data="delkw_prompt")],
-        [InlineKeyboardButton(text="◀️ Назад", callback_data="back")],
-    ])
+    kws = get_keywords()
+    buttons = [
+        [InlineKeyboardButton(text=f"🗑 {kw}", callback_data=f"delkw:{kw[:30]}")]
+        for kw in kws
+    ]
+    buttons.append([InlineKeyboardButton(text="➕ Добавить слово", callback_data="addkw_prompt")])
+    buttons.append([InlineKeyboardButton(text="◀️ Назад", callback_data="back")])
+    return InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
-def main_keyboard() -> InlineKeyboardMarkup:
-    return InlineKeyboardMarkup(inline_keyboard=[
-        [
-            InlineKeyboardButton(text="🔍 Проверить сейчас", callback_data="check"),
-        ],
-        [
-            InlineKeyboardButton(text="📋 Ключевые слова", callback_data="keywords"),
-            InlineKeyboardButton(text="📢 Каналы", callback_data="channels"),
-        ],
-        [
-            InlineKeyboardButton(text="📊 Статус", callback_data="status"),
-        ],
-    ])
+def profile_keyboard() -> InlineKeyboardMarkup:
+    buttons = [
+        [InlineKeyboardButton(text=label, callback_data=f"edit_profile:{key}")]
+        for key, label in PROFILE_LABELS.items()
+    ]
+    buttons.append([InlineKeyboardButton(text="◀️ Назад", callback_data="back")])
+    return InlineKeyboardMarkup(inline_keyboard=buttons)
 
+
+# ─── Команды ───────────────────────────────────────────────────────────────────
 
 @dp.message(Command("start"))
 async def cmd_start(message: Message):
     if message.from_user.id != USER_ID:
         return
     interval_min = CHECK_INTERVAL // 60
+    api_status = "✅" if ANTHROPIC_API_KEY else "❌ ANTHROPIC_API_KEY не задан"
     await message.answer(
         f"🤖 <b>Freelance Monitor Bot</b>\n\n"
-        f"Мониторю: FL.ru, Habr Freelance, Kwork, TG-каналы\n"
+        f"Мониторю: FL.ru, Kwork, TG-каналы\n"
         f"Интервал: каждые {interval_min} мин\n"
-        f"Ключевых слов: {len(get_keywords())}",
+        f"Ключевых слов: {len(get_keywords())}\n"
+        f"Claude API: {api_status}",
         reply_markup=main_keyboard(),
         parse_mode="HTML",
     )
@@ -96,64 +128,11 @@ async def cmd_channels(message: Message):
     await show_channels(message)
 
 
-@dp.message(Command("addchannel"))
-async def cmd_addchannel(message: Message):
+@dp.message(Command("profile"))
+async def cmd_profile(message: Message):
     if message.from_user.id != USER_ID:
         return
-    arg = message.text.partition(" ")[2].strip()
-    if not arg:
-        await message.answer("Используй: /addchannel @username")
-        return
-    if not arg.startswith("@"):
-        arg = "@" + arg
-    if add_channel(arg):
-        await message.answer(f"✅ Канал {arg} добавлен.")
-    else:
-        await message.answer(f"Канал {arg} уже в списке.")
-
-
-@dp.message(Command("delchannel"))
-async def cmd_delchannel(message: Message):
-    if message.from_user.id != USER_ID:
-        return
-    arg = message.text.partition(" ")[2].strip()
-    if not arg:
-        await message.answer("Используй: /delchannel @username")
-        return
-    if not arg.startswith("@"):
-        arg = "@" + arg
-    if remove_channel(arg):
-        await message.answer(f"🗑 Канал {arg} удалён.")
-    else:
-        await message.answer(f"Канал {arg} не найден.")
-
-
-@dp.message(Command("addkeyword"))
-async def cmd_addkeyword(message: Message):
-    if message.from_user.id != USER_ID:
-        return
-    arg = message.text.partition(" ")[2].strip()
-    if not arg:
-        await message.answer("Используй: /addkeyword слово или фраза")
-        return
-    if add_keyword(arg):
-        await message.answer(f"✅ Ключевое слово «{arg}» добавлено.")
-    else:
-        await message.answer(f"«{arg}» уже в списке.")
-
-
-@dp.message(Command("delkeyword"))
-async def cmd_delkeyword(message: Message):
-    if message.from_user.id != USER_ID:
-        return
-    arg = message.text.partition(" ")[2].strip()
-    if not arg:
-        await message.answer("Используй: /delkeyword слово или фраза")
-        return
-    if remove_keyword(arg):
-        await message.answer(f"🗑 «{arg}» удалено.")
-    else:
-        await message.answer(f"«{arg}» не найдено.")
+    await show_profile(message)
 
 
 @dp.message(Command("check"))
@@ -163,12 +142,13 @@ async def cmd_check(message: Message):
     msg = await message.answer("🔄 Запускаю проверку...")
     count = await check_all()
     await msg.edit_text(
-        f"✅ Проверка завершена.\n"
-        f"Новых подходящих заказов: <b>{count}</b>",
+        f"✅ Проверка завершена.\nНовых подходящих заказов: <b>{count}</b>",
         reply_markup=main_keyboard(),
         parse_mode="HTML",
     )
 
+
+# ─── Callback-кнопки ───────────────────────────────────────────────────────────
 
 @dp.callback_query(F.data == "check")
 async def cb_check(callback: CallbackQuery):
@@ -178,10 +158,23 @@ async def cb_check(callback: CallbackQuery):
     await callback.message.edit_text("🔄 Запускаю проверку...")
     count = await check_all()
     await callback.message.edit_text(
-        f"✅ Проверка завершена.\n"
-        f"Новых подходящих заказов: <b>{count}</b>",
+        f"✅ Проверка завершена.\nНовых подходящих заказов: <b>{count}</b>",
         reply_markup=main_keyboard(),
         parse_mode="HTML",
+    )
+
+
+@dp.callback_query(F.data == "reply_manual")
+async def cb_reply_manual(callback: CallbackQuery):
+    if callback.from_user.id != USER_ID:
+        return
+    if not ANTHROPIC_API_KEY:
+        await callback.answer("❌ ANTHROPIC_API_KEY не задан в .env", show_alert=True)
+        return
+    pending[callback.from_user.id] = "vacancy"
+    await callback.answer()
+    await callback.message.answer(
+        "Отправь текст вакансии следующим сообщением — напишу отклик."
     )
 
 
@@ -201,20 +194,29 @@ async def cb_channels(callback: CallbackQuery):
     await show_channels(callback.message)
 
 
+@dp.callback_query(F.data == "profile")
+async def cb_profile(callback: CallbackQuery):
+    if callback.from_user.id != USER_ID:
+        return
+    await callback.answer()
+    await show_profile(callback.message)
+
+
 @dp.callback_query(F.data == "status")
 async def cb_status(callback: CallbackQuery):
     if callback.from_user.id != USER_ID:
         return
     await callback.answer()
     interval_min = CHECK_INTERVAL // 60
+    api_ok = "✅ подключён" if ANTHROPIC_API_KEY else "❌ ключ не задан"
     await callback.message.edit_text(
         f"📊 <b>Статус бота</b>\n\n"
         f"✅ FL.ru — активен\n"
-        f"✅ Habr Freelance — активен\n"
         f"✅ Kwork — активен\n"
         f"✅ TG-каналов: {len(get_channels())}\n\n"
-        f"⏱ Интервал проверки: каждые {interval_min} мин\n"
-        f"🔑 Ключевых слов: {len(get_keywords())}",
+        f"⏱ Интервал: каждые {interval_min} мин\n"
+        f"🔑 Ключевых слов: {len(get_keywords())}\n"
+        f"🤖 Claude API: {api_ok}",
         reply_markup=InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text="◀️ Назад", callback_data="back")]
         ]),
@@ -226,6 +228,9 @@ async def cb_status(callback: CallbackQuery):
 async def cb_reply(callback: CallbackQuery):
     if callback.from_user.id != USER_ID:
         return
+    if not ANTHROPIC_API_KEY:
+        await callback.answer("❌ ANTHROPIC_API_KEY не задан в .env", show_alert=True)
+        return
     await callback.answer("Генерирую отклик...")
     order_id = callback.data.split(":", 1)[1]
     order = get_order(order_id)
@@ -235,12 +240,9 @@ async def cb_reply(callback: CallbackQuery):
     msg = await callback.message.answer("✍️ Генерирую отклик через Claude...")
     try:
         response = await generate_response(order["title"], order["description"], order["source"])
-        await msg.edit_text(
-            f"✍️ <b>Отклик готов:</b>\n\n{response}",
-            parse_mode="HTML",
-        )
+        await msg.edit_text(f"✍️ <b>Отклик готов:</b>\n\n{response}", parse_mode="HTML")
     except Exception as e:
-        await msg.edit_text(f"Ошибка генерации: {e}")
+        await msg.edit_text(f"❌ Ошибка генерации:\n<code>{e}</code>", parse_mode="HTML")
 
 
 @dp.callback_query(F.data.startswith("delch:"))
@@ -250,12 +252,27 @@ async def cb_delchannel_btn(callback: CallbackQuery):
     name = callback.data.split(":", 1)[1]
     remove_channel(name)
     await callback.answer(f"Удалён {name}")
-    channels = get_channels()
     text = (
-        "📢 <b>Telegram-каналы:</b>\n\nНажми на канал, чтобы удалить, или добавь новый кнопкой ниже."
-        if channels else "Telegram-каналы не настроены."
+        "📢 <b>Telegram-каналы:</b>\n\nНажми на канал чтобы удалить."
+        if get_channels() else "Каналы не настроены."
     )
     await callback.message.edit_text(text, reply_markup=channels_keyboard(), parse_mode="HTML")
+
+
+@dp.callback_query(F.data.startswith("delkw:"))
+async def cb_delkeyword_btn(callback: CallbackQuery):
+    if callback.from_user.id != USER_ID:
+        return
+    word = callback.data.split(":", 1)[1]
+    # Ищем полное слово по префиксу (т.к. обрезали до 30 символов в кнопке)
+    for kw in get_keywords():
+        if kw.startswith(word):
+            remove_keyword(kw)
+            await callback.answer(f"Удалено: {kw}")
+            break
+    else:
+        await callback.answer("Не найдено")
+    await show_keywords(callback.message)
 
 
 @dp.callback_query(F.data == "addch_prompt")
@@ -276,13 +293,22 @@ async def cb_addkeyword_prompt(callback: CallbackQuery):
     await callback.message.answer("Напиши слово или фразу следующим сообщением.")
 
 
-@dp.callback_query(F.data == "delkw_prompt")
-async def cb_delkeyword_prompt(callback: CallbackQuery):
+@dp.callback_query(F.data.startswith("edit_profile:"))
+async def cb_edit_profile(callback: CallbackQuery):
     if callback.from_user.id != USER_ID:
         return
-    pending[callback.from_user.id] = "delkeyword"
+    field = callback.data.split(":", 1)[1]
+    label = PROFILE_LABELS.get(field, field)
+    pending[callback.from_user.id] = f"profile_field:{field}"
     await callback.answer()
-    await callback.message.answer("Напиши слово или фразу для удаления следующим сообщением.")
+    fields = get_profile_fields()
+    current = fields.get(field, "—")
+    await callback.message.answer(
+        f"Редактируешь: <b>{label}</b>\n\n"
+        f"Сейчас: <i>{current}</i>\n\n"
+        "Напиши новое значение следующим сообщением:",
+        parse_mode="HTML",
+    )
 
 
 @dp.callback_query(F.data == "back")
@@ -293,7 +319,7 @@ async def cb_back(callback: CallbackQuery):
     interval_min = CHECK_INTERVAL // 60
     await callback.message.edit_text(
         f"🤖 <b>Freelance Monitor Bot</b>\n\n"
-        f"Мониторю: FL.ru, Habr Freelance, Kwork, TG-каналы\n"
+        f"Мониторю: FL.ru, Kwork, TG-каналы\n"
         f"Интервал: каждые {interval_min} мин\n"
         f"Ключевых слов: {len(get_keywords())}",
         reply_markup=main_keyboard(),
@@ -301,11 +327,14 @@ async def cb_back(callback: CallbackQuery):
     )
 
 
+# ─── Вспомогательные функции ───────────────────────────────────────────────────
+
 async def show_keywords(message: Message):
-    kw_list = "\n".join(f"• {kw}" for kw in get_keywords())
+    kws = get_keywords()
+    kw_list = "\n".join(f"• {kw}" for kw in kws) if kws else "Список пуст."
     await message.answer(
-        f"🔑 <b>Ключевые слова:</b>\n\n{kw_list}\n\n"
-        f"Кнопками ниже или командой: <code>/addkeyword слово</code> / <code>/delkeyword слово</code>",
+        f"🔑 <b>Ключевые слова ({len(kws)}):</b>\n\n{kw_list}\n\n"
+        "Нажми на слово чтобы удалить, или добавь новое кнопкой ниже.",
         reply_markup=keywords_keyboard(),
         parse_mode="HTML",
     )
@@ -314,27 +343,42 @@ async def show_keywords(message: Message):
 async def show_channels(message: Message):
     channels = get_channels()
     if channels:
-        text = "📢 <b>Telegram-каналы:</b>\n\nНажми на канал, чтобы удалить, или добавь новый кнопкой ниже."
+        text = f"📢 <b>Telegram-каналы ({len(channels)}):</b>\n\nНажми на канал чтобы удалить, или добавь новый кнопкой ниже."
     else:
-        text = "Telegram-каналы не настроены."
+        text = "Каналы не настроены. Добавь первый канал кнопкой ниже."
     await message.answer(text, reply_markup=channels_keyboard(), parse_mode="HTML")
 
 
+async def show_profile(message: Message):
+    f = get_profile_fields()
+    text = (
+        f"👤 <b>Мой профиль</b>\n\n"
+        f"<b>Имя:</b> {f.get('name', '—')}\n"
+        f"<b>Локация:</b> {f.get('location', '—')}\n"
+        f"<b>Контакт:</b> {f.get('contact', '—')}\n"
+        f"<b>ТЗ-бот:</b> {f.get('tzbot', '—')}\n"
+        f"<b>Портфолио:</b> {f.get('portfolio', '—')}\n\n"
+        f"<b>Услуги:</b>\n{f.get('services', '—')}\n\n"
+        f"<b>Стиль откликов:</b>\n{f.get('style', '—')}\n\n"
+        "Нажми на поле чтобы изменить:"
+    )
+    await message.answer(text, reply_markup=profile_keyboard(), parse_mode="HTML")
+
+
+# ─── Обработчик текстовых сообщений ───────────────────────────────────────────
+
 @dp.message(F.text)
-async def handle_pending_text(message: Message):
+async def handle_text(message: Message):
     if message.from_user.id != USER_ID:
         return
-    if message.text.startswith("/"):
-        return
-    action = pending.pop(message.from_user.id, None)
-    if not action:
+    if message.text and message.text.startswith("/"):
         return
 
-    arg = message.text.strip()
+    action = pending.pop(message.from_user.id, None)
+    text = message.text.strip() if message.text else ""
 
     if action == "addchannel":
-        if not arg.startswith("@"):
-            arg = "@" + arg
+        arg = text if text.startswith("@") else "@" + text
         if add_channel(arg):
             await message.answer(f"✅ Канал {arg} добавлен.")
         else:
@@ -342,26 +386,42 @@ async def handle_pending_text(message: Message):
         await show_channels(message)
 
     elif action == "addkeyword":
-        if add_keyword(arg):
-            await message.answer(f"✅ Ключевое слово «{arg}» добавлено.")
+        if add_keyword(text):
+            await message.answer(f"✅ Слово «{text}» добавлено.")
         else:
-            await message.answer(f"«{arg}» уже в списке.")
+            await message.answer(f"«{text}» уже в списке.")
         await show_keywords(message)
 
-    elif action == "delkeyword":
-        if remove_keyword(arg):
-            await message.answer(f"🗑 «{arg}» удалено.")
-        else:
-            await message.answer(f"«{arg}» не найдено.")
-        await show_keywords(message)
+    elif action and action.startswith("profile_field:"):
+        field = action.split(":", 1)[1]
+        set_profile_field(field, text)
+        label = PROFILE_LABELS.get(field, field)
+        await message.answer(f"✅ <b>{label}</b> обновлено.", parse_mode="HTML")
+        await show_profile(message)
 
+    elif action == "vacancy":
+        if not ANTHROPIC_API_KEY:
+            await message.answer("❌ ANTHROPIC_API_KEY не задан в .env — отклики не работают.")
+            return
+        msg = await message.answer("✍️ Генерирую отклик...")
+        try:
+            response = await generate_response("Вакансия", text, "Ручной ввод")
+            await msg.edit_text(f"✍️ <b>Отклик готов:</b>\n\n{response}", parse_mode="HTML")
+        except Exception as e:
+            await msg.edit_text(f"❌ Ошибка:\n<code>{e}</code>", parse_mode="HTML")
+
+    else:
+        # Неизвестное сообщение — показываем главное меню
+        await message.answer("Нажми кнопку ниже или /start", reply_markup=main_keyboard())
+
+
+# ─── Проверка всех источников ──────────────────────────────────────────────────
 
 async def check_all() -> int:
     log.info("Запускаю проверку всех источников...")
 
     results = await asyncio.gather(
         flru.fetch(),
-        habr.fetch(),
         kwork.fetch(),
         tg.fetch(get_channels()),
         return_exceptions=True,
@@ -375,14 +435,11 @@ async def check_all() -> int:
         for order in orders:
             if total_new >= MAX_PER_CYCLE:
                 break
-            # Пропускаем слишком короткие тексты (спам, объявления без смысла)
             full_text = order.title + " " + order.description
             if len(full_text) < MIN_TEXT_LEN:
                 continue
-            # Дедупликация по ID
             if is_seen(order.id):
                 continue
-            # Дедупликация по содержимому (один заказ в нескольких каналах)
             fp = _make_fingerprint(full_text)
             if is_seen_fingerprint(fp):
                 mark_seen(order.id, order.source, order.title, order.description)
@@ -397,6 +454,8 @@ async def check_all() -> int:
     return total_new
 
 
+# ─── Запуск ────────────────────────────────────────────────────────────────────
+
 async def main():
     if not BOT_TOKEN or BOT_TOKEN == "1234567890:AAxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx":
         print("ОШИБКА: BOT_TOKEN не задан в .env файле!")
@@ -404,6 +463,8 @@ async def main():
     if not USER_ID:
         print("ОШИБКА: USER_ID не задан в .env файле!")
         return
+    if not ANTHROPIC_API_KEY:
+        log.warning("ANTHROPIC_API_KEY не задан — функция откликов недоступна")
 
     init_db()
     log.info("База данных инициализирована.")
@@ -415,7 +476,7 @@ async def main():
 
     await check_all()
 
-    log.info("Бот запущен и ждёт заказов...")
+    log.info("Бот запущен.")
     await dp.start_polling(bot)
 
 

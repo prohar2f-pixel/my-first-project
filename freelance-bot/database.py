@@ -30,6 +30,12 @@ def init_db():
 
         conn.execute("CREATE TABLE IF NOT EXISTS channels (name TEXT PRIMARY KEY)")
         conn.execute("CREATE TABLE IF NOT EXISTS keywords (word TEXT PRIMARY KEY)")
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS profile (
+                key   TEXT PRIMARY KEY,
+                value TEXT DEFAULT ''
+            )
+        """)
         conn.commit()
 
         # Засеять из config.py при первом запуске — дальше список живёт только в БД
@@ -39,6 +45,17 @@ def init_db():
         if conn.execute("SELECT COUNT(*) FROM keywords").fetchone()[0] == 0:
             from config import KEYWORDS
             conn.executemany("INSERT OR IGNORE INTO keywords (word) VALUES (?)", [(k.lower(),) for k in KEYWORDS])
+        if conn.execute("SELECT COUNT(*) FROM profile").fetchone()[0] == 0:
+            defaults = [
+                ("name",      "Александр Прохоров"),
+                ("location",  "Латвия"),
+                ("contact",   "@alex_prohar"),
+                ("tzbot",     "@prohar_tz_bot"),
+                ("portfolio", "https://prohar2f-pixel.github.io/my-first-project/"),
+                ("services",  "Сайты под ключ: визитки (от 30 000 ₽, 5-7 дней), лендинги (от 50 000 ₽, 7-14 дней), корпоративные сайты (от 90 000 ₽, 14-30 дней). Интернет-магазины: от 150 000 ₽, от 30 дней. Telegram-боты и автоматизация. Нейросети для бизнеса. HTML/CSS верстка, WordPress, адаптивный дизайн."),
+                ("style",     "Коротко, по делу, без воды. Сразу показываю что понял задачу и что конкретно могу сделать."),
+            ]
+            conn.executemany("INSERT OR IGNORE INTO profile (key, value) VALUES (?, ?)", defaults)
         conn.commit()
 
 
@@ -113,6 +130,18 @@ def mark_seen(order_id: str, source: str, title: str = "", description: str = ""
             "INSERT OR IGNORE INTO seen (id, source, title, description, fingerprint) VALUES (?, ?, ?, ?, ?)",
             (order_id, source, title[:200], description[:500], fp),
         )
+        conn.commit()
+
+
+def get_profile_fields() -> dict[str, str]:
+    with sqlite3.connect(DB_PATH) as conn:
+        rows = conn.execute("SELECT key, value FROM profile").fetchall()
+        return {r[0]: r[1] for r in rows}
+
+
+def set_profile_field(key: str, value: str):
+    with sqlite3.connect(DB_PATH) as conn:
+        conn.execute("INSERT OR REPLACE INTO profile (key, value) VALUES (?, ?)", (key, value))
         conn.commit()
 
 
