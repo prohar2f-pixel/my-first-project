@@ -1749,10 +1749,21 @@ fetch('/content.json')
     // Перерисовываем прайс
     const pricesGrid = document.getElementById('prices-grid');
     if (pricesGrid && data.prices) {
-      const lotusIcon = '<svg width="26" height="30" viewBox="0 0 36 38" fill="#E879A0" xmlns="http://www.w3.org/2000/svg"><path d="M18 34C18 34 2 26 3 13C8 18 13 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 34 26 33 13C28 18 23 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 7 23 8 10C12 15 15 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 29 23 28 10C24 15 21 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 11 21 12 8C15 13 17 20 18 34Z" opacity="0.82"/><path d="M18 34C18 34 25 21 24 8C21 13 19 20 18 34Z" opacity="0.82"/><path d="M18 34C15.5 21 17 2 18 2C19 2 20.5 21 18 34Z"/><path d="M6 37Q18 34 30 37" stroke="#E879A0" stroke-width="1.2" fill="none" opacity="0.4" stroke-linecap="round"/></svg>';
-      pricesGrid.innerHTML = data.prices.map(p => `
+      const priceIcons = [
+        '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="6"/><path d="M16 16l4 4"/><path d="M10 7v3M10 13v1M7 10h1M13 10h1"/></svg>',
+        '<svg width="28" height="28" viewBox="0 0 36 38" fill="#E879A0" xmlns="http://www.w3.org/2000/svg"><path d="M18 34C18 34 2 26 3 13C8 18 13 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 34 26 33 13C28 18 23 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 7 23 8 10C12 15 15 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 29 23 28 10C24 15 21 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 11 21 12 8C15 13 17 20 18 34Z" opacity="0.82"/><path d="M18 34C18 34 25 21 24 8C21 13 19 20 18 34Z" opacity="0.82"/><path d="M18 34C15.5 21 17 2 18 2C19 2 20.5 21 18 34Z"/></svg>',
+        '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.5" stroke-linecap="round"><path d="M12 20C12 20 5 16 5 9c2.5 1.5 5 4 7 11z"/><path d="M12 20C12 20 19 16 19 9c-2.5 1.5-5 4-7 11z"/><path d="M12 20C9.5 13 10 3 12 3c2 0 2.5 10 0 17z"/></svg>',
+        '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.5" stroke-linecap="round"><path d="M12 20C12 20 4 16 4 9c3 2 5 5 8 11z"/><path d="M12 20C12 20 20 16 20 9c-3 2-5 5-8 11z"/><path d="M12 20C9 12 9.5 2 12 2c2.5 0 3 10 0 18z"/><path d="M4 12Q12 9 20 12" stroke-width="1" opacity="0.5"/></svg>',
+        '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.5" stroke-linejoin="round"><path d="M12 2l2.5 7.5H22l-6.5 4.7 2.5 7.6L12 17l-6 4.8 2.5-7.6L2 9.5h7.5z"/></svg>',
+        '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.5" stroke-linecap="round"><ellipse cx="12" cy="12" rx="6" ry="4"/><path d="M4 15c1 3 4 5 8 5s7-2 8-5"/><path d="M4 15c-1-1-1-2 0-3"/><path d="M20 15c1-1 1-2 0-3"/></svg>',
+        '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="9" width="18" height="12" rx="1"/><path d="M3 9V7a1 1 0 011-1h16a1 1 0 011 1v2"/><line x1="12" y1="6" x2="12" y2="21"/><path d="M12 6c0 0-2-4-4-3s0 3 4 3"/><path d="M12 6c0 0 2-4 4-3s0 3-4 3"/></svg>',
+        '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="5" r="3"/><path d="M7 8c-3 2-4 5-4 7h18c0-2-1-5-4-7"/><line x1="12" y1="8" x2="12" y2="15"/><path d="M9 15v5M15 15v5"/></svg>',
+        '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.5" stroke-linecap="round"><path d="M12 3v8"/><ellipse cx="12" cy="15" rx="7" ry="4"/><path d="M7 17l-2 4M17 17l2 4"/></svg>'
+      ];
+      const lotusIcon = priceIcons[1];
+      pricesGrid.innerHTML = data.prices.map((p, i) => `
         <div class="price-card">
-          <div class="price-icon">${lotusIcon}</div>
+          <div class="price-icon">${priceIcons[i] || lotusIcon}</div>
           <div class="price-name">${p.name}</div>
           <div class="price-desc">${p.desc}</div>
           <div class="price-amount">${p.amount}</div>
