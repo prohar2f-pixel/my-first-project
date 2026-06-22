@@ -18,7 +18,14 @@ DEFAULT_TG_CHANNELS = (
     "@web_fl,"           # Фрилансер — заказы на верстку, WordPress, лендинги
     "@workk_on,"         # Work On — проекты на лендинги, веб-дизайн (72k подписчиков)
     "@allgigs,"          # Mellow — международные заказы, веб, дизайн, разработка
-    "@toppchallenge"     # Топп — заказы и проекты для разработчиков
+    "@toppchallenge,"    # Топп — заказы и проекты для разработчиков
+    "@webfrl,"           # Веб-фриланс — лендинги, вёрстка, веб-разработка
+    "@zakaz_design,"     # Заказы на дизайн и разработку от заказчиков
+    "@designer_ru,"      # Ищу дизайнера — живые заказчики ищут специалистов
+    "@workinart,"        # Дизайн + веб-работа
+    "@kadrof_work,"      # Kadrof — проверенные вакансии и заказы
+    "@zapwork,"          # Удалёнщики — удалённая работа и фриланс
+    "@dnative_job"       # Digital-вакансии — SMM, веб, digital-маркетинг
 )
 TG_CHANNELS = [ch.strip() for ch in os.getenv("TG_CHANNELS", DEFAULT_TG_CHANNELS).split(",") if ch.strip()]
 
