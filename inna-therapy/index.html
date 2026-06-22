@@ -1768,7 +1768,7 @@ const waves = [[4,7,10,14,18,22,20,16,12,8,11,15,21,17,13,9,7,11,15,19,23,19,15,
 
 // Загрузка content.json и обновление динамических элементов
 // ?v=... — антикэш, чтобы всегда брать свежую версию после правок в админке
-fetch('/content.json?v=' + Date.now())
+fetch('content.json?v=' + Date.now())
   .then(r => r.json())
   .then(data => {
     const c = data.contacts;
