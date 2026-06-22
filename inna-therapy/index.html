@@ -704,7 +704,7 @@ nav {
     margin: 0 auto 6px;
     flex-shrink: 0;
 }
-.price-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 4px; line-height: 1.3; color: #2D2D2D; }
+.price-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 9px; line-height: 1.3; color: #141414; }
 .p-desc { font-size: 11.5px; color: #7A5555; line-height: 1.5; margin-bottom: 10px; flex: 1; }
 .p-amount {
     display: block;
@@ -1818,10 +1818,10 @@ fetch('/content.json?v=' + Date.now())
       const lotusIcon = priceIcons[1];
       pricesGrid.innerHTML = data.prices.map((p, i) => `
         <div class="price-card">
-          <div class="price-icon">${priceIcons[i] || lotusIcon}</div>
-          <div class="price-name">${p.name}</div>
-          <div class="price-desc">${p.desc}</div>
-          <div class="price-amount">${p.amount}</div>
+          <div class="p-icon">${priceIcons[i] || lotusIcon}</div>
+          <h3>${p.name}</h3>
+          <p class="p-desc">${p.desc}</p>
+          <div class="p-amount">${p.amount}</div>
         </div>`).join('');
     }
 
