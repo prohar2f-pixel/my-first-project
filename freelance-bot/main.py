@@ -3,7 +3,7 @@ import logging
 
 from aiogram import Bot, Dispatcher, F
 from aiogram.filters import Command
-from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton, BotCommand
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from config import BOT_TOKEN, USER_ID, CHECK_INTERVAL, ANTHROPIC_API_KEY
@@ -498,6 +498,14 @@ async def main():
         return
     if not ANTHROPIC_API_KEY:
         log.warning("ANTHROPIC_API_KEY не задан — функция откликов недоступна")
+
+    await bot.set_my_commands([
+        BotCommand(command="start",    description="🏠 Главное меню"),
+        BotCommand(command="check",    description="🔍 Проверить сейчас"),
+        BotCommand(command="keywords", description="🔑 Ключевые слова"),
+        BotCommand(command="channels", description="📢 Каналы"),
+        BotCommand(command="profile",  description="👤 Мой профиль"),
+    ])
 
     init_db()
     log.info("База данных инициализирована.")
