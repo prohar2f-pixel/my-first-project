@@ -16,3 +16,4 @@ venv/
 drafts/
 *.png
 !inna-therapy/images/*.png
+.gstack/

@@ -184,7 +184,14 @@ async def cb_keywords(callback: CallbackQuery):
     if callback.from_user.id != USER_ID:
         return
     await callback.answer()
-    await show_keywords(callback.message)
+    kws = get_keywords()
+    kw_list = "\n".join(f"• {kw}" for kw in kws) if kws else "Список пуст."
+    await callback.message.edit_text(
+        f"🔑 <b>Ключевые слова ({len(kws)}):</b>\n\n{kw_list}\n\n"
+        "Нажми на слово чтобы удалить, или добавь новое кнопкой ниже.",
+        reply_markup=keywords_keyboard(),
+        parse_mode="HTML",
+    )
 
 
 @dp.callback_query(F.data == "channels")
@@ -192,7 +199,12 @@ async def cb_channels(callback: CallbackQuery):
     if callback.from_user.id != USER_ID:
         return
     await callback.answer()
-    await show_channels(callback.message)
+    channels = get_channels()
+    if channels:
+        text = f"📢 <b>Telegram-каналы ({len(channels)}):</b>\n\nНажми на канал чтобы удалить, или добавь новый кнопкой ниже."
+    else:
+        text = "Каналы не настроены. Добавь первый канал кнопкой ниже."
+    await callback.message.edit_text(text, reply_markup=channels_keyboard(), parse_mode="HTML")
 
 
 @dp.callback_query(F.data == "profile")
@@ -236,7 +248,11 @@ async def cb_reply(callback: CallbackQuery):
     order_id = callback.data.split(":", 1)[1]
     order = get_order(order_id)
     if not order:
-        await callback.message.answer("Данные заказа не найдены.")
+        pending[callback.from_user.id] = "vacancy"
+        await callback.message.answer(
+            "⚠️ Данные этого заказа не найдены (бот мог перезапуститься).\n\n"
+            "Скопируй текст вакансии и отправь следующим сообщением — напишу отклик."
+        )
         return
     msg = await callback.message.answer("✍️ Генерирую отклик через Claude...")
     try:
@@ -273,7 +289,14 @@ async def cb_delkeyword_btn(callback: CallbackQuery):
             break
     else:
         await callback.answer("Не найдено")
-    await show_keywords(callback.message)
+    kws = get_keywords()
+    kw_list = "\n".join(f"• {kw}" for kw in kws) if kws else "Список пуст."
+    await callback.message.edit_text(
+        f"🔑 <b>Ключевые слова ({len(kws)}):</b>\n\n{kw_list}\n\n"
+        "Нажми на слово чтобы удалить, или добавь новое кнопкой ниже.",
+        reply_markup=keywords_keyboard(),
+        parse_mode="HTML",
+    )
 
 
 @dp.callback_query(F.data == "addch_prompt")
@@ -326,6 +349,13 @@ async def cb_back(callback: CallbackQuery):
         reply_markup=main_keyboard(),
         parse_mode="HTML",
     )
+
+
+@dp.callback_query()
+async def cb_unknown(callback: CallbackQuery):
+    if callback.from_user.id != USER_ID:
+        return
+    await callback.answer("Устаревшая кнопка. Нажми /start чтобы открыть меню заново.", show_alert=True)
 
 
 # ─── Вспомогательные функции ───────────────────────────────────────────────────
