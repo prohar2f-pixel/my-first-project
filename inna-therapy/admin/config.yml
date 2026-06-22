@@ -19,6 +19,55 @@ collections:
         file: inna-therapy/content.json
         format: json
         fields:
+          - label: Тексты разделов
+            name: texts
+            widget: object
+            collapsed: true
+            fields:
+              - { label: "Главный экран — заголовок", name: hero_title, widget: string, hint: "Розовое слово оформляется так: <span class='accent'>слово</span>. Перенос строки — <br>" }
+              - { label: "Главный экран — подзаголовок", name: hero_subtitle, widget: text, hint: "<br> — перенос строки" }
+              - { label: "Главный экран — плашка (мягкий подход)", name: hero_badge, widget: text }
+              - { label: "Обо мне — заголовок", name: about_h2, widget: string }
+              - { label: "Обо мне — абзац 1", name: about_p1, widget: text }
+              - { label: "Обо мне — абзац 2", name: about_p2, widget: text }
+              - { label: "Обо мне — цитата", name: about_quote, widget: text, hint: "<br> — перенос строки" }
+              - { label: "Мой подход — абзац 1", name: approach_p1, widget: text }
+              - { label: "Мой подход — абзац 2", name: approach_p2, widget: text }
+              - { label: "Мой подход — цитата", name: approach_quote, widget: text, hint: "<br> — перенос строки" }
+              - { label: "Как проходит сеанс — заголовок", name: steps_h2, widget: string }
+              - { label: "Как проходит сеанс — строка результата", name: steps_result, widget: text }
+              - { label: "Отзывы — заголовок", name: reviews_h2, widget: string }
+              - { label: "Цены — заголовок", name: prices_h2, widget: string }
+              - { label: "Акции — заголовок раздела", name: offers_h2, widget: string }
+              - { label: "Акция 1 — название", name: offer1_title, widget: string, hint: "<br> — перенос строки" }
+              - { label: "Акция 1 — вариант 1, подпись", name: offer1_v1_sub, widget: string }
+              - { label: "Акция 1 — вариант 1, цена", name: offer1_v1_price, widget: string }
+              - { label: "Акция 1 — вариант 1, старая цена", name: offer1_v1_old, widget: string }
+              - { label: "Акция 1 — вариант 2, подпись", name: offer1_v2_sub, widget: string }
+              - { label: "Акция 1 — вариант 2, бонус", name: offer1_v2_bonus, widget: string }
+              - { label: "Акция 1 — примечание", name: offer1_note, widget: text }
+              - { label: "Акция 2 — название", name: offer2_title, widget: string, hint: "<br> — перенос строки" }
+              - { label: "Кабинеты — заголовок", name: location_h2, widget: string }
+              - { label: "Кабинеты — подзаголовок", name: location_subtitle, widget: text }
+              - { label: "Призыв — заголовок", name: options_h2, widget: string }
+              - { label: "Призыв — подзаголовок", name: options_subtitle, widget: text }
+
+          - label: Специальности
+            name: specialties
+            widget: list
+            collapsed: true
+            hint: "Можно менять текст пунктов. Количество (6) лучше не менять — иконки на сайте заданы по местам."
+            field: { label: Специальность, name: item, widget: string }
+
+          - label: Шаги (как проходит сеанс)
+            name: steps
+            widget: list
+            collapsed: true
+            hint: "Можно менять текст. Количество (5) лучше не менять — иконки на сайте заданы по местам."
+            fields:
+              - { label: Название шага, name: title, widget: string }
+              - { label: Описание шага, name: desc, widget: text }
+
           - label: Контакты
             name: contacts
             widget: object

@@ -1236,8 +1236,8 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
 <div class="hero-inner">
     <div class="hero-text-wrap">
     <div class="hero-text">
-        <h1><span style="white-space:nowrap">Снять боль</span><br>и найти <span class="accent">причину</span><br>её возникновения</h1>
-        <p class="sub">Комплексная терапия для женщин и мужчин,<br>которые устали страдать и хотят понять,<br>почему это происходит</p>
+        <h1 data-key="hero_title"><span style="white-space:nowrap">Снять боль</span><br>и найти <span class="accent">причину</span><br>её возникновения</h1>
+        <p class="sub" data-key="hero_subtitle">Комплексная терапия для женщин и мужчин,<br>которые устали страдать и хотят понять,<br>почему это происходит</p>
         <a href="#prices" class="btn-hero">
             Выбрать курс
             <span class="btn-circle">
@@ -1246,7 +1246,7 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
         </a>
         <div class="hero-shield">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A07070" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            <span>Мягкий и безопасный подход<br>с вниманием к вашему телу</span>
+            <span data-key="hero_badge">Мягкий и безопасный подход<br>с вниманием к вашему телу</span>
         </div>
     </div>
     </div>
@@ -1266,19 +1266,19 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
         <!-- Колонка 1: Bio + цитата -->
         <div class="about-bio">
             <span class="sec-label">Обо мне</span>
-            <h2 class="about-h2">Кто я и чем могу помочь</h2>
+            <h2 class="about-h2" data-key="about_h2">Кто я и чем могу помочь</h2>
             <div class="about-lotus"><svg width="26" height="30" viewBox="0 0 36 38" fill="#E879A0" xmlns="http://www.w3.org/2000/svg"><path d="M18 34C18 34 2 26 3 13C8 18 13 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 34 26 33 13C28 18 23 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 7 23 8 10C12 15 15 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 29 23 28 10C24 15 21 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 11 21 12 8C15 13 17 20 18 34Z" opacity="0.82"/><path d="M18 34C18 34 25 21 24 8C21 13 19 20 18 34Z" opacity="0.82"/><path d="M18 34C15.5 21 17 2 18 2C19 2 20.5 21 18 34Z"/><path d="M6 37Q18 34 30 37" stroke="#E879A0" stroke-width="1.2" fill="none" opacity="0.4" stroke-linecap="round"/></svg></div>
-            <p>Я — дипломированный специалист по комплексной телесной терапии. Более 5 лет помогаю людям избавиться от боли, стресса, тревоги и найти глубинные причины их проблем.</p>
-            <p>Мой подход объединяет работу с телом, психикой и родовыми программами, чтобы вернуть вам лёгкость, здоровье и радость жизни.</p>
+            <p data-key="about_p1">Я — дипломированный специалист по комплексной телесной терапии. Более 5 лет помогаю людям избавиться от боли, стресса, тревоги и найти глубинные причины их проблем.</p>
+            <p data-key="about_p2">Мой подход объединяет работу с телом, психикой и родовыми программами, чтобы вернуть вам лёгкость, здоровье и радость жизни.</p>
             <div class="about-quote-card">
                 <div class="quote-circle">❝</div>
-                <p class="quote-text">Я не лечу боль —<br>я устраняю её причины</p>
+                <p class="quote-text" data-key="about_quote">Я не лечу боль —<br>я устраняю её причины</p>
             </div>
         </div>
         <!-- Колонка 2: Специальности -->
         <div>
             <span class="sec-label">Мои специальности</span>
-            <ul class="specialties-list">
+            <ul class="specialties-list" id="specialties-list">
                 <li>
                     <span class="s-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4" r="2"/><path d="M12 6v9"/><path d="M9 9h6"/><path d="M10 15l-2 5"/><path d="M14 15l2 5"/></svg></span>
                     Терапевт телесной практики
@@ -1308,10 +1308,10 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
         <!-- Колонка 3: Подход -->
         <div class="about-approach">
             <span class="sec-label">Мой подход</span>
-            <p>Я помогаю разобраться с родовыми программами, страхами, отношениями в семье и физической болью в теле одновременно.</p>
-            <p>Телесная работа и нейросоматика неразделимы: тело хранит все переживания, а психика влияет на здоровье. Работая с причиной, мы меняем жизнь на всех уровнях.</p>
+            <p data-key="approach_p1">Я помогаю разобраться с родовыми программами, страхами, отношениями в семье и физической болью в теле одновременно.</p>
+            <p data-key="approach_p2">Телесная работа и нейросоматика неразделимы: тело хранит все переживания, а психика влияет на здоровье. Работая с причиной, мы меняем жизнь на всех уровнях.</p>
             <div class="about-lotus"><svg width="26" height="30" viewBox="0 0 36 38" fill="#E879A0" xmlns="http://www.w3.org/2000/svg"><path d="M18 34C18 34 2 26 3 13C8 18 13 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 34 26 33 13C28 18 23 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 7 23 8 10C12 15 15 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 29 23 28 10C24 15 21 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 11 21 12 8C15 13 17 20 18 34Z" opacity="0.82"/><path d="M18 34C18 34 25 21 24 8C21 13 19 20 18 34Z" opacity="0.82"/><path d="M18 34C15.5 21 17 2 18 2C19 2 20.5 21 18 34Z"/><path d="M6 37Q18 34 30 37" stroke="#E879A0" stroke-width="1.2" fill="none" opacity="0.4" stroke-linecap="round"/></svg></div>
-            <p class="approach-quote">Тело и душа — единое целое.<br>Изменяя одно, исцеляется всё.</p>
+            <p class="approach-quote" data-key="approach_quote">Тело и душа — единое целое.<br>Изменяя одно, исцеляется всё.</p>
         </div>
     </div>
 </div>
@@ -1323,9 +1323,9 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
     <div class="steps-header">
         <span class="sec-label">Процесс</span>
         <div class="steps-header-lotus"><svg width="26" height="30" viewBox="0 0 36 38" fill="#E879A0" xmlns="http://www.w3.org/2000/svg"><path d="M18 34C18 34 2 26 3 13C8 18 13 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 34 26 33 13C28 18 23 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 7 23 8 10C12 15 15 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 29 23 28 10C24 15 21 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 11 21 12 8C15 13 17 20 18 34Z" opacity="0.82"/><path d="M18 34C18 34 25 21 24 8C21 13 19 20 18 34Z" opacity="0.82"/><path d="M18 34C15.5 21 17 2 18 2C19 2 20.5 21 18 34Z"/><path d="M6 37Q18 34 30 37" stroke="#E879A0" stroke-width="1.2" fill="none" opacity="0.4" stroke-linecap="round"/></svg></div>
-        <h2 class="steps-h2">Как проходит сеанс</h2>
+        <h2 class="steps-h2" data-key="steps_h2">Как проходит сеанс</h2>
     </div>
-    <div class="steps-grid">
+    <div class="steps-grid" id="steps-grid">
         <div class="step-card">
             <div class="step-icon"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></div>
             <div class="step-num-badge">1</div>
@@ -1359,7 +1359,7 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
     </div>
     <div class="steps-result-row">
         <svg width="28" height="32" viewBox="0 0 36 38" fill="#E879A0" xmlns="http://www.w3.org/2000/svg"><path d="M18 34C18 34 2 26 3 13C8 18 13 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 34 26 33 13C28 18 23 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 7 23 8 10C12 15 15 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 29 23 28 10C24 15 21 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 11 21 12 8C15 13 17 20 18 34Z" opacity="0.82"/><path d="M18 34C18 34 25 21 24 8C21 13 19 20 18 34Z" opacity="0.82"/><path d="M18 34C15.5 21 17 2 18 2C19 2 20.5 21 18 34Z"/><path d="M6 37Q18 34 30 37" stroke="#E879A0" stroke-width="1.2" fill="none" opacity="0.4" stroke-linecap="round"/></svg>
-        <p class="steps-result"><strong>Результат:</strong> <em>ясность, лёгкость, свобода и возможность достичь желаемого</em></p>
+        <p class="steps-result"><strong>Результат:</strong> <em data-key="steps_result">ясность, лёгкость, свобода и возможность достичь желаемого</em></p>
     </div>
 </div>
 </section>
@@ -1370,7 +1370,7 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
     <div class="reviews-header">
         <span class="sec-label">Отзывы</span>
         <div class="reviews-header-lotus"><svg width="26" height="30" viewBox="0 0 36 38" fill="#E879A0" xmlns="http://www.w3.org/2000/svg"><path d="M18 34C18 34 2 26 3 13C8 18 13 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 34 26 33 13C28 18 23 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 7 23 8 10C12 15 15 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 29 23 28 10C24 15 21 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 11 21 12 8C15 13 17 20 18 34Z" opacity="0.82"/><path d="M18 34C18 34 25 21 24 8C21 13 19 20 18 34Z" opacity="0.82"/><path d="M18 34C15.5 21 17 2 18 2C19 2 20.5 21 18 34Z"/><path d="M6 37Q18 34 30 37" stroke="#E879A0" stroke-width="1.2" fill="none" opacity="0.4" stroke-linecap="round"/></svg></div>
-        <h2 class="reviews-h2">Что говорят мои клиенты</h2>
+        <h2 class="reviews-h2" data-key="reviews_h2">Что говорят мои клиенты</h2>
     </div>
     <div class="reviews-inner">
         <div class="text-reviews" id="text-reviews">
@@ -1459,7 +1459,7 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
     <div class="prices-header">
         <span class="sec-label">Услуги и цены</span>
         <div class="prices-header-lotus"><svg width="26" height="30" viewBox="0 0 36 38" fill="#E879A0" xmlns="http://www.w3.org/2000/svg"><path d="M18 34C18 34 2 26 3 13C8 18 13 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 34 26 33 13C28 18 23 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 7 23 8 10C12 15 15 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 29 23 28 10C24 15 21 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 11 21 12 8C15 13 17 20 18 34Z" opacity="0.82"/><path d="M18 34C18 34 25 21 24 8C21 13 19 20 18 34Z" opacity="0.82"/><path d="M18 34C15.5 21 17 2 18 2C19 2 20.5 21 18 34Z"/><path d="M6 37Q18 34 30 37" stroke="#E879A0" stroke-width="1.2" fill="none" opacity="0.4" stroke-linecap="round"/></svg></div>
-        <h2 class="prices-h2">Выберите подходящий вам курс</h2>
+        <h2 class="prices-h2" data-key="prices_h2">Выберите подходящий вам курс</h2>
     </div>
     <div class="prices-grid" id="prices-grid">
         <div class="price-card">
@@ -1519,40 +1519,40 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
     <div class="offers-header">
         <span class="sec-label">Акции и специальные предложения</span>
         <div class="offers-header-lotus"><svg width="26" height="30" viewBox="0 0 36 38" fill="#E879A0" xmlns="http://www.w3.org/2000/svg"><path d="M18 34C18 34 2 26 3 13C8 18 13 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 34 26 33 13C28 18 23 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 7 23 8 10C12 15 15 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 29 23 28 10C24 15 21 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 11 21 12 8C15 13 17 20 18 34Z" opacity="0.82"/><path d="M18 34C18 34 25 21 24 8C21 13 19 20 18 34Z" opacity="0.82"/><path d="M18 34C15.5 21 17 2 18 2C19 2 20.5 21 18 34Z"/><path d="M6 37Q18 34 30 37" stroke="#E879A0" stroke-width="1.2" fill="none" opacity="0.4" stroke-linecap="round"/></svg></div>
-        <h2 class="offers-h2">Специальные предложения для вас</h2>
+        <h2 class="offers-h2" data-key="offers_h2">Специальные предложения для вас</h2>
     </div>
     <div class="offers-inner">
         <div class="offer-card">
             <div class="offer-head">
                 <div class="offer-icon-circle"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg></div>
-                <h3>Акция на пакет<br>из 5 сеансов</h3>
+                <h3 data-key="offer1_title">Акция на пакет<br>из 5 сеансов</h3>
             </div>
             <div class="offer-body">
                 <div class="offer-variants-row">
                     <div>
                         <span class="v-label-pill">Вариант 1</span>
-                        <p class="v-sub">Скидка 2 000 ₽ платите</p>
-                        <span class="v-price-big">18 000 ₽</span>
-                        <span class="v-price-old">вместо 20 000 ₽</span>
+                        <p class="v-sub" data-key="offer1_v1_sub">Скидка 2 000 ₽ платите</p>
+                        <span class="v-price-big" data-key="offer1_v1_price">18 000 ₽</span>
+                        <span class="v-price-old" data-key="offer1_v1_old">вместо 20 000 ₽</span>
                     </div>
                     <div class="v-or">или</div>
                     <div>
                         <span class="v-label-pill">Вариант 2</span>
-                        <p class="v-sub">Платите 20 000 ₽ и получаете</p>
+                        <p class="v-sub" data-key="offer1_v2_sub">Платите 20 000 ₽ и получаете</p>
                         <span class="v-bonus-big">БОНУС</span>
-                        <p class="v-bonus-desc">мини-разбор матрицы судьбы</p>
+                        <p class="v-bonus-desc" data-key="offer1_v2_bonus">мини-разбор матрицы судьбы</p>
                     </div>
                 </div>
                 <div class="offer-note">
                     <svg width="26" height="30" viewBox="0 0 36 38" fill="currentColor" opacity="0.7" xmlns="http://www.w3.org/2000/svg"><path d="M18 34C18 34 2 26 3 13C8 18 13 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 34 26 33 13C28 18 23 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 7 23 8 10C12 15 15 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 29 23 28 10C24 15 21 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 11 21 12 8C15 13 17 20 18 34Z" opacity="0.82"/><path d="M18 34C18 34 25 21 24 8C21 13 19 20 18 34Z" opacity="0.82"/><path d="M18 34C15.5 21 17 2 18 2C19 2 20.5 21 18 34Z"/><path d="M6 37Q18 34 30 37" stroke="currentColor" stroke-width="1.2" fill="none" opacity="0.4" stroke-linecap="round"/></svg>
-                    <p>Узнаете, что вам мешает прийти к своей цели и что нужно сделать в этом году.</p>
+                    <p data-key="offer1_note">Узнаете, что вам мешает прийти к своей цели и что нужно сделать в этом году.</p>
                 </div>
             </div>
         </div>
         <div class="offer-card">
             <div class="offer-head">
                 <div class="offer-icon-circle"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
-                <h3>Акция<br>«Приведи подругу»</h3>
+                <h3 data-key="offer2_title">Акция<br>«Приведи подругу»</h3>
             </div>
             <div class="offer-body">
                 <div class="offer-steps">
@@ -1599,8 +1599,8 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
     <div class="location-header">
         <span class="sec-label">Места приёма</span>
         <div class="location-header-lotus"><svg width="26" height="30" viewBox="0 0 36 38" fill="#E879A0" xmlns="http://www.w3.org/2000/svg"><path d="M18 34C18 34 2 26 3 13C8 18 13 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 34 26 33 13C28 18 23 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 7 23 8 10C12 15 15 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 29 23 28 10C24 15 21 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 11 21 12 8C15 13 17 20 18 34Z" opacity="0.82"/><path d="M18 34C18 34 25 21 24 8C21 13 19 20 18 34Z" opacity="0.82"/><path d="M18 34C15.5 21 17 2 18 2C19 2 20.5 21 18 34Z"/><path d="M6 37Q18 34 30 37" stroke="#E879A0" stroke-width="1.2" fill="none" opacity="0.4" stroke-linecap="round"/></svg></div>
-        <h2 class="location-h2">Где я принимаю</h2>
-        <p class="location-subtitle">Выбирайте удобное для вас место. В каждом кабинете уютная атмосфера и забота о вашем комфорте.</p>
+        <h2 class="location-h2" data-key="location_h2">Где я принимаю</h2>
+        <p class="location-subtitle" data-key="location_subtitle">Выбирайте удобное для вас место. В каждом кабинете уютная атмосфера и забота о вашем комфорте.</p>
     </div>
     <div class="location-grid" id="location-grid">
         <div class="location-card">
@@ -1659,8 +1659,8 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
     <div class="options-header">
         <span class="sec-label">ГОТОВЫ НАЧАТЬ?</span>
         <div class="options-header-lotus"><svg width="26" height="30" viewBox="0 0 36 38" fill="#E879A0" xmlns="http://www.w3.org/2000/svg"><path d="M18 34C18 34 2 26 3 13C8 18 13 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 34 26 33 13C28 18 23 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 7 23 8 10C12 15 15 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 29 23 28 10C24 15 21 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 11 21 12 8C15 13 17 20 18 34Z" opacity="0.82"/><path d="M18 34C18 34 25 21 24 8C21 13 19 20 18 34Z" opacity="0.82"/><path d="M18 34C15.5 21 17 2 18 2C19 2 20.5 21 18 34Z"/><path d="M6 37Q18 34 30 37" stroke="#E879A0" stroke-width="1.2" fill="none" opacity="0.4" stroke-linecap="round"/></svg></div>
-        <h2 class="options-h2">Выберите свой путь</h2>
-        <p class="options-subtitle">Я помогу вам на каждом этапе. Выбирайте то, что подходит именно вам.</p>
+        <h2 class="options-h2" data-key="options_h2">Выберите свой путь</h2>
+        <p class="options-subtitle" data-key="options_subtitle">Я помогу вам на каждом этапе. Выбирайте то, что подходит именно вам.</p>
     </div>
     <div class="options-grid">
         <!-- Карточка 1: Есть вопросы -->
@@ -1858,6 +1858,41 @@ fetch('/content.json')
             <div class="loc-address">${pinIcon}<p>${l.address}</p></div>
           </div>
         </div>`).join('');
+    }
+
+    // Обновляем простые тексты по меткам data-key
+    if (data.texts) {
+      Object.keys(data.texts).forEach(key => {
+        const val = data.texts[key];
+        if (val == null) return;
+        document.querySelectorAll('[data-key="' + key + '"]').forEach(el => {
+          el.innerHTML = val;
+        });
+      });
+    }
+
+    // Обновляем тексты шагов (иконки на странице не трогаем)
+    if (data.steps) {
+      document.querySelectorAll('#steps-grid .step-card').forEach((card, i) => {
+        const s = data.steps[i];
+        if (!s) return;
+        const h3 = card.querySelector('h3');
+        const p = card.querySelector('p');
+        if (h3 && s.title) h3.textContent = s.title;
+        if (p && s.desc) p.textContent = s.desc;
+      });
+    }
+
+    // Обновляем тексты специальностей (иконки оставляем как есть)
+    if (data.specialties) {
+      document.querySelectorAll('#specialties-list li').forEach((li, i) => {
+        const val = data.specialties[i];
+        if (val == null) return;
+        const icon = li.querySelector('.s-icon');
+        li.textContent = '';
+        if (icon) li.appendChild(icon);
+        li.appendChild(document.createTextNode(' ' + val));
+      });
     }
   })
   .catch(() => {}); // fallback — статичные данные из HTML остаются
