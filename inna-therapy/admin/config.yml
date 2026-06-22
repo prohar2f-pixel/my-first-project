@@ -40,12 +40,10 @@ collections:
               - { label: "Цены — заголовок", name: prices_h2, widget: string }
               - { label: "Акции — заголовок раздела", name: offers_h2, widget: string }
               - { label: "Акция 1 — название", name: offer1_title, widget: string, hint: "<br> — перенос строки" }
-              - { label: "Акция 1 — вариант 1, подпись", name: offer1_v1_sub, widget: string }
-              - { label: "Акция 1 — вариант 1, цена", name: offer1_v1_price, widget: string }
-              - { label: "Акция 1 — вариант 1, старая цена", name: offer1_v1_old, widget: string }
-              - { label: "Акция 1 — вариант 2, подпись", name: offer1_v2_sub, widget: string }
-              - { label: "Акция 1 — вариант 2, бонус", name: offer1_v2_bonus, widget: string }
-              - { label: "Акция 1 — примечание", name: offer1_note, widget: text }
+              - { label: "Акция 1 — текст", name: offer1_text, widget: text }
+              - { label: "Акция 1 — цена со скидкой", name: offer1_price, widget: string }
+              - { label: "Акция 1 — старая цена", name: offer1_old, widget: string }
+              - { label: "Акция 1 — примечание (условие)", name: offer1_note, widget: text }
               - { label: "Акция 2 — название", name: offer2_title, widget: string, hint: "<br> — перенос строки" }
               - { label: "Кабинеты — заголовок", name: location_h2, widget: string }
               - { label: "Кабинеты — подзаголовок", name: location_subtitle, widget: text }
