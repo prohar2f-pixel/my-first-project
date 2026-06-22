@@ -1829,7 +1829,7 @@ fetch('content.json?v=' + Date.now())
       const pinIcon = '<svg width="16" height="16" viewBox="0 0 24 24" fill="#E879A0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3" fill="#fff"/></svg>';
       locationGrid.innerHTML = data.locations.map(l => `
         <div class="location-card">
-          <div class="loc-photo"><img src="${l.photo}" alt="${l.name}"></div>
+          <div class="loc-photo"><img src="${l.photo.replace(/^\//, '')}" alt="${l.name}"></div>
           <div class="loc-content">
             <div class="loc-icon-circle">${homeIcon}</div>
             <span class="loc-label">${l.sub}</span>

@@ -6,7 +6,7 @@ backend:
   auth_endpoint: api/auth
 
 media_folder: inna-therapy/images
-public_folder: /images
+public_folder: images
 
 locale: ru
 
