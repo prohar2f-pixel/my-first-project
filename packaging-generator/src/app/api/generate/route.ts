@@ -26,7 +26,7 @@ export async function POST(req: Request) {
       acceptedLanding: body.acceptedLanding,
       modifier: body.modifier,
     }),
-    maxOutputTokens: 2000,
+    maxOutputTokens: body.stage === "emails" ? 4000 : 2000,
   });
 
   return result.toTextStreamResponse();

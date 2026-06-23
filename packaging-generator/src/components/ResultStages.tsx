@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { STAGES, isStageUnlocked, nextStage, type StageId } from "@/lib/generation/stages";
 import type { Brief } from "@/lib/onboarding/questions";
 import { modifierInstruction, type VariantId } from "@/lib/generation/variants";
@@ -15,14 +15,25 @@ const ACCEPT_LABEL: Record<StageId, string> = {
 export function ResultStages({ brief }: { brief: Brief }) {
   const [accepted, setAccepted] = useState<StageId[]>([]);
   const [texts, setTexts] = useState<Record<string, string>>({});
+  const textsRef = useRef<Record<string, string>>({});
   const [streaming, setStreaming] = useState<StageId | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const sessionId = useRef<string>(crypto.randomUUID()).current;
+  const didStart = useRef(false);
+
+  function updateTexts(updater: (t: Record<string, string>) => Record<string, string>) {
+    setTexts((t) => {
+      const next = updater(t);
+      textsRef.current = next;
+      return next;
+    });
+  }
 
   async function generate(stage: StageId, modifier?: VariantId) {
     setError(null);
     setStreaming(stage);
-    const previous = texts[stage] ?? "";
-    setTexts((t) => ({ ...t, [stage]: "" }));
+    const previous = textsRef.current[stage] ?? "";
+    updateTexts((t) => ({ ...t, [stage]: "" }));
     try {
       const res = await fetch("/api/generate", {
         method: "POST",
@@ -30,8 +41,8 @@ export function ResultStages({ brief }: { brief: Brief }) {
         body: JSON.stringify({
           stage,
           brief,
-          acceptedOffer: texts.offer,
-          acceptedLanding: texts.landing,
+          acceptedOffer: textsRef.current.offer,
+          acceptedLanding: textsRef.current.landing,
           modifier: modifier ? modifierInstruction(modifier) : undefined,
         }),
       });
@@ -43,25 +54,35 @@ export function ResultStages({ brief }: { brief: Brief }) {
         const { value, done } = await reader.read();
         if (done) break;
         acc += decoder.decode(value, { stream: true });
-        setTexts((t) => ({ ...t, [stage]: acc }));
+        updateTexts((t) => ({ ...t, [stage]: acc }));
       }
     } catch {
       setError("Не получилось сгенерировать. Попробуй ещё раз.");
-      setTexts((t) => ({ ...t, [stage]: previous }));
+      updateTexts((t) => ({ ...t, [stage]: previous }));
     } finally {
       setStreaming(null);
     }
   }
 
-  // Auto-generate offer once on mount
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => { generate("offer"); }, []);
+  // Auto-generate offer once on mount — latch prevents StrictMode double-invoke
+  useEffect(() => {
+    if (didStart.current) return;
+    didStart.current = true;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    generate("offer");
+  }, []);
 
   function accept(stage: StageId) {
     const updated = accepted.includes(stage) ? accepted : [...accepted, stage];
     setAccepted(updated);
     const nxt = nextStage(stage);
-    if (nxt && !texts[nxt]) generate(nxt);
+    if (nxt && !textsRef.current[nxt]) generate(nxt);
+    // Best-effort background save — never blocks or throws in the UI
+    fetch("/api/packages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sessionId, brief, materials: textsRef.current }),
+    }).catch(() => {});
   }
 
   return (
