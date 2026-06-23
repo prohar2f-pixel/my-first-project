@@ -20,12 +20,13 @@ def init_db():
         """)
         # Добавить колонки если их нет (для старых БД)
         for col in ("title TEXT DEFAULT ''", "description TEXT DEFAULT ''",
-                    "fingerprint TEXT DEFAULT ''"):
+                    "fingerprint TEXT DEFAULT ''", "url TEXT DEFAULT ''"):
             try:
                 conn.execute(f"ALTER TABLE seen ADD COLUMN {col}")
             except Exception:
                 pass
         conn.execute("CREATE INDEX IF NOT EXISTS idx_fingerprint ON seen(fingerprint)")
+        conn.execute("CREATE INDEX IF NOT EXISTS idx_url ON seen(url)")
         conn.execute("DELETE FROM seen WHERE seen_at < datetime('now', '-30 days')")
 
         conn.execute("CREATE TABLE IF NOT EXISTS channels (name TEXT PRIMARY KEY)")
@@ -118,13 +119,14 @@ def remove_keyword(word: str) -> bool:
 
 
 import re as _re
+import hashlib as _hashlib
 
 
 def _make_fingerprint(text: str) -> str:
-    """First 120 chars of normalized text — catches duplicates across channels."""
+    """MD5 hash of full normalized text — catches exact duplicates across channels."""
     clean = _re.sub(r'[^а-яёa-z0-9\s]', '', text.lower())
     clean = _re.sub(r'\s+', ' ', clean).strip()
-    return clean[:120]
+    return _hashlib.md5(clean.encode()).hexdigest()
 
 
 def is_seen(order_id: str) -> bool:
@@ -143,12 +145,20 @@ def is_seen_fingerprint(fingerprint: str) -> bool:
     return row is not None
 
 
-def mark_seen(order_id: str, source: str, title: str = "", description: str = ""):
+def is_seen_url(url: str) -> bool:
+    if not url:
+        return False
+    with sqlite3.connect(DB_PATH) as conn:
+        row = conn.execute("SELECT 1 FROM seen WHERE url = ?", (url,)).fetchone()
+    return row is not None
+
+
+def mark_seen(order_id: str, source: str, title: str = "", description: str = "", url: str = ""):
     fp = _make_fingerprint(title + " " + description)
     with sqlite3.connect(DB_PATH) as conn:
         conn.execute(
-            "INSERT OR IGNORE INTO seen (id, source, title, description, fingerprint) VALUES (?, ?, ?, ?, ?)",
-            (order_id, source, title[:200], description[:500], fp),
+            "INSERT OR IGNORE INTO seen (id, source, title, description, fingerprint, url) VALUES (?, ?, ?, ?, ?, ?)",
+            (order_id, source, title[:200], description[:500], fp, url),
         )
         conn.commit()
 

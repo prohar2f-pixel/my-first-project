@@ -8,7 +8,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from config import BOT_TOKEN, USER_ID, CHECK_INTERVAL, ANTHROPIC_API_KEY
 from database import (
-    init_db, is_seen, is_seen_fingerprint, mark_seen, get_order,
+    init_db, is_seen, is_seen_fingerprint, is_seen_url, mark_seen, get_order,
     get_channels, add_channel, remove_channel,
     get_keywords, add_keyword, remove_keyword,
     get_profile_fields, set_profile_field,
@@ -473,11 +473,14 @@ async def check_all() -> int:
                 continue
             if is_seen(order.id):
                 continue
+            if order.url and is_seen_url(order.url):
+                mark_seen(order.id, order.source, order.title, order.description, order.url)
+                continue
             fp = _make_fingerprint(full_text)
             if is_seen_fingerprint(fp):
-                mark_seen(order.id, order.source, order.title, order.description)
+                mark_seen(order.id, order.source, order.title, order.description, order.url)
                 continue
-            mark_seen(order.id, order.source, order.title, order.description)
+            mark_seen(order.id, order.source, order.title, order.description, order.url)
             if matches(full_text):
                 await send_order(bot, USER_ID, order)
                 total_new += 1
