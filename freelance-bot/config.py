@@ -25,7 +25,13 @@ DEFAULT_TG_CHANNELS = (
     "@workinart,"        # Дизайн + веб-работа
     "@kadrof_work,"      # Kadrof — проверенные вакансии и заказы
     "@zapwork,"          # Удалёнщики — удалённая работа и фриланс
-    "@dnative_job"       # Digital-вакансии — SMM, веб, digital-маркетинг
+    "@dnative_job,"      # Digital-вакансии — SMM, веб, digital-маркетинг
+    "@freelance_all,"    # Все фриланс-заказы — агрегатор из разных площадок
+    "@youdo_ru,"         # YouDo — бытовые и digital-задачи
+    "@freelance_habr,"   # Хабр Фриланс — IT-заказы
+    "@tg_jobs,"          # TG Jobs — удалённая работа и фриланс
+    "@remotejob_ru,"     # Удалённая работа Россия
+    "@dev_jobs_ru"       # Вакансии для разработчиков
 )
 TG_CHANNELS = [ch.strip() for ch in os.getenv("TG_CHANNELS", DEFAULT_TG_CHANNELS).split(",") if ch.strip()]
 

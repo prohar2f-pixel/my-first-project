@@ -24,6 +24,9 @@ from responder import generate_response
 import parsers.flru as flru
 import parsers.kwork as kwork
 import parsers.tg_channels as tg
+import parsers.freelanceru as freelanceru
+import parsers.weblancer as weblancer
+import parsers.freelancehunt as freelancehunt
 
 logging.basicConfig(
     level=logging.INFO,
@@ -106,7 +109,7 @@ async def cmd_start(message: Message):
     api_status = "✅" if ANTHROPIC_API_KEY else "❌ ANTHROPIC_API_KEY не задан"
     await message.answer(
         f"🤖 <b>Freelance Monitor Bot</b>\n\n"
-        f"Мониторю: FL.ru, Kwork, TG-каналы\n"
+        f"Мониторю: FL.ru, Kwork, Freelance.ru, Weblancer, Freelancehunt, TG-каналы\n"
         f"Интервал: каждые {interval_min} мин\n"
         f"Ключевых слов: {len(get_keywords())}\n"
         f"Claude API: {api_status}",
@@ -343,7 +346,7 @@ async def cb_back(callback: CallbackQuery):
     interval_min = CHECK_INTERVAL // 60
     await callback.message.edit_text(
         f"🤖 <b>Freelance Monitor Bot</b>\n\n"
-        f"Мониторю: FL.ru, Kwork, TG-каналы\n"
+        f"Мониторю: FL.ru, Kwork, Freelance.ru, Weblancer, Freelancehunt, TG-каналы\n"
         f"Интервал: каждые {interval_min} мин\n"
         f"Ключевых слов: {len(get_keywords())}",
         reply_markup=main_keyboard(),
@@ -457,6 +460,9 @@ async def check_all() -> int:
         flru.fetch(),
         kwork.fetch(),
         tg.fetch(get_channels()),
+        freelanceru.fetch(),
+        weblancer.fetch(),
+        freelancehunt.fetch(),
         return_exceptions=True,
     )
 
