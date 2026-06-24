@@ -12,7 +12,7 @@ from database import (
     get_channels, add_channel, remove_channel,
     get_keywords, add_keyword, remove_keyword,
     get_profile_fields, set_profile_field,
-    _make_fingerprint,
+    get_stats_by_source, _make_fingerprint,
 )
 
 MAX_PER_CYCLE = 5
@@ -225,13 +225,24 @@ async def cb_status(callback: CallbackQuery):
     await callback.answer()
     interval_min = CHECK_INTERVAL // 60
     api_ok = "✅ подключён" if ANTHROPIC_API_KEY else "❌ ключ не задан"
+
+    stats = get_stats_by_source()
+    total = sum(cnt for _, cnt in stats)
+
+    # Платформы отдельно от TG-каналов
+    platforms = [(s, c) for s, c in stats if not s.startswith("TG")]
+    tg_total  = sum(c for s, c in stats if s.startswith("TG"))
+
+    platform_lines = "\n".join(f"  · {s}: <b>{c}</b>" for s, c in platforms) or "  нет данных"
+    tg_line = f"  · TG-каналы: <b>{tg_total}</b>" if tg_total else "  · TG-каналы: нет данных"
+
     await callback.message.edit_text(
         f"📊 <b>Статус бота</b>\n\n"
-        f"✅ FL.ru — активен\n"
-        f"✅ Kwork — активен\n"
-        f"✅ TG-каналов: {len(get_channels())}\n\n"
-        f"⏱ Интервал: каждые {interval_min} мин\n"
-        f"🔑 Ключевых слов: {len(get_keywords())}\n"
+        f"<b>Платформы:</b>\n{platform_lines}\n{tg_line}\n\n"
+        f"📦 Всего обработано заказов: <b>{total}</b>\n"
+        f"📢 TG-каналов: <b>{len(get_channels())}</b>\n"
+        f"🔑 Ключевых слов: <b>{len(get_keywords())}</b>\n"
+        f"⏱ Интервал: каждые <b>{interval_min} мин</b>\n"
         f"🤖 Claude API: {api_ok}",
         reply_markup=InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text="◀️ Назад", callback_data="back")]

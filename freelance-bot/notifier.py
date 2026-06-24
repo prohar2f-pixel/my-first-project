@@ -9,10 +9,21 @@ MOSCOW = timezone(timedelta(hours=3))
 log = logging.getLogger(__name__)
 
 SOURCE_EMOJI = {
-    "FL.ru": "🟠",
+    "FL.ru":          "🟠",
     "Habr Freelance": "🟢",
-    "Kwork": "🔵",
+    "Kwork":          "🔵",
+    "Freelance.ru":   "🟡",
+    "Weblancer":      "🟣",
+    "Freelancehunt":  "🔴",
 }
+
+
+def get_source_emoji(source: str) -> str:
+    if source in SOURCE_EMOJI:
+        return SOURCE_EMOJI[source]
+    if source.startswith("TG"):
+        return "✈️"
+    return "🔔"
 
 
 def order_keyboard(order: Order) -> InlineKeyboardMarkup:
@@ -30,7 +41,7 @@ async def send_order(bot: Bot, user_id: int, order: Order):
         log.info(f"Ночное время ({hour}:xx МСК) — уведомление отложено")
         return
 
-    emoji = SOURCE_EMOJI.get(order.source, "🔔")
+    emoji = get_source_emoji(order.source)
     price_line = f"\n💰 <b>{order.price}</b>" if order.price else ""
     desc = order.description[:400].strip()
     if len(order.description) > 400:

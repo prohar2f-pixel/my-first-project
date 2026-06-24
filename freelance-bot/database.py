@@ -175,6 +175,14 @@ def set_profile_field(key: str, value: str):
         conn.commit()
 
 
+def get_stats_by_source() -> list[tuple[str, int]]:
+    with sqlite3.connect(DB_PATH) as conn:
+        rows = conn.execute(
+            "SELECT source, COUNT(*) as cnt FROM seen GROUP BY source ORDER BY cnt DESC"
+        ).fetchall()
+    return rows
+
+
 def get_order(order_id: str) -> dict | None:
     with sqlite3.connect(DB_PATH) as conn:
         row = conn.execute(
