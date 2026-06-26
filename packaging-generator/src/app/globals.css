@@ -89,7 +89,7 @@ body::after {
 .btn:hover { transform: translateY(-3px); }
 .btn:hover::before { opacity: 1; transform: scale(1.15); animation: sglow 2.2s ease-in-out infinite; }
 .btn:hover::after { opacity: 1; transform: translateY(0) scaleX(1.1); animation: srise 1.8s ease-out infinite; }
-.btn:disabled { opacity: 0.4; cursor: default; transform: none; }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 .btn:disabled::before, .btn:disabled::after { opacity: 0; }
 
 .btn-primary { background: var(--p); color: #fff; box-shadow: 0 0 22px rgba(168, 85, 247, 0.42), 0 4px 16px rgba(0, 0, 0, 0.3); }
