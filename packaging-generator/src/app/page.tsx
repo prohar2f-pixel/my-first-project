@@ -4,15 +4,12 @@ import { useState } from "react";
 import type { Brief } from "@/lib/onboarding/questions";
 import { OnboardingWizard } from "@/components/OnboardingWizard";
 import { ResultStages } from "@/components/ResultStages";
-import { FluidBackground } from "@/components/FluidBackground";
 
 export default function Home() {
   const [brief, setBrief] = useState<Brief | null>(null);
 
   return (
     <div className="relative min-h-screen text-text">
-      <FluidBackground />
-
       <header className="sticky top-0 z-20 border-b border-white/5 bg-bg/90 backdrop-blur-xl">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-3">
           <a href="#" className="flex items-center">
