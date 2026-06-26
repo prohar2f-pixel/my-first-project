@@ -3,16 +3,16 @@ import logging
 
 from aiogram import Bot, Dispatcher, F
 from aiogram.filters import Command
-from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton, BotCommand
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from config import BOT_TOKEN, USER_ID, CHECK_INTERVAL, ANTHROPIC_API_KEY
 from database import (
-    init_db, is_seen, is_seen_fingerprint, mark_seen, get_order,
+    init_db, is_seen, is_seen_fingerprint, is_seen_url, mark_seen, get_order,
     get_channels, add_channel, remove_channel,
     get_keywords, add_keyword, remove_keyword,
     get_profile_fields, set_profile_field,
-    _make_fingerprint,
+    get_stats_by_source, _make_fingerprint,
 )
 
 MAX_PER_CYCLE = 5
@@ -24,6 +24,9 @@ from responder import generate_response
 import parsers.flru as flru
 import parsers.kwork as kwork
 import parsers.tg_channels as tg
+import parsers.freelanceru as freelanceru
+import parsers.weblancer as weblancer
+import parsers.freelancehunt as freelancehunt
 
 logging.basicConfig(
     level=logging.INFO,
@@ -106,7 +109,7 @@ async def cmd_start(message: Message):
     api_status = "✅" if ANTHROPIC_API_KEY else "❌ ANTHROPIC_API_KEY не задан"
     await message.answer(
         f"🤖 <b>Freelance Monitor Bot</b>\n\n"
-        f"Мониторю: FL.ru, Kwork, TG-каналы\n"
+        f"Мониторю: FL.ru, Kwork, Freelance.ru, Weblancer, Freelancehunt, TG-каналы\n"
         f"Интервал: каждые {interval_min} мин\n"
         f"Ключевых слов: {len(get_keywords())}\n"
         f"Claude API: {api_status}",
@@ -222,13 +225,24 @@ async def cb_status(callback: CallbackQuery):
     await callback.answer()
     interval_min = CHECK_INTERVAL // 60
     api_ok = "✅ подключён" if ANTHROPIC_API_KEY else "❌ ключ не задан"
+
+    stats = get_stats_by_source()
+    total = sum(cnt for _, cnt in stats)
+
+    # Платформы отдельно от TG-каналов
+    platforms = [(s, c) for s, c in stats if not s.startswith("TG")]
+    tg_total  = sum(c for s, c in stats if s.startswith("TG"))
+
+    platform_lines = "\n".join(f"  · {s}: <b>{c}</b>" for s, c in platforms) or "  нет данных"
+    tg_line = f"  · TG-каналы: <b>{tg_total}</b>" if tg_total else "  · TG-каналы: нет данных"
+
     await callback.message.edit_text(
         f"📊 <b>Статус бота</b>\n\n"
-        f"✅ FL.ru — активен\n"
-        f"✅ Kwork — активен\n"
-        f"✅ TG-каналов: {len(get_channels())}\n\n"
-        f"⏱ Интервал: каждые {interval_min} мин\n"
-        f"🔑 Ключевых слов: {len(get_keywords())}\n"
+        f"<b>Платформы:</b>\n{platform_lines}\n{tg_line}\n\n"
+        f"📦 Всего обработано заказов: <b>{total}</b>\n"
+        f"📢 TG-каналов: <b>{len(get_channels())}</b>\n"
+        f"🔑 Ключевых слов: <b>{len(get_keywords())}</b>\n"
+        f"⏱ Интервал: каждые <b>{interval_min} мин</b>\n"
         f"🤖 Claude API: {api_ok}",
         reply_markup=InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text="◀️ Назад", callback_data="back")]
@@ -343,7 +357,7 @@ async def cb_back(callback: CallbackQuery):
     interval_min = CHECK_INTERVAL // 60
     await callback.message.edit_text(
         f"🤖 <b>Freelance Monitor Bot</b>\n\n"
-        f"Мониторю: FL.ru, Kwork, TG-каналы\n"
+        f"Мониторю: FL.ru, Kwork, Freelance.ru, Weblancer, Freelancehunt, TG-каналы\n"
         f"Интервал: каждые {interval_min} мин\n"
         f"Ключевых слов: {len(get_keywords())}",
         reply_markup=main_keyboard(),
@@ -457,6 +471,9 @@ async def check_all() -> int:
         flru.fetch(),
         kwork.fetch(),
         tg.fetch(get_channels()),
+        freelanceru.fetch(),
+        weblancer.fetch(),
+        freelancehunt.fetch(),
         return_exceptions=True,
     )
 
@@ -473,11 +490,14 @@ async def check_all() -> int:
                 continue
             if is_seen(order.id):
                 continue
+            if order.url and is_seen_url(order.url):
+                mark_seen(order.id, order.source, order.title, order.description, order.url)
+                continue
             fp = _make_fingerprint(full_text)
             if is_seen_fingerprint(fp):
-                mark_seen(order.id, order.source, order.title, order.description)
+                mark_seen(order.id, order.source, order.title, order.description, order.url)
                 continue
-            mark_seen(order.id, order.source, order.title, order.description)
+            mark_seen(order.id, order.source, order.title, order.description, order.url)
             if matches(full_text):
                 await send_order(bot, USER_ID, order)
                 total_new += 1
@@ -498,6 +518,14 @@ async def main():
         return
     if not ANTHROPIC_API_KEY:
         log.warning("ANTHROPIC_API_KEY не задан — функция откликов недоступна")
+
+    await bot.set_my_commands([
+        BotCommand(command="start",    description="🏠 Главное меню"),
+        BotCommand(command="check",    description="🔍 Проверить сейчас"),
+        BotCommand(command="keywords", description="🔑 Ключевые слова"),
+        BotCommand(command="channels", description="📢 Каналы"),
+        BotCommand(command="profile",  description="👤 Мой профиль"),
+    ])
 
     init_db()
     log.info("База данных инициализирована.")
