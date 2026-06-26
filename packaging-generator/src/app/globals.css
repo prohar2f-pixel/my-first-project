@@ -25,7 +25,7 @@ body {
   overflow-x: hidden;
 }
 
-/* зерно поверх фона */
+/* зерно поверх фона; z-index 1 намеренно выше WebGL-канваса (z-0) — зерно поверх дыма */
 body::after {
   content: "";
   position: fixed;
