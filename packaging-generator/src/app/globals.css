@@ -1,26 +1,133 @@
 @import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@import "./brand-tokens.css";
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-bg: var(--bg);
+  --color-bg2: var(--bg2);
+  --color-card: var(--card);
+  --color-card-solid: var(--card-solid);
+  --color-border: var(--border);
+  --color-border-p: var(--border-p);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-accent: var(--p);
+  --color-accent-d: var(--pd);
+  --color-accent-b: var(--pb);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-oswald);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* зерно поверх фона */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.4;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: rgba(168, 85, 247, 0.3); border-radius: 3px; }
+
+*:focus-visible { outline: 2px solid var(--p); outline-offset: 3px; border-radius: 3px; }
+
+/* ── Кнопки (порт из site.css) ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 13px 28px;
+  border-radius: 12px;
+  font-size: 0.93rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  white-space: nowrap;
+  transition: transform 0.25s, box-shadow 0.3s, background 0.25s, border-color 0.25s;
+}
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: -18px;
+  border-radius: 22px;
+  background: radial-gradient(ellipse at center, rgba(168, 85, 247, 0.55) 0%, rgba(109, 40, 217, 0.2) 45%, transparent 68%);
+  filter: blur(20px);
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.4s, transform 0.5s;
+  z-index: -1;
+  pointer-events: none;
+}
+.btn::after {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: calc(100% - 10px);
+  height: 55px;
+  background: radial-gradient(ellipse at 50% 100%, rgba(168, 85, 247, 0.6) 0%, rgba(139, 92, 246, 0.2) 40%, transparent 68%);
+  filter: blur(16px);
+  opacity: 0;
+  transform: translateY(18px) scaleX(0.6);
+  transition: opacity 0.35s, transform 0.5s;
+  z-index: -1;
+  pointer-events: none;
+}
+.btn:hover { transform: translateY(-3px); }
+.btn:hover::before { opacity: 1; transform: scale(1.15); animation: sglow 2.2s ease-in-out infinite; }
+.btn:hover::after { opacity: 1; transform: translateY(0) scaleX(1.1); animation: srise 1.8s ease-out infinite; }
+.btn:disabled { opacity: 0.4; cursor: default; transform: none; }
+.btn:disabled::before, .btn:disabled::after { opacity: 0; }
+
+.btn-primary { background: var(--p); color: #fff; box-shadow: 0 0 22px rgba(168, 85, 247, 0.42), 0 4px 16px rgba(0, 0, 0, 0.3); }
+.btn-primary:hover { background: #9333ea; box-shadow: 0 0 44px rgba(168, 85, 247, 0.75), 0 8px 28px rgba(0, 0, 0, 0.4); }
+
+.btn-outline { background: rgba(255, 255, 255, 0.04); color: var(--text); border: 1px solid var(--border-p); }
+.btn-outline:hover { border-color: rgba(168, 85, 247, 0.75); background: rgba(168, 85, 247, 0.07); }
+
+/* малые кнопки (копировать/варианты) */
+.btn-mini {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-p);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+.btn-mini:hover { background: rgba(168, 85, 247, 0.1); border-color: rgba(168, 85, 247, 0.6); }
+.btn-mini:disabled { opacity: 0.4; cursor: default; }
+
+@keyframes sglow { 0%, 100% { transform: scale(1.1); opacity: 0.8; } 50% { transform: scale(1.28); opacity: 1; } }
+@keyframes srise { 0% { opacity: 0.65; transform: translateY(0) scaleX(1.1) scaleY(0.7); } 100% { opacity: 0; transform: translateY(-45px) scaleX(1.7) scaleY(2); } }
+
+/* плавное появление карточек */
+.fi { animation: fadeUp 0.6s ease both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+/* мигающая каретка при стриминге */
+.caret { display: inline-block; width: 2px; height: 1em; margin-left: 3px; background: var(--p); vertical-align: -2px; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .fi { animation: none; }
+  .caret { animation: none; }
+  .btn:hover::before, .btn:hover::after { animation: none; }
 }
