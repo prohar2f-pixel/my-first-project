@@ -88,7 +88,7 @@ export function ResultStages({ brief }: { brief: Brief }) {
   return (
     <div className="mx-auto max-w-2xl space-y-4">
       {error && (
-        <div className="rounded-xl bg-red-50 p-4 text-sm text-red-700">
+        <div className="fi rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-300">
           {error}{" "}
           <button className="font-semibold underline" onClick={() => generate("offer")}>
             Повторить
@@ -99,11 +99,11 @@ export function ResultStages({ brief }: { brief: Brief }) {
         const unlocked = isStageUnlocked(stage.id, accepted);
         if (!unlocked) {
           return (
-            <div key={stage.id} className="rounded-2xl bg-neutral-100 p-5">
-              <h3 className="flex items-center gap-2 font-bold text-neutral-400">
+            <div key={stage.id} className="fi rounded-[20px] border border-border bg-card p-5">
+              <h3 className="flex items-center gap-2 font-display font-bold text-muted">
                 🔒 {stage.title}
               </h3>
-              <p className="mt-1 text-sm text-neutral-400">{stage.lockedReason}</p>
+              <p className="mt-1 text-sm text-muted">{stage.lockedReason}</p>
             </div>
           );
         }
