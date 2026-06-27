@@ -301,6 +301,18 @@ nav a{color:var(--muted);text-decoration:none;font-size:.84rem;
   transition:color .2s;padding:12px 2px;min-height:44px;display:flex;align-items:center}
 nav a:hover{color:var(--text)}
 .nav-toggle{display:none;background:none;border:none;cursor:pointer;color:var(--text);padding:4px}
+.nav-dd{position:relative;display:flex;align-items:center}
+.nav-dd-btn{background:none;border:none;cursor:pointer;color:var(--muted);font-family:inherit;font-size:.84rem;
+  display:flex;align-items:center;gap:5px;padding:12px 2px;min-height:44px;transition:color .2s}
+.nav-dd-btn:hover,.nav-dd-btn[aria-expanded="true"]{color:var(--text)}
+.nav-dd-arr{transition:transform .25s}
+.nav-dd-btn[aria-expanded="true"] .nav-dd-arr{transform:rotate(180deg)}
+.nav-dd-menu{position:absolute;top:100%;right:0;min-width:210px;flex-direction:column;gap:2px;padding:8px;display:none;
+  background:rgba(13,13,20,.98);border:1px solid rgb(var(--p-rgb) / .25);border-radius:12px;box-shadow:0 14px 36px rgba(0,0,0,.55)}
+.nav-dd.open .nav-dd-menu{display:flex}
+.nav-dd-menu a{color:var(--muted);text-decoration:none;font-size:.86rem;padding:10px 12px;border-radius:8px;
+  min-height:auto;display:block;transition:background .15s,color .15s}
+.nav-dd-menu a:hover{background:rgb(var(--p-rgb) / .12);color:#fff}
 
 /* ── UTILS ──────────────────────────────── */
 .wrap{max-width:1160px;margin:0 auto;padding:0 60px}
@@ -714,6 +726,9 @@ footer{padding:52px 0 36px;text-align:center}
     border-bottom:1px solid rgba(255,255,255,.05);gap:16px}
   nav.open{display:flex}
   .nav-toggle{display:block}
+  .nav-dd{flex-direction:column;align-items:stretch;width:100%}
+  .nav-dd-btn{width:100%;justify-content:space-between}
+  .nav-dd-menu{position:static;min-width:0;width:100%;padding:6px 0 2px 14px;border:none;background:none;box-shadow:none}
   .wrap{padding:0 20px}
   section{padding:68px 0}
   .hero{flex-direction:column;align-items:flex-start;min-height:auto}
@@ -770,6 +785,16 @@ footer{padding:52px 0 36px;text-align:center}
     <a href="#about">Обо мне</a>
     <a href="#services">Услуги</a>
     <a href="#pricing">Цены</a>
+    <div class="nav-dd">
+      <button type="button" class="nav-dd-btn" aria-expanded="false" aria-haspopup="true">Инструменты
+        <svg class="nav-dd-arr" width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="nav-dd-menu">
+        <a href="/aeo/">AEO + SEO аудит</a>
+        <a href="https://aeo.aiprohar.ru/" target="_blank" rel="noopener">AEO-оптимизация</a>
+        <a href="#tzbot">ТЗ-бот</a>
+      </div>
+    </div>
     <a href="#faq">Вопросы</a>
     <a href="#contact">Контакты</a>
   </nav>
@@ -1723,6 +1748,17 @@ footer{padding:52px 0 36px;text-align:center}
   const nav    = document.getElementById('nav');
   toggle.addEventListener('click', () => nav.classList.toggle('open'));
   nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => nav.classList.remove('open')));
+
+  // tools dropdown
+  const navDd = document.querySelector('.nav-dd');
+  if(navDd){
+    const ddBtn = navDd.querySelector('.nav-dd-btn');
+    const setDd = open => { navDd.classList.toggle('open', open); ddBtn.setAttribute('aria-expanded', open ? 'true' : 'false'); };
+    ddBtn.addEventListener('click', e => { e.stopPropagation(); setDd(!navDd.classList.contains('open')); });
+    document.addEventListener('click', e => { if(!navDd.contains(e.target)) setDd(false); });
+    document.addEventListener('keydown', e => { if(e.key === 'Escape') setDd(false); });
+    navDd.querySelectorAll('.nav-dd-menu a').forEach(a => a.addEventListener('click', () => setDd(false)));
+  }
 
   // order modal
   const WORKER_URL = 'https://prohar-contact-form.prohar2f.workers.dev';
