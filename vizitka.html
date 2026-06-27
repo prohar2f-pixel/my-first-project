@@ -255,7 +255,7 @@
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --p:#a855f7;--pd:#7c3aed;--pb:#c084fc;
+  --p:#a855f7;--p-rgb:168 85 247;--pd:#7c3aed;--pb:#c084fc;
   --bg:#0a0a0a;--bg2:#0d0d14;--bg-deep:rgba(10,6,22,.9);
   --card:rgba(255,255,255,.025);--card-solid:rgba(6,6,16,.95);
   --border:rgba(255,255,255,.07);
@@ -274,7 +274,7 @@ body{background:var(--bg);color:var(--text);
   line-height:1.6;overflow-x:hidden}
 ::-webkit-scrollbar{width:5px}
 ::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:rgba(168,85,247,.3);border-radius:3px}
+::-webkit-scrollbar-thumb{background:rgb(var(--p-rgb) / .3);border-radius:3px}
 
 /* grain */
 body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:var(--z-grain);opacity:.4;
@@ -291,9 +291,9 @@ header{
   font-family:'Oswald',sans-serif;
   font-size:1.35rem;font-weight:700;letter-spacing:.04em;
   text-decoration:none;color:var(--p);
-  border:1.5px solid rgba(168,85,247,.55);
+  border:1.5px solid rgb(var(--p-rgb) / .55);
   padding:4px 10px;border-radius:6px;
-  text-shadow:0 0 12px rgba(168,85,247,.5);
+  text-shadow:0 0 12px rgb(var(--p-rgb) / .5);
 }
 .logo.logo-img{border:none;padding:0;text-shadow:none;background:none}
 nav{display:flex;gap:32px}
@@ -305,14 +305,14 @@ nav a:hover{color:var(--text)}
 /* ── UTILS ──────────────────────────────── */
 .wrap{max-width:1160px;margin:0 auto;padding:0 60px}
 section{padding:96px 0}
-.divider{height:1px;background:linear-gradient(to right,transparent,rgba(168,85,247,.18),transparent);max-width:1160px;margin:0 auto}
+.divider{height:1px;background:linear-gradient(to right,transparent,rgb(var(--p-rgb) / .18),transparent);max-width:1160px;margin:0 auto}
 
 .sec-label{
   display:flex;align-items:center;justify-content:center;
   gap:14px;font-size:.68rem;font-weight:700;letter-spacing:.22em;
   text-transform:uppercase;color:var(--p);margin-bottom:20px;
 }
-.sec-label::before,.sec-label::after{content:'';width:36px;height:1px;background:rgba(168,85,247,.4)}
+.sec-label::before,.sec-label::after{content:'';width:36px;height:1px;background:rgb(var(--p-rgb) / .4)}
 h2.sec-h{text-align:center;font-size:clamp(2.4rem,4.8vw,3.8rem);font-weight:700;
   color:#fff;line-height:1.12;margin-bottom:16px}
 h2.sec-h span{color:var(--p)}
@@ -335,14 +335,14 @@ h2.sec-h span{color:var(--p)}
 /* smoke layers */
 .btn::before{
   content:'';position:absolute;inset:-18px;border-radius:22px;
-  background:radial-gradient(ellipse at center,rgba(168,85,247,.55) 0%,rgba(109,40,217,.2) 45%,transparent 68%);
+  background:radial-gradient(ellipse at center,rgb(var(--p-rgb) / .55) 0%,rgba(109,40,217,.2) 45%,transparent 68%);
   filter:blur(20px);opacity:0;transform:scale(.8);
   transition:opacity .4s,transform .5s;z-index:-1;pointer-events:none;
 }
 .btn::after{
   content:'';position:absolute;left:8%;right:8%;
   bottom:calc(100% - 10px);height:55px;
-  background:radial-gradient(ellipse at 50% 100%,rgba(168,85,247,.6) 0%,rgba(139,92,246,.2) 40%,transparent 68%);
+  background:radial-gradient(ellipse at 50% 100%,rgb(var(--p-rgb) / .6) 0%,rgba(139,92,246,.2) 40%,transparent 68%);
   filter:blur(16px);opacity:0;transform:translateY(18px) scaleX(.6);
   transition:opacity .35s,transform .5s;z-index:-1;pointer-events:none;
 }
@@ -352,10 +352,10 @@ h2.sec-h span{color:var(--p)}
 @keyframes sglow{0%,100%{transform:scale(1.1);opacity:.8}50%{transform:scale(1.28);opacity:1}}
 @keyframes srise{0%{opacity:.65;transform:translateY(0) scaleX(1.1) scaleY(.7)}100%{opacity:0;transform:translateY(-45px) scaleX(1.7) scaleY(2)}}
 
-.btn-primary{background:var(--p);color:#fff;box-shadow:0 0 22px rgba(168,85,247,.42),0 4px 16px rgba(0,0,0,.3)}
-.btn-primary:hover{background:#9333ea;box-shadow:0 0 44px rgba(168,85,247,.75),0 8px 28px rgba(0,0,0,.4)}
-.btn-outline{background:rgba(255,255,255,.04);color:var(--text);border:1px solid rgba(168,85,247,.35)}
-.btn-outline:hover{border-color:rgba(168,85,247,.75);background:rgba(168,85,247,.07);box-shadow:0 0 28px rgba(168,85,247,.22)}
+.btn-primary{background:var(--p);color:#fff;box-shadow:0 0 22px rgb(var(--p-rgb) / .42),0 4px 16px rgba(0,0,0,.3)}
+.btn-primary:hover{background:#9333ea;box-shadow:0 0 44px rgb(var(--p-rgb) / .75),0 8px 28px rgba(0,0,0,.4)}
+.btn-outline{background:rgba(255,255,255,.04);color:var(--text);border:1px solid rgb(var(--p-rgb) / .35)}
+.btn-outline:hover{border-color:rgb(var(--p-rgb) / .75);background:rgb(var(--p-rgb) / .07);box-shadow:0 0 28px rgb(var(--p-rgb) / .22)}
 
 /* ── CARDS ──────────────────────────────── */
 .card{
@@ -365,11 +365,11 @@ h2.sec-h span{color:var(--p)}
 }
 .card::before{
   content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(to right,transparent,rgba(168,85,247,.65),transparent);
+  background:linear-gradient(to right,transparent,rgb(var(--p-rgb) / .65),transparent);
   transform:scaleX(0);transition:transform .4s;
 }
-.card:hover{transform:translateY(-6px);border-color:rgba(168,85,247,.28);
-  box-shadow:0 22px 60px rgba(0,0,0,.45),0 0 32px rgba(168,85,247,.07)}
+.card:hover{transform:translateY(-6px);border-color:rgb(var(--p-rgb) / .28);
+  box-shadow:0 22px 60px rgba(0,0,0,.45),0 0 32px rgb(var(--p-rgb) / .07)}
 .card:hover::before{transform:scaleX(1)}
 
 /* ════════════════════════════════════════
@@ -451,7 +451,7 @@ h2.sec-h span{color:var(--p)}
 .hl:hover{color:var(--p)}
 .hl-ico{
   width:26px;height:26px;border-radius:50%;
-  border:1px solid rgba(168,85,247,.35);
+  border:1px solid rgb(var(--p-rgb) / .35);
   display:flex;align-items:center;justify-content:center;
   font-size:.6rem;font-weight:700;color:var(--p);flex-shrink:0;
 }
@@ -464,26 +464,26 @@ h2.sec-h span{color:var(--p)}
 
 .card.srv-card{
   background:var(--card-solid);
-  border:1.5px solid rgba(168,85,247,.42);
+  border:1.5px solid rgb(var(--p-rgb) / .42);
   border-radius:18px;padding:36px 32px 32px;
-  box-shadow:0 0 28px rgba(168,85,247,.06),inset 0 1px 0 rgba(168,85,247,.12);
+  box-shadow:0 0 28px rgb(var(--p-rgb) / .06),inset 0 1px 0 rgb(var(--p-rgb) / .12);
 }
 
 .srv-num{
   position:absolute;top:20px;right:20px;
   font-size:.72rem;font-weight:700;letter-spacing:.05em;
   color:#fff;
-  border:1.5px solid rgba(168,85,247,.55);
+  border:1.5px solid rgb(var(--p-rgb) / .55);
   width:36px;height:36px;border-radius:10px;
   display:flex;align-items:center;justify-content:center;
-  background:rgba(168,85,247,.22);
-  box-shadow:0 0 10px rgba(168,85,247,.2);
+  background:rgb(var(--p-rgb) / .22);
+  box-shadow:0 0 10px rgb(var(--p-rgb) / .2);
 }
 
 .srv-ico{
   width:80px;height:80px;color:var(--p);
   margin-bottom:26px;
-  filter:drop-shadow(0 0 12px rgba(168,85,247,.5));
+  filter:drop-shadow(0 0 12px rgb(var(--p-rgb) / .5));
 }
 
 .srv-card h3{font-size:1.22rem;font-weight:700;color:#fff;margin-bottom:10px}
@@ -507,7 +507,7 @@ h2.sec-h span{color:var(--p)}
 .trust-row{display:flex;gap:18px;align-items:flex-start}
 .trust-row-ico{
   flex-shrink:0;width:48px;height:48px;border-radius:13px;
-  border:1px solid rgba(168,85,247,.3);background:rgba(168,85,247,.07);
+  border:1px solid rgb(var(--p-rgb) / .3);background:rgb(var(--p-rgb) / .07);
   display:flex;align-items:center;justify-content:center;color:var(--p);
 }
 .trust-row-ico svg{width:26px;height:26px}
@@ -523,30 +523,30 @@ h2.sec-h span{color:var(--p)}
 .res-row:last-child{border-bottom:none}
 .res-check-lg{
   flex-shrink:0;width:50px;height:50px;border-radius:50%;color:var(--p);
-  background:rgba(168,85,247,.12);border:1.5px solid rgba(168,85,247,.5);
+  background:rgb(var(--p-rgb) / .12);border:1.5px solid rgb(var(--p-rgb) / .5);
   display:flex;align-items:center;justify-content:center;
-  box-shadow:0 0 18px rgba(168,85,247,.15);
+  box-shadow:0 0 18px rgb(var(--p-rgb) / .15);
 }
 .res-row-body{flex:1;min-width:0}
 .res-row h3{font-size:1.12rem;font-weight:700;color:#fff;margin-bottom:7px}
 .res-row p{color:var(--muted);font-size:.88rem;line-height:1.7;margin-bottom:14px}
 .r-note{
   display:flex;align-items:flex-start;gap:8px;padding:11px 14px;
-  border:1.5px dashed rgba(168,85,247,.35);
+  border:1.5px dashed rgb(var(--p-rgb) / .35);
   border-radius:10px;font-size:.78rem;color:rgba(220,220,220,.6);
   text-align:left;line-height:1.5;
 }
 .r-note svg{flex-shrink:0;margin-top:1px}
 .guarantee{
   background:rgba(6,6,16,.9);
-  border:1.5px solid rgba(168,85,247,.38);
+  border:1.5px solid rgb(var(--p-rgb) / .38);
   border-radius:20px;padding:36px 44px;
   display:flex;align-items:center;gap:40px;
-  box-shadow:0 0 28px rgba(168,85,247,.06);
+  box-shadow:0 0 28px rgb(var(--p-rgb) / .06);
 }
 .g-ico{
   width:86px;height:86px;flex-shrink:0;color:var(--p);
-  filter:drop-shadow(0 0 16px rgba(168,85,247,.5));
+  filter:drop-shadow(0 0 16px rgb(var(--p-rgb) / .5));
 }
 .guarantee h3{font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:8px;line-height:1.35}
 .guarantee h3 span{color:var(--p)}
@@ -560,9 +560,9 @@ h2.sec-h span{color:var(--p)}
   position:relative;overflow:hidden;padding:60px 40px 0;
   max-width:1200px;margin:0 auto;
   background:var(--bg-deep);
-  border:1.5px solid rgba(168,85,247,.38);
+  border:1.5px solid rgb(var(--p-rgb) / .38);
   border-radius:24px;
-  box-shadow:0 0 60px rgba(120,0,255,.1),inset 0 1px 0 rgba(168,85,247,.1);
+  box-shadow:0 0 60px rgba(120,0,255,.1),inset 0 1px 0 rgb(var(--p-rgb) / .1);
 }
 .cta-inner{
   display:grid;grid-template-columns:1fr 1fr;
@@ -629,22 +629,22 @@ footer{padding:52px 0 36px;text-align:center}
 .price-big-title .p{color:var(--p);display:block}
 .price-sub{font-size:.9rem;color:rgba(255,255,255,.55);line-height:1.7;max-width:520px}
 .price-sub a{color:var(--p);text-decoration:underline;text-underline-offset:3px}
-.price-gear{flex-shrink:0;font-size:8rem;line-height:1;text-align:right;filter:drop-shadow(0 0 40px rgba(168,85,247,.9)) drop-shadow(0 0 80px rgba(120,0,255,.5));margin-top:-20px;user-select:none}
+.price-gear{flex-shrink:0;font-size:8rem;line-height:1;text-align:right;filter:drop-shadow(0 0 40px rgb(var(--p-rgb) / .9)) drop-shadow(0 0 80px rgba(120,0,255,.5));margin-top:-20px;user-select:none}
 .carousel-row{display:flex;align-items:center;gap:12px;margin-top:40px}
 .carousel-outer{flex:1;overflow:hidden}
 .price-grid{display:flex;gap:24px;overflow-x:scroll;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;padding-bottom:8px}
 .price-grid::-webkit-scrollbar{display:none}
-.car-btn{flex-shrink:0;width:44px;height:44px;border-radius:50%;background:rgba(10,6,22,.9);border:1.5px solid rgba(168,85,247,.4);color:var(--p);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,border-color .2s}
-.car-btn:hover{background:rgba(168,85,247,.12);border-color:rgba(168,85,247,.75)}
+.car-btn{flex-shrink:0;width:44px;height:44px;border-radius:50%;background:rgba(10,6,22,.9);border:1.5px solid rgb(var(--p-rgb) / .4);color:var(--p);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,border-color .2s}
+.car-btn:hover{background:rgb(var(--p-rgb) / .12);border-color:rgb(var(--p-rgb) / .75)}
 .car-btn:disabled{opacity:.28;cursor:default}
 .car-dots{display:flex;justify-content:center;gap:8px;margin-top:20px}
-.car-dot{width:8px;height:8px;border-radius:50%;background:rgba(168,85,247,.3);border:none;cursor:pointer;padding:0;transition:background .2s,transform .2s}
+.car-dot{width:8px;height:8px;border-radius:50%;background:rgb(var(--p-rgb) / .3);border:none;cursor:pointer;padding:0;transition:background .2s,transform .2s}
 .car-dot.active{background:var(--p);transform:scale(1.35)}
 .price-card{position:relative;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px 28px;display:flex;flex-direction:column;transition:border-color .3s,transform .3s;flex:0 0 calc((100% - 48px) / 3);scroll-snap-align:start}
-.price-card:hover{border-color:rgba(168,85,247,.4);transform:translateY(-4px)}
-.price-card.featured{border-color:rgba(168,85,247,.5);background:rgba(168,85,247,.06)}
+.price-card:hover{border-color:rgb(var(--p-rgb) / .4);transform:translateY(-4px)}
+.price-card.featured{border-color:rgb(var(--p-rgb) / .5);background:rgb(var(--p-rgb) / .06)}
 .price-badge{position:absolute;top:8px;left:50%;transform:translateX(-50%);background:var(--p);color:#fff;font-size:.68rem;font-weight:700;letter-spacing:.1em;padding:4px 14px;border-radius:20px;white-space:nowrap}
-.price-icon{width:52px;height:52px;border-radius:12px;border:1px solid rgba(168,85,247,.35);background:rgba(168,85,247,.08);display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:16px}
+.price-icon{width:52px;height:52px;border-radius:12px;border:1px solid rgb(var(--p-rgb) / .35);background:rgb(var(--p-rgb) / .08);display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:16px}
 .price-name{font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:6px}
 .price-desc{font-size:.8rem;color:var(--muted);margin-bottom:20px;line-height:1.5}
 .price-amount{font-size:1.8rem;font-weight:700;color:var(--p);margin-bottom:4px}
@@ -653,7 +653,7 @@ footer{padding:52px 0 36px;text-align:center}
 .price-line{height:1px;background:var(--border);margin-bottom:20px}
 .price-feats{list-style:none;display:flex;flex-direction:column;gap:9px;margin:0;padding:0}
 .price-feats li{font-size:.8rem;color:rgba(255,255,255,.65);padding-left:28px;position:relative;line-height:1.4}
-.price-feats li::before{content:'✓';position:absolute;left:0;top:0;width:18px;height:18px;border-radius:50%;background:rgba(168,85,247,.15);border:1px solid rgba(168,85,247,.4);color:var(--p);font-size:.6rem;font-weight:700;line-height:18px;text-align:center}
+.price-feats li::before{content:'✓';position:absolute;left:0;top:0;width:18px;height:18px;border-radius:50%;background:rgb(var(--p-rgb) / .15);border:1px solid rgb(var(--p-rgb) / .4);color:var(--p);font-size:.6rem;font-weight:700;line-height:18px;text-align:center}
 
 /* ── ORDER BUTTON & MODAL ─── */
 .order-btn{margin-top:auto;padding-top:20px}
@@ -661,15 +661,15 @@ footer{padding:52px 0 36px;text-align:center}
 .order-btn button:hover{opacity:.85;transform:translateY(-1px)}
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:var(--z-modal);align-items:center;justify-content:center;padding:20px}
 .modal-overlay.open{display:flex}
-.modal-box{background:var(--bg-deep);border:1px solid rgba(168,85,247,.35);border-radius:20px;padding:36px 32px;width:100%;max-width:460px;position:relative;box-shadow:0 0 60px rgba(168,85,247,.15)}
+.modal-box{background:var(--bg-deep);border:1px solid rgb(var(--p-rgb) / .35);border-radius:20px;padding:36px 32px;width:100%;max-width:460px;position:relative;box-shadow:0 0 60px rgb(var(--p-rgb) / .15)}
 .modal-close{position:absolute;top:16px;right:20px;background:none;border:none;color:rgba(255,255,255,.35);font-size:1.5rem;cursor:pointer;line-height:1;padding:0}
 .modal-close:hover{color:rgba(255,255,255,.8)}
 .modal-title{font-size:1.25rem;font-weight:700;color:#fff;margin-bottom:6px}
 .modal-sub{font-size:.82rem;color:rgba(255,255,255,.4);margin-bottom:24px;line-height:1.5}
 .form-group{margin-bottom:16px}
 .form-group label{display:block;font-size:.72rem;color:rgba(255,255,255,.45);margin-bottom:6px;text-transform:uppercase;letter-spacing:.07em}
-.form-group input,.form-group select,.form-group textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(168,85,247,.2);border-radius:10px;padding:11px 14px;color:#fff;font-size:.88rem;outline:none;box-sizing:border-box;transition:border-color .2s;font-family:inherit}
-.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:rgba(168,85,247,.6)}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid rgb(var(--p-rgb) / .2);border-radius:10px;padding:11px 14px;color:#fff;font-size:.88rem;outline:none;box-sizing:border-box;transition:border-color .2s;font-family:inherit}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:rgb(var(--p-rgb) / .6)}
 .form-group select option{background:#0f0f1a;color:#fff}
 .form-group textarea{height:88px;resize:none}
 .form-submit{width:100%;padding:13px;background:var(--p-gradient);color:#fff;border:none;border-radius:12px;font-size:.92rem;font-weight:600;cursor:pointer;margin-top:8px;transition:opacity .2s;font-family:inherit}
@@ -688,7 +688,7 @@ footer{padding:52px 0 36px;text-align:center}
 .tzbot-text .sec-sub{text-align:left;margin-bottom:0}
 .tzbot-steps{display:flex;flex-direction:column;gap:18px;margin:28px 0 36px}
 .tzbot-step{display:flex;align-items:flex-start;gap:14px}
-.tzbot-step-num{flex-shrink:0;width:38px;height:38px;border-radius:50%;background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.35);display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:700;color:var(--p)}
+.tzbot-step-num{flex-shrink:0;width:38px;height:38px;border-radius:50%;background:rgb(var(--p-rgb) / .12);border:1px solid rgb(var(--p-rgb) / .35);display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:700;color:var(--p)}
 .tzbot-step-body h4{font-size:.98rem;font-weight:600;margin:0 0 4px;color:#fff}
 .tzbot-step-body p{font-size:.82rem;color:rgba(255,255,255,.5);margin:0}
 @media(max-width:1024px){
@@ -765,19 +765,13 @@ footer{padding:52px 0 36px;text-align:center}
 
 <!-- HEADER -->
 <header>
-  <a href="#" class="logo logo-img"><img src="assets/logo.png" alt="АП" style="height:60px;width:auto;display:block"></a>
+  <a href="#" class="logo logo-img"><img src="assets/logo.webp" alt="АП" style="height:60px;width:auto;display:block"></a>
   <nav id="nav">
     <a href="#about">Обо мне</a>
-    <a href="#services">Что делаю</a>
-    <a href="#trust">Преимущества</a>
-    <a href="#results">Результат</a>
-    <a href="#tzbot">ТЗ-бот</a>
-    <a href="#aeo">AEO</a>
+    <a href="#services">Услуги</a>
     <a href="#pricing">Цены</a>
     <a href="#faq">Вопросы</a>
     <a href="#contact">Контакты</a>
-    <a href="/aeo/" style="color:#c084fc;border:1px solid rgba(168,85,247,.4);border-radius:6px;padding:3px 10px;margin-left:4px">Аудит →</a>
-    <a href="https://aeo.aiprohar.ru/" style="color:#c084fc;border:1px solid rgba(168,85,247,.4);border-radius:6px;padding:3px 10px">AEO →</a>
   </nav>
   <button class="nav-toggle" id="navToggle" aria-label="Меню">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
@@ -836,7 +830,7 @@ footer{padding:52px 0 36px;text-align:center}
       background:radial-gradient(ellipse at 20% 50%,rgba(120,0,255,.18) 0%,rgba(80,0,200,.08) 35%,transparent 68%);
       filter:blur(40px)"></div>
     <div style="position:absolute;left:20px;top:30%;width:280px;height:320px;
-      background:radial-gradient(ellipse at 30% 40%,rgba(168,85,247,.14) 0%,transparent 60%);
+      background:radial-gradient(ellipse at 30% 40%,rgb(var(--p-rgb) / .14) 0%,transparent 60%);
       filter:blur(30px)"></div>
     <div style="position:absolute;left:-20px;top:50%;width:200px;height:200px;
       background:radial-gradient(ellipse,rgba(200,100,255,.1) 0%,transparent 65%);
@@ -848,7 +842,7 @@ footer{padding:52px 0 36px;text-align:center}
       background:radial-gradient(ellipse at 80% 50%,rgba(120,0,255,.15) 0%,rgba(80,0,200,.07) 38%,transparent 68%);
       filter:blur(42px)"></div>
     <div style="position:absolute;right:10px;top:35%;width:260px;height:300px;
-      background:radial-gradient(ellipse at 70% 40%,rgba(168,85,247,.12) 0%,transparent 60%);
+      background:radial-gradient(ellipse at 70% 40%,rgb(var(--p-rgb) / .12) 0%,transparent 60%);
       filter:blur(28px)"></div>
   </div>
 
@@ -949,7 +943,7 @@ footer{padding:52px 0 36px;text-align:center}
       background:radial-gradient(ellipse at 20% 50%,rgba(120,0,255,.18) 0%,rgba(80,0,200,.08) 35%,transparent 68%);
       filter:blur(40px)"></div>
     <div style="position:absolute;left:20px;top:35%;width:260px;height:300px;
-      background:radial-gradient(ellipse at 30% 40%,rgba(168,85,247,.13) 0%,transparent 60%);
+      background:radial-gradient(ellipse at 30% 40%,rgb(var(--p-rgb) / .13) 0%,transparent 60%);
       filter:blur(28px)"></div>
   </div>
   <!-- smoke right -->
@@ -958,7 +952,7 @@ footer{padding:52px 0 36px;text-align:center}
       background:radial-gradient(ellipse at 80% 50%,rgba(120,0,255,.15) 0%,rgba(80,0,200,.07) 38%,transparent 68%);
       filter:blur(42px)"></div>
     <div style="position:absolute;right:10px;top:35%;width:260px;height:300px;
-      background:radial-gradient(ellipse at 70% 40%,rgba(168,85,247,.12) 0%,transparent 60%);
+      background:radial-gradient(ellipse at 70% 40%,rgb(var(--p-rgb) / .12) 0%,transparent 60%);
       filter:blur(28px)"></div>
   </div>
 
@@ -1052,7 +1046,7 @@ footer{padding:52px 0 36px;text-align:center}
       background:radial-gradient(ellipse at 20% 50%,rgba(120,0,255,.18) 0%,rgba(80,0,200,.08) 35%,transparent 68%);
       filter:blur(40px)"></div>
     <div style="position:absolute;left:20px;top:35%;width:260px;height:300px;
-      background:radial-gradient(ellipse at 30% 40%,rgba(168,85,247,.13) 0%,transparent 60%);
+      background:radial-gradient(ellipse at 30% 40%,rgb(var(--p-rgb) / .13) 0%,transparent 60%);
       filter:blur(28px)"></div>
   </div>
   <!-- smoke right -->
@@ -1061,7 +1055,7 @@ footer{padding:52px 0 36px;text-align:center}
       background:radial-gradient(ellipse at 80% 50%,rgba(120,0,255,.15) 0%,rgba(80,0,200,.07) 38%,transparent 68%);
       filter:blur(42px)"></div>
     <div style="position:absolute;right:10px;top:35%;width:260px;height:300px;
-      background:radial-gradient(ellipse at 70% 40%,rgba(168,85,247,.12) 0%,transparent 60%);
+      background:radial-gradient(ellipse at 70% 40%,rgb(var(--p-rgb) / .12) 0%,transparent 60%);
       filter:blur(28px)"></div>
   </div>
 
@@ -1139,7 +1133,7 @@ footer{padding:52px 0 36px;text-align:center}
   <!-- smoke bg -->
   <div style="position:absolute;left:50%;top:0;transform:translateX(-50%);width:900px;height:100%;pointer-events:none;z-index:1">
     <div style="position:absolute;left:50%;top:20%;transform:translateX(-50%);width:700px;height:500px;
-      background:radial-gradient(ellipse at 50% 40%,rgba(120,0,255,.16) 0%,rgba(168,85,247,.08) 40%,transparent 70%);
+      background:radial-gradient(ellipse at 50% 40%,rgba(120,0,255,.16) 0%,rgb(var(--p-rgb) / .08) 40%,transparent 70%);
       filter:blur(48px)"></div>
   </div>
 
@@ -1148,7 +1142,7 @@ footer{padding:52px 0 36px;text-align:center}
 
       <!-- LEFT: image -->
       <div class="tzbot-img">
-        <img src="assets/tzbot_hero.png" alt="ИИ-бот берёт интервью для ТЗ" loading="lazy" decoding="async">
+        <img src="assets/tzbot_hero.webp" alt="ИИ-бот берёт интервью для ТЗ" loading="lazy" decoding="async">
       </div>
 
       <!-- RIGHT: text -->
@@ -1203,7 +1197,7 @@ footer{padding:52px 0 36px;text-align:center}
 <!-- ═══════════════════════════════════ AEO -->
 <section id="aeo" style="position:relative;overflow:hidden;padding:52px 0 48px">
 
-  <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:1000px;height:700px;pointer-events:none;z-index:1;background:radial-gradient(ellipse at 50% 50%,rgba(168,85,247,.15) 0%,transparent 65%);filter:blur(60px)"></div>
+  <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:1000px;height:700px;pointer-events:none;z-index:1;background:radial-gradient(ellipse at 50% 50%,rgb(var(--p-rgb) / .15) 0%,transparent 65%);filter:blur(60px)"></div>
 
   <div class="wrap" style="position:relative;z-index:2;text-align:center">
 
@@ -1213,7 +1207,7 @@ footer{padding:52px 0 36px;text-align:center}
       В 2026 году люди всё чаще ищут через нейросети, а не Google. AEO-оптимизация настраивает ваш сайт так, чтобы ИИ цитировал именно вас — с ценами, услугами и контактами.
     </p>
 
-    <div style="display:inline-block;background:rgba(168,85,247,.08);border:1px solid rgba(168,85,247,.25);border-radius:12px;padding:10px 18px;margin-bottom:16px">
+    <div style="display:inline-block;background:rgb(var(--p-rgb) / .08);border:1px solid rgb(var(--p-rgb) / .25);border-radius:12px;padding:10px 18px;margin-bottom:16px">
       <p style="margin:0;font-size:.8rem;color:#e8e8e8;line-height:1.55">
         🇷🇺 В России единицы специалистов умеют это настраивать.<br>Мы одни из первых начали применять AEO и уже видим результат.
       </p>
@@ -1222,44 +1216,44 @@ footer{padding:52px 0 36px;text-align:center}
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:0 auto 14px;max-width:900px;text-align:left">
 
       <div class="card" style="padding:12px 14px;border-radius:12px">
-        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,rgba(168,85,247,.2),rgba(124,58,237,.4));border:1px solid rgba(168,85,247,.35);display:flex;align-items:center;justify-content:center;margin-bottom:8px;box-shadow:0 0 10px rgba(168,85,247,.2)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="3"/><path d="M8 8V6a4 4 0 0 1 8 0v2"/><circle cx="9" cy="14" r="1.5" fill="#a855f7" stroke="none"/><circle cx="15" cy="14" r="1.5" fill="#a855f7" stroke="none"/><path d="M9 18h6"/><path d="M12 3v1"/></svg></div>
+        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,rgb(var(--p-rgb) / .2),rgba(124,58,237,.4));border:1px solid rgb(var(--p-rgb) / .35);display:flex;align-items:center;justify-content:center;margin-bottom:8px;box-shadow:0 0 10px rgb(var(--p-rgb) / .2)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="3"/><path d="M8 8V6a4 4 0 0 1 8 0v2"/><circle cx="9" cy="14" r="1.5" fill="#a855f7" stroke="none"/><circle cx="15" cy="14" r="1.5" fill="#a855f7" stroke="none"/><path d="M9 18h6"/><path d="M12 3v1"/></svg></div>
         <div style="font-weight:600;font-size:.82rem;margin-bottom:4px">ИИ-поисковики находят вас</div>
         <p style="font-size:.72rem;color:var(--muted);margin:0;line-height:1.5">Открываем доступ: ChatGPT, Perplexity и Claude получают разрешение зайти на ваш сайт и изучить его</p>
       </div>
 
       <div class="card" style="padding:12px 14px;border-radius:12px">
-        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,rgba(168,85,247,.2),rgba(124,58,237,.4));border:1px solid rgba(168,85,247,.35);display:flex;align-items:center;justify-content:center;margin-bottom:8px;box-shadow:0 0 10px rgba(168,85,247,.2)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A6.5 6.5 0 0 1 16 8.5c0 2.5-1.4 4.7-3.5 5.8V16h-3v-1.7A6.5 6.5 0 0 1 9.5 2z"/><path d="M9 16h6"/><path d="M10 19h4"/><path d="M12 19v2"/><path d="M7 8.5h.01M17 8.5h.01"/></svg></div>
+        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,rgb(var(--p-rgb) / .2),rgba(124,58,237,.4));border:1px solid rgb(var(--p-rgb) / .35);display:flex;align-items:center;justify-content:center;margin-bottom:8px;box-shadow:0 0 10px rgb(var(--p-rgb) / .2)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A6.5 6.5 0 0 1 16 8.5c0 2.5-1.4 4.7-3.5 5.8V16h-3v-1.7A6.5 6.5 0 0 1 9.5 2z"/><path d="M9 16h6"/><path d="M10 19h4"/><path d="M12 19v2"/><path d="M7 8.5h.01M17 8.5h.01"/></svg></div>
         <div style="font-weight:600;font-size:.82rem;margin-bottom:4px">ИИ понимает ваш бизнес</div>
         <p style="font-size:.72rem;color:var(--muted);margin:0;line-height:1.5">Нейросеть понимает кто вы, что предлагаете и сколько стоит — и рассказывает об этом своим пользователям</p>
       </div>
 
       <div class="card" style="padding:12px 14px;border-radius:12px">
-        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,rgba(168,85,247,.2),rgba(124,58,237,.4));border:1px solid rgba(168,85,247,.35);display:flex;align-items:center;justify-content:center;margin-bottom:8px;box-shadow:0 0 10px rgba(168,85,247,.2)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v3M12 20v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M1 12h3M20 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/><circle cx="12" cy="12" r="4"/><path d="M12 8v4l2 2"/></svg></div>
+        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,rgb(var(--p-rgb) / .2),rgba(124,58,237,.4));border:1px solid rgb(var(--p-rgb) / .35);display:flex;align-items:center;justify-content:center;margin-bottom:8px;box-shadow:0 0 10px rgb(var(--p-rgb) / .2)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v3M12 20v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M1 12h3M20 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/><circle cx="12" cy="12" r="4"/><path d="M12 8v4l2 2"/></svg></div>
         <div style="font-weight:600;font-size:.82rem;margin-bottom:4px">Ваши слова звучат вслух</div>
         <p style="font-size:.72rem;color:var(--muted);margin:0;line-height:1.5">Когда человек спрашивает голосового ассистента — он озвучивает именно ваши цены и услуги</p>
       </div>
 
       <div class="card" style="padding:12px 14px;border-radius:12px">
-        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,rgba(168,85,247,.2),rgba(124,58,237,.4));border:1px solid rgba(168,85,247,.35);display:flex;align-items:center;justify-content:center;margin-bottom:8px;box-shadow:0 0 10px rgba(168,85,247,.2)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M12 8v4"/><circle cx="12" cy="15" r=".5" fill="#a855f7" stroke="none"/></svg></div>
+        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,rgb(var(--p-rgb) / .2),rgba(124,58,237,.4));border:1px solid rgb(var(--p-rgb) / .35);display:flex;align-items:center;justify-content:center;margin-bottom:8px;box-shadow:0 0 10px rgb(var(--p-rgb) / .2)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M12 8v4"/><circle cx="12" cy="15" r=".5" fill="#a855f7" stroke="none"/></svg></div>
         <div style="font-weight:600;font-size:.82rem;margin-bottom:4px">ChatGPT отвечает про вас</div>
         <p style="font-size:.72rem;color:var(--muted);margin:0;line-height:1.5">Готовим ответы на частые вопросы так, чтобы нейросети давали их и ссылались на ваш сайт</p>
       </div>
 
       <div class="card" style="padding:12px 14px;border-radius:12px">
-        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,rgba(168,85,247,.2),rgba(124,58,237,.4));border:1px solid rgba(168,85,247,.35);display:flex;align-items:center;justify-content:center;margin-bottom:8px;box-shadow:0 0 10px rgba(168,85,247,.2)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c-2.5 3-4 5.5-4 9s1.5 6 4 9"/><path d="M12 3c2.5 3 4 5.5 4 9s-1.5 6-4 9"/></svg></div>
+        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,rgb(var(--p-rgb) / .2),rgba(124,58,237,.4));border:1px solid rgb(var(--p-rgb) / .35);display:flex;align-items:center;justify-content:center;margin-bottom:8px;box-shadow:0 0 10px rgb(var(--p-rgb) / .2)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c-2.5 3-4 5.5-4 9s1.5 6 4 9"/><path d="M12 3c2.5 3 4 5.5 4 9s-1.5 6-4 9"/></svg></div>
         <div style="font-weight:600;font-size:.82rem;margin-bottom:4px">Сайт полностью виден ИИ</div>
         <p style="font-size:.72rem;color:var(--muted);margin:0;line-height:1.5">Специальные настройки дают ИИ разрешение прочитать весь ваш контент — ничего не остаётся скрытым</p>
       </div>
 
       <div class="card" style="padding:12px 14px;border-radius:12px">
-        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,rgba(168,85,247,.2),rgba(124,58,237,.4));border:1px solid rgba(168,85,247,.35);display:flex;align-items:center;justify-content:center;margin-bottom:8px;box-shadow:0 0 10px rgba(168,85,247,.2)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-5"/></svg></div>
+        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,rgb(var(--p-rgb) / .2),rgba(124,58,237,.4));border:1px solid rgb(var(--p-rgb) / .35);display:flex;align-items:center;justify-content:center;margin-bottom:8px;box-shadow:0 0 10px rgb(var(--p-rgb) / .2)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-5"/></svg></div>
         <div style="font-weight:600;font-size:.82rem;margin-bottom:4px">Проверяем результат</div>
         <p style="font-size:.72rem;color:var(--muted);margin:0;line-height:1.5">После всех настроек убеждаемся что нейросети действительно видят ваш сайт правильно</p>
       </div>
 
     </div>
 
-    <div style="max-width:900px;width:100%;margin:0 auto;background:rgba(255,255,255,.03);border:1px solid rgba(168,85,247,.45);border-radius:18px;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;box-sizing:border-box">
+    <div style="max-width:900px;width:100%;margin:0 auto;background:rgba(255,255,255,.03);border:1px solid rgb(var(--p-rgb) / .45);border-radius:18px;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;box-sizing:border-box">
       <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
         <div>
           <div style="font-size:.66rem;font-weight:700;letter-spacing:.1em;color:var(--p);text-transform:uppercase;margin-bottom:4px">🔥 Акция — первые 5 заказов</div>
@@ -1269,9 +1263,9 @@ footer{padding:52px 0 36px;text-align:center}
           </div>
         </div>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
-          <span style="background:rgba(168,85,247,.15);border:1px solid rgba(168,85,247,.3);border-radius:20px;padding:3px 10px;font-size:.7rem;color:rgba(255,255,255,.65)">⏱ 1–2 дня</span>
-          <span style="background:rgba(168,85,247,.15);border:1px solid rgba(168,85,247,.3);border-radius:20px;padding:3px 10px;font-size:.7rem;color:rgba(255,255,255,.65)">Любой сайт</span>
-          <span style="background:rgba(168,85,247,.15);border:1px solid rgba(168,85,247,.3);border-radius:20px;padding:3px 10px;font-size:.7rem;color:rgba(255,255,255,.65)">Экономия 10 000 ₽</span>
+          <span style="background:rgb(var(--p-rgb) / .15);border:1px solid rgb(var(--p-rgb) / .3);border-radius:20px;padding:3px 10px;font-size:.7rem;color:rgba(255,255,255,.65)">⏱ 1–2 дня</span>
+          <span style="background:rgb(var(--p-rgb) / .15);border:1px solid rgb(var(--p-rgb) / .3);border-radius:20px;padding:3px 10px;font-size:.7rem;color:rgba(255,255,255,.65)">Любой сайт</span>
+          <span style="background:rgb(var(--p-rgb) / .15);border:1px solid rgb(var(--p-rgb) / .3);border-radius:20px;padding:3px 10px;font-size:.7rem;color:rgba(255,255,255,.65)">Экономия 10 000 ₽</span>
         </div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
@@ -1285,7 +1279,7 @@ footer{padding:52px 0 36px;text-align:center}
           </div>
           <span style="font-size:.76rem;color:rgba(255,255,255,.5)">Осталось 5 из 5 мест</span>
         </div>
-        <button type="button" class="btn btn-primary" style="font-size:.9rem;padding:11px 28px" onclick="(function(){var m=document.getElementById('orderModal');var s=document.getElementById('fservice');for(var i=0;i<s.options.length;i++){if(s.options[i].text.startsWith('AEO')){s.selectedIndex=i;break}}document.getElementById('formWrap').style.display='';document.getElementById('formSuccess').style.display='none';document.getElementById('orderForm').reset();m.classList.add('open')})()">Заказать за 5 000 ₽</button>
+        <button type="button" class="btn btn-primary" style="font-size:.9rem;padding:11px 28px" onclick="(function(){var m=document.getElementById('orderModal');var s=document.getElementById('fservice');document.getElementById('orderForm').reset();for(var i=0;i<s.options.length;i++){if(s.options[i].text.startsWith('AEO')){s.selectedIndex=i;break}}document.getElementById('formWrap').style.display='';document.getElementById('formSuccess').style.display='none';m.classList.add('open')})()">Заказать за 5 000 ₽</button>
         <p style="font-size:.63rem;color:rgba(255,255,255,.6);margin:0">Когда все места займут — цена вернётся к 15 000 ₽</p>
       </div>
     </div>
@@ -1298,8 +1292,8 @@ footer{padding:52px 0 36px;text-align:center}
 <!-- ═══════════════════════════════════ PRICING -->
 <section id="pricing" style="position:relative;overflow:hidden">
   <!-- Side glows -->
-  <div style="position:absolute;left:-200px;top:50%;transform:translateY(-50%);width:500px;height:700px;background:radial-gradient(ellipse,rgba(168,85,247,.2) 0%,transparent 70%);filter:blur(70px);pointer-events:none;z-index:0"></div>
-  <div style="position:absolute;right:-200px;top:50%;transform:translateY(-50%);width:500px;height:700px;background:radial-gradient(ellipse,rgba(168,85,247,.2) 0%,transparent 70%);filter:blur(70px);pointer-events:none;z-index:0"></div>
+  <div style="position:absolute;left:-200px;top:50%;transform:translateY(-50%);width:500px;height:700px;background:radial-gradient(ellipse,rgb(var(--p-rgb) / .2) 0%,transparent 70%);filter:blur(70px);pointer-events:none;z-index:0"></div>
+  <div style="position:absolute;right:-200px;top:50%;transform:translateY(-50%);width:500px;height:700px;background:radial-gradient(ellipse,rgb(var(--p-rgb) / .2) 0%,transparent 70%);filter:blur(70px);pointer-events:none;z-index:0"></div>
   <div class="wrap" style="position:relative;z-index:2">
 
     <div class="price-section-header">
@@ -1310,7 +1304,7 @@ footer{padding:52px 0 36px;text-align:center}
         </h2>
         <p class="price-sub fi">Фиксированные цены, никаких скрытых платежей.<br>По мере роста портфолио цены будут обновляться.</p>
       </div>
-      <div class="price-gear fi"><img src="assets/5.png" alt="" loading="lazy" decoding="async" style="width:300px;height:300px;object-fit:contain;margin-right:-60px"></div>
+      <div class="price-gear fi"><img src="assets/5.webp" alt="" loading="lazy" decoding="async" style="width:300px;height:300px;object-fit:contain;margin-right:-60px"></div>
     </div>
 
     <div class="carousel-row">
@@ -1322,7 +1316,7 @@ footer{padding:52px 0 36px;text-align:center}
       <div class="card price-card fi">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px">
           <div class="price-name" style="margin-bottom:0">Сайт-визитка</div>
-          <img src="assets/6.png" alt="" loading="lazy" decoding="async" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
+          <img src="assets/6.webp" alt="" loading="lazy" decoding="async" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
         </div>
         <div class="price-desc">Для специалистов, самозанятых и небольших компаний</div>
         <div class="price-amount">30 000 <span>₽</span></div>
@@ -1335,7 +1329,7 @@ footer{padding:52px 0 36px;text-align:center}
           <li>Форма обратной связи</li>
           <li>Базовое SEO</li>
         </ul>
-        <div class="order-btn"><button type="button">Заказать</button></div>
+        <div class="order-btn"><button type="button">Сделать визитку</button></div>
       </div>
 
       <!-- Лендинг -->
@@ -1343,7 +1337,7 @@ footer{padding:52px 0 36px;text-align:center}
         <div class="price-badge">ПОПУЛЯРНОЕ</div>
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px">
           <div class="price-name" style="margin-bottom:0">Лендинг</div>
-          <img src="assets/7.png" alt="" loading="lazy" decoding="async" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
+          <img src="assets/7.webp" alt="" loading="lazy" decoding="async" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
         </div>
         <div class="price-desc">Продающая страница с акцентом на конверсию и заявки</div>
         <div class="price-amount">50 000 <span>₽</span></div>
@@ -1356,14 +1350,14 @@ footer{padding:52px 0 36px;text-align:center}
           <li>Форма заявки / WhatsApp</li>
           <li>Подключение аналитики</li>
         </ul>
-        <div class="order-btn"><button type="button">Заказать</button></div>
+        <div class="order-btn"><button type="button">Запустить лендинг</button></div>
       </div>
 
       <!-- Корпоративный -->
       <div class="card price-card fi">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px">
           <div class="price-name" style="margin-bottom:0">Корпоративный сайт</div>
-          <img src="assets/8.png" alt="" loading="lazy" decoding="async" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
+          <img src="assets/8.webp" alt="" loading="lazy" decoding="async" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
         </div>
         <div class="price-desc">Полноценный сайт для бизнеса с несколькими разделами</div>
         <div class="price-amount">90 000 <span>₽</span></div>
@@ -1376,14 +1370,14 @@ footer{padding:52px 0 36px;text-align:center}
           <li>Блог или новости</li>
           <li>SEO-оптимизация</li>
         </ul>
-        <div class="order-btn"><button type="button">Заказать</button></div>
+        <div class="order-btn"><button type="button">Сделать корп. сайт</button></div>
       </div>
 
       <!-- Магазин -->
       <div class="card price-card fi">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px">
           <div class="price-name" style="margin-bottom:0">Интернет-магазин</div>
-          <img src="assets/9.png" alt="" loading="lazy" decoding="async" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
+          <img src="assets/9.webp" alt="" loading="lazy" decoding="async" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
         </div>
         <div class="price-desc">Полноценный магазин с каталогом, корзиной и оплатой</div>
         <div class="price-amount">от 150 000 <span>₽</span></div>
@@ -1396,14 +1390,14 @@ footer{padding:52px 0 36px;text-align:center}
           <li>Личный кабинет</li>
           <li>Управление товарами</li>
         </ul>
-        <div class="order-btn"><button type="button">Заказать</button></div>
+        <div class="order-btn"><button type="button">Открыть магазин</button></div>
       </div>
 
       <!-- Telegram-бот -->
       <div class="card price-card fi">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px">
           <div class="price-name" style="margin-bottom:0">Telegram-бот</div>
-          <img src="assets/10.png" alt="" loading="lazy" decoding="async" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
+          <img src="assets/10.webp" alt="" loading="lazy" decoding="async" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
         </div>
         <div class="price-desc">Автоматизация продаж, поддержки или сбора заявок</div>
         <div class="price-amount">от 25 000 <span>₽</span></div>
@@ -1416,14 +1410,14 @@ footer{padding:52px 0 36px;text-align:center}
           <li>Уведомления владельцу</li>
           <li>ИИ по запросу</li>
         </ul>
-        <div class="order-btn"><button type="button">Заказать</button></div>
+        <div class="order-btn"><button type="button">Запустить бота</button></div>
       </div>
 
       <!-- ИИ -->
       <div class="card price-card fi">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px">
           <div class="price-name" style="margin-bottom:0">ИИ-интеграция</div>
-          <img src="assets/11.png" alt="" loading="lazy" decoding="async" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
+          <img src="assets/11.webp" alt="" loading="lazy" decoding="async" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
         </div>
         <div class="price-desc">Нейросети в ваш сайт или бизнес-процесс</div>
         <div class="price-amount">от 20 000 <span>₽</span></div>
@@ -1436,7 +1430,7 @@ footer{padding:52px 0 36px;text-align:center}
           <li>Автоматизация задач</li>
           <li>Консультация бесплатно</li>
         </ul>
-        <div class="order-btn"><button type="button">Заказать</button></div>
+        <div class="order-btn"><button type="button">Внедрить нейросеть</button></div>
       </div>
 
       <!-- AEO-оптимизация -->
@@ -1459,7 +1453,7 @@ footer{padding:52px 0 36px;text-align:center}
           <li>Голосовые ассистенты называют вас</li>
           <li>Полная видимость для нейросетей</li>
         </ul>
-        <div class="order-btn"><button type="button">Заказать</button></div>
+        <div class="order-btn"><button type="button">Настроить AEO</button></div>
       </div>
 
         </div>
@@ -1522,8 +1516,8 @@ footer{padding:52px 0 36px;text-align:center}
 
       <!-- RIGHT: photo -->
       <div class="cta-photo-wrap fi">
-        <img src="assets/photo_cta.png" alt="Александр Прохоров" class="cta-photo" loading="lazy" decoding="async">
-        <img src="assets/photo_cta_mobile.png" alt="Александр Прохоров" class="cta-photo cta-photo-mobile" loading="lazy" decoding="async">
+        <img src="assets/photo_cta.webp" alt="Александр Прохоров" class="cta-photo" loading="lazy" decoding="async">
+        <img src="assets/photo_cta_mobile.webp" alt="Александр Прохоров" class="cta-photo cta-photo-mobile" loading="lazy" decoding="async">
       </div>
     </div>
 
@@ -1620,8 +1614,8 @@ footer{padding:52px 0 36px;text-align:center}
 
 <style>
 .faq-item{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:border-color .25s}
-.faq-item:hover{border-color:rgba(168,85,247,.28)}
-.faq-item[open]{border-color:rgba(168,85,247,.4)}
+.faq-item:hover{border-color:rgb(var(--p-rgb) / .28)}
+.faq-item[open]{border-color:rgb(var(--p-rgb) / .4)}
 .faq-item summary{padding:20px 24px;font-size:.97rem;font-weight:600;color:#fff;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
 .faq-item summary::-webkit-details-marker{display:none}
 .faq-item summary::after{content:'+';font-size:1.4rem;font-weight:300;color:var(--p);flex-shrink:0;transition:transform .25s}
@@ -1629,8 +1623,8 @@ footer{padding:52px 0 36px;text-align:center}
 .faq-item p{padding:0 24px 20px;color:var(--muted);font-size:.88rem;line-height:1.75;margin:0}
 .faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
 @media(max-width:768px){.faq-grid{grid-template-columns:1fr}}
-.sticky-cta{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:1500;display:flex;align-items:center;gap:10px;padding:14px 32px;background:var(--p);color:#fff;border:none;border-radius:50px;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 0 24px rgba(168,85,247,.55),0 4px 16px rgba(0,0,0,.4);white-space:nowrap;transition:transform .2s,box-shadow .2s}
-.sticky-cta:hover{transform:translateX(-50%) translateY(-3px);box-shadow:0 0 36px rgba(168,85,247,.8),0 8px 24px rgba(0,0,0,.5)}
+.sticky-cta{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:1500;display:flex;align-items:center;gap:10px;padding:14px 32px;background:var(--p);color:#fff;border:none;border-radius:50px;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 0 24px rgb(var(--p-rgb) / .55),0 4px 16px rgba(0,0,0,.4);white-space:nowrap;transition:transform .2s,box-shadow .2s}
+.sticky-cta:hover{transform:translateX(-50%) translateY(-3px);box-shadow:0 0 36px rgb(var(--p-rgb) / .8),0 8px 24px rgba(0,0,0,.5)}
 @media(max-width:600px){.sticky-cta{bottom:16px;padding:13px 24px;font-size:.93rem}}
 </style>
 
@@ -1646,8 +1640,8 @@ footer{padding:52px 0 36px;text-align:center}
 </section>
 
 <style>
-.final-cta-btn{padding:18px 52px;background:var(--p);color:#fff;border:none;border-radius:50px;font-size:1.13rem;font-weight:700;cursor:pointer;box-shadow:0 0 32px rgba(168,85,247,.5);transition:transform .2s,box-shadow .2s}
-.final-cta-btn:hover{transform:translateY(-3px);box-shadow:0 0 52px rgba(168,85,247,.8)}
+.final-cta-btn{padding:18px 52px;background:var(--p);color:#fff;border:none;border-radius:50px;font-size:1.13rem;font-weight:700;cursor:pointer;box-shadow:0 0 32px rgb(var(--p-rgb) / .5);transition:transform .2s,box-shadow .2s}
+.final-cta-btn:hover{transform:translateY(-3px);box-shadow:0 0 52px rgb(var(--p-rgb) / .8)}
 @media(max-width:600px){.final-cta-btn{padding:15px 32px;font-size:1rem}}
 </style>
 
@@ -1737,13 +1731,13 @@ footer{padding:52px 0 36px;text-align:center}
 
   document.querySelectorAll('.order-btn button').forEach(btn => {
     btn.addEventListener('click', () => {
+      document.getElementById('orderForm').reset();
       const name = btn.closest('.price-card').querySelector('.price-name')?.textContent || '';
       for(let i=0;i<fservice.options.length;i++){
         if(fservice.options[i].text.startsWith(name)){fservice.selectedIndex=i;break}
       }
       document.getElementById('formWrap').style.display='';
       document.getElementById('formSuccess').style.display='none';
-      document.getElementById('orderForm').reset();
       modal.classList.add('open');
     });
   });
@@ -1788,13 +1782,13 @@ footer{padding:52px 0 36px;text-align:center}
       var btn = card.querySelector('.order-btn button');
       if(!btn) return;
       btn.addEventListener('click', function(){
+        document.getElementById('orderForm').reset();
         var name = (card.querySelector('.price-name') || {}).textContent || '';
         for(var j=0;j<fservice.options.length;j++){
           if(fservice.options[j].text.startsWith(name)){fservice.selectedIndex=j;break;}
         }
         document.getElementById('formWrap').style.display='';
         document.getElementById('formSuccess').style.display='none';
-        document.getElementById('orderForm').reset();
         modal.classList.add('open');
       });
     });
@@ -1895,7 +1889,7 @@ footer{padding:52px 0 36px;text-align:center}
 
 <!-- COOKIE BANNER -->
 <div id="cookieBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:3000;
-  background:rgba(10,6,22,.97);border-top:1px solid rgba(168,85,247,.3);
+  background:rgba(10,6,22,.97);border-top:1px solid rgb(var(--p-rgb) / .3);
   padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
   <p style="margin:0;font-size:.82rem;color:rgba(255,255,255,.6);line-height:1.5">
     Мы используем cookie-файлы. Это нужно для лучшей работы сайта.
@@ -1923,12 +1917,12 @@ footer{padding:52px 0 36px;text-align:center}
 
 <!-- ═══ EXIT INTENT POPUP ═══ -->
 <div id="exitPopup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:2500;align-items:center;justify-content:center;padding:20px">
-  <div role="dialog" aria-modal="true" aria-labelledby="exitPopupTitle" style="background:var(--card);border:1px solid rgba(168,85,247,.45);border-radius:20px;max-width:460px;width:100%;padding:40px 36px;text-align:center;position:relative;box-shadow:0 0 60px rgba(168,85,247,.25)">
+  <div role="dialog" aria-modal="true" aria-labelledby="exitPopupTitle" style="background:var(--card);border:1px solid rgb(var(--p-rgb) / .45);border-radius:20px;max-width:460px;width:100%;padding:40px 36px;text-align:center;position:relative;box-shadow:0 0 60px rgb(var(--p-rgb) / .25)">
     <button id="exitPopupClose" type="button" style="position:absolute;top:14px;right:18px;background:none;border:none;color:rgba(255,255,255,.4);font-size:1.5rem;cursor:pointer;line-height:1" aria-label="Закрыть">×</button>
     <div style="font-size:2rem;margin-bottom:12px">🚀</div>
     <h3 id="exitPopupTitle" style="color:#fff;font-size:1.35rem;font-weight:700;margin:0 0 12px;line-height:1.3">Подождите! Не уходите<br>без консультации</h3>
     <p style="color:var(--muted);font-size:.9rem;line-height:1.65;margin:0 0 28px">Консультация <b style="color:#fff">бесплатна</b>, отвечу в течение <b style="color:#fff">2–3 часов</b>. Расскажу, как сделать ваш проект быстро и без лишних затрат.</p>
-    <button id="exitPopupCta" style="width:100%;padding:15px 24px;background:var(--p);color:#fff;border:none;border-radius:50px;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:12px;box-shadow:0 0 28px rgba(168,85,247,.5);transition:transform .2s,box-shadow .2s">Записаться на консультацию</button>
+    <button id="exitPopupCta" style="width:100%;padding:15px 24px;background:var(--p);color:#fff;border:none;border-radius:50px;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:12px;box-shadow:0 0 28px rgb(var(--p-rgb) / .5);transition:transform .2s,box-shadow .2s">Записаться на консультацию</button>
     <button id="exitPopupNo" style="width:100%;padding:11px 24px;background:transparent;color:rgba(255,255,255,.35);border:1px solid rgba(255,255,255,.12);border-radius:50px;font-size:.88rem;cursor:pointer;transition:color .2s">Нет, спасибо</button>
   </div>
 </div>
