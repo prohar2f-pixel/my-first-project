@@ -265,7 +265,10 @@
 }
 html{scroll-behavior:smooth}
 *:focus-visible{outline:2px solid var(--p);outline-offset:3px;border-radius:3px}
-@media(prefers-reduced-motion:reduce){.fi{transition:none!important;opacity:1!important;transform:none!important}}
+@media(prefers-reduced-motion:reduce){
+  .fi{transition:none!important;opacity:1!important;transform:none!important}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
 body{background:var(--bg);color:var(--text);
   font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Inter',sans-serif;
   line-height:1.6;overflow-x:hidden}
@@ -500,46 +503,33 @@ h2.sec-h span{color:var(--p)}
 /* ════════════════════════════════════════
    TRUST
 ════════════════════════════════════════ */
-.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
-.trust-card{
-  background:var(--card-solid);
-  border:1.5px solid rgba(168,85,247,.42);
-  border-radius:18px;padding:36px 24px 32px;
-  text-align:center;
-  box-shadow:0 0 28px rgba(168,85,247,.06),inset 0 1px 0 rgba(168,85,247,.12);
+.trust-list{display:grid;grid-template-columns:1fr 1fr;gap:30px 52px}
+.trust-row{display:flex;gap:18px;align-items:flex-start}
+.trust-row-ico{
+  flex-shrink:0;width:48px;height:48px;border-radius:13px;
+  border:1px solid rgba(168,85,247,.3);background:rgba(168,85,247,.07);
+  display:flex;align-items:center;justify-content:center;color:var(--p);
 }
-.trust-ico{
-  width:72px;height:72px;color:var(--p);margin:0 auto 24px;display:block;
-  filter:drop-shadow(0 0 12px rgba(168,85,247,.5));
-}
-.trust-card h3{font-size:1.08rem;font-weight:700;color:#fff;margin-bottom:10px}
-.trust-card .s-line{margin:0 auto 14px}
-.trust-card p{color:var(--muted);font-size:.84rem;line-height:1.7}
+.trust-row-ico svg{width:26px;height:26px}
+.trust-row h3{font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:7px;line-height:1.25}
+.trust-row p{color:var(--muted);font-size:.86rem;line-height:1.7}
 
 /* ════════════════════════════════════════
    RESULTS
 ════════════════════════════════════════ */
-.res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-bottom:22px}
-.res-card{
-  background:var(--card-solid);
-  border:1.5px solid rgba(168,85,247,.42);
-  border-radius:18px;padding:40px 28px 28px;
-  text-align:center;position:relative;
-  box-shadow:0 0 28px rgba(168,85,247,.06),inset 0 1px 0 rgba(168,85,247,.12);
-}
-.r-check{
-  position:absolute;top:18px;right:18px;
-  width:30px;height:30px;border-radius:8px;
-  background:rgba(168,85,247,.15);border:1.5px solid rgba(168,85,247,.5);
+.res-list{display:flex;flex-direction:column;margin-bottom:22px}
+.res-row{display:flex;gap:22px;align-items:flex-start;padding:26px 0;border-bottom:1px solid var(--border)}
+.res-row:first-child{padding-top:0}
+.res-row:last-child{border-bottom:none}
+.res-check-lg{
+  flex-shrink:0;width:50px;height:50px;border-radius:50%;color:var(--p);
+  background:rgba(168,85,247,.12);border:1.5px solid rgba(168,85,247,.5);
   display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 18px rgba(168,85,247,.15);
 }
-.res-ico{
-  width:76px;height:76px;color:var(--p);margin:0 auto 26px;display:block;
-  filter:drop-shadow(0 0 12px rgba(168,85,247,.5));
-}
-.res-card h3{font-size:1.08rem;font-weight:700;color:#fff;margin-bottom:10px}
-.res-card .s-line{margin:0 auto 14px}
-.res-card p{color:var(--muted);font-size:.85rem;line-height:1.7;margin-bottom:16px}
+.res-row-body{flex:1;min-width:0}
+.res-row h3{font-size:1.12rem;font-weight:700;color:#fff;margin-bottom:7px}
+.res-row p{color:var(--muted);font-size:.88rem;line-height:1.7;margin-bottom:14px}
 .r-note{
   display:flex;align-items:flex-start;gap:8px;padding:11px 14px;
   border:1.5px dashed rgba(168,85,247,.35);
@@ -590,7 +580,7 @@ h2.sec-h span{color:var(--p)}
 .cta-bw{display:flex;flex-direction:column;gap:7px;align-items:flex-start}
 .cta-note{
   display:flex;align-items:center;gap:5px;
-  font-size:.72rem;color:rgba(140,140,140,.7);padding-left:4px;
+  font-size:.72rem;color:var(--muted);padding-left:4px;
 }
 .cta-note svg{opacity:.55;flex-shrink:0}
 
@@ -626,9 +616,9 @@ h2.sec-h span{color:var(--p)}
 /* ── FOOTER ─────────────────────────────── */
 footer{padding:52px 0 36px;text-align:center}
 .f-heart{display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:6px}
-.f-thanks{color:rgba(107,107,107,.5);font-size:.8rem}
+.f-thanks{color:var(--muted);font-size:.8rem}
 .f-tl{color:var(--p);font-size:.84rem;font-style:italic;margin-bottom:28px}
-.f-copy{color:rgba(107,107,107,.28);font-size:.72rem}
+.f-copy{color:var(--muted);font-size:.72rem}
 
 /* ── RESPONSIVE ─────────────────────────── */
 /* ── PRICING ─────────────────────────────── */
@@ -702,7 +692,6 @@ footer{padding:52px 0 36px;text-align:center}
 .tzbot-step-body h4{font-size:.98rem;font-weight:600;margin:0 0 4px;color:#fff}
 .tzbot-step-body p{font-size:.82rem;color:rgba(255,255,255,.5);margin:0}
 @media(max-width:1024px){
-  .trust-grid{grid-template-columns:repeat(2,1fr)}
   .price-card{flex:0 0 calc((100% - 24px) / 2)}
   .cta-inner{grid-template-columns:1fr}
   .cta-photo-wrap{height:auto;overflow:visible;display:block;order:-1}
@@ -735,7 +724,8 @@ footer{padding:52px 0 36px;text-align:center}
   .hero-photo::after{background:linear-gradient(to bottom,transparent 60%,var(--bg) 100%)}
   .hn1,.hn2{font-size:clamp(2.8rem,10vw,4.2rem)}
   .hero-content{padding:0 20px}
-  .srv-grid,.res-grid{grid-template-columns:1fr}
+  .srv-grid{grid-template-columns:1fr}
+  .trust-list{grid-template-columns:1fr}
   .price-card{flex:0 0 100%}
   .price-gear{display:none}
   .price-big-title{font-size:clamp(2rem,8vw,3rem)}
@@ -762,7 +752,7 @@ footer{padding:52px 0 36px;text-align:center}
   }
 }
 @media(max-width:480px){
-  .trust-grid,.cta-feats{grid-template-columns:1fr}
+  .cta-feats{grid-template-columns:1fr}
   .hero-btns{flex-direction:column}
   header{padding:0 16px}
   .wrap{padding:0 16px}
@@ -801,7 +791,7 @@ footer{padding:52px 0 36px;text-align:center}
 
   <!-- photo -->
   <div class="hero-photo">
-    <img src="assets/photo.jpg" alt="Александр Прохоров">
+    <img src="assets/photo.jpg" alt="Александр Прохоров" fetchpriority="high" decoding="async">
   </div>
 
   <!-- content -->
@@ -975,64 +965,76 @@ footer{padding:52px 0 36px;text-align:center}
   <div class="wrap" style="position:relative;z-index:2">
     <h2 class="sec-h fi" style="font-size:clamp(2.4rem,4.8vw,3.8rem)">Подход, на который<br>можно <span style="font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.02em">положиться</span></h2>
     <p class="sec-sub fi">Работаю честно, на результат и в долгую.<br>За каждым проектом — внимание к деталям и ответственность.</p>
-    <div class="trust-grid">
+    <div class="trust-list">
 
       <!-- 1: target -->
-      <div class="trust-card fi">
-        <svg class="trust-ico" viewBox="0 0 72 72" fill="none">
-          <circle cx="36" cy="36" r="26" stroke="currentColor" stroke-width="2.2"/>
-          <circle cx="36" cy="36" r="16" stroke="currentColor" stroke-width="2.2"/>
-          <circle cx="36" cy="36" r="5" stroke="currentColor" stroke-width="2.2"/>
-          <path d="M52 20 L44 28" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-          <path d="M56 16 L52 20 L56 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <h3>Спокойный и системный подход</h3>
-        <div class="s-line"></div>
-        <p>Сначала разбираюсь в задаче и целях, потом предлагаю решение, которое работает. Без суеты и лишних движений.</p>
+      <div class="trust-row fi">
+        <div class="trust-row-ico">
+          <svg viewBox="0 0 72 72" fill="none">
+            <circle cx="36" cy="36" r="26" stroke="currentColor" stroke-width="2.2"/>
+            <circle cx="36" cy="36" r="16" stroke="currentColor" stroke-width="2.2"/>
+            <circle cx="36" cy="36" r="5" stroke="currentColor" stroke-width="2.2"/>
+            <path d="M52 20 L44 28" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M56 16 L52 20 L56 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <h3>Спокойный и системный подход</h3>
+          <p>Сначала разбираюсь в задаче и целях, потом предлагаю решение, которое работает. Без суеты и лишних движений.</p>
+        </div>
       </div>
 
       <!-- 2: rounded square minus -->
-      <div class="trust-card fi">
-        <svg class="trust-ico" viewBox="0 0 72 72" fill="none">
-          <rect x="10" y="10" width="52" height="52" rx="14" stroke="currentColor" stroke-width="2.2"/>
-          <path d="M22 36h28" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-        </svg>
-        <h3>Без лишнего</h3>
-        <div class="s-line"></div>
-        <p>Не перегружаю проект ненужным функционалом. Только то, что действительно важно и приносит результат.</p>
+      <div class="trust-row fi">
+        <div class="trust-row-ico">
+          <svg viewBox="0 0 72 72" fill="none">
+            <rect x="10" y="10" width="52" height="52" rx="14" stroke="currentColor" stroke-width="2.2"/>
+            <path d="M22 36h28" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <h3>Без лишнего</h3>
+          <p>Не перегружаю проект ненужным функционалом. Только то, что действительно важно и приносит результат.</p>
+        </div>
       </div>
 
       <!-- 3: bar chart + arrow -->
-      <div class="trust-card fi">
-        <svg class="trust-ico" viewBox="0 0 72 72" fill="none">
-          <rect x="8"  y="44" width="14" height="18" rx="3" stroke="currentColor" stroke-width="2.2"/>
-          <rect x="29" y="30" width="14" height="32" rx="3" stroke="currentColor" stroke-width="2.2"/>
-          <rect x="50" y="18" width="14" height="44" rx="3" stroke="currentColor" stroke-width="2.2"/>
-          <path d="M44 12 L56 12 L56 24" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M32 26 L56 12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-        </svg>
-        <h3>Довожу до результата</h3>
-        <div class="s-line"></div>
-        <p>Всегда на связи, держу в курсе каждого этапа и довожу проект до запуска. Для меня важен не процесс, а ваш результат.</p>
+      <div class="trust-row fi">
+        <div class="trust-row-ico">
+          <svg viewBox="0 0 72 72" fill="none">
+            <rect x="8"  y="44" width="14" height="18" rx="3" stroke="currentColor" stroke-width="2.2"/>
+            <rect x="29" y="30" width="14" height="32" rx="3" stroke="currentColor" stroke-width="2.2"/>
+            <rect x="50" y="18" width="14" height="44" rx="3" stroke="currentColor" stroke-width="2.2"/>
+            <path d="M44 12 L56 12 L56 24" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M32 26 L56 12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <h3>Довожу до результата</h3>
+          <p>Всегда на связи, держу в курсе каждого этапа и довожу проект до запуска. Для меня важен не процесс, а ваш результат.</p>
+        </div>
       </div>
 
       <!-- 4: brain circuit -->
-      <div class="trust-card fi">
-        <svg class="trust-ico" viewBox="0 0 72 72" fill="none">
-          <path d="M36 14 C30 14 24 17 21 22 C17 22 13 25 12 30 C10 34 11 39 14 42 C13 46 15 51 19 53 C22 56 27 57 31 55 L36 55" stroke="currentColor" stroke-width="2"/>
-          <path d="M36 14 C42 14 48 17 51 22 C55 22 59 25 60 30 C62 34 61 39 58 42 C59 46 57 51 53 53 C50 56 45 57 41 55 L36 55" stroke="currentColor" stroke-width="2"/>
-          <path d="M36 14 L36 55" stroke="currentColor" stroke-width="1.4" stroke-dasharray="3 3.5"/>
-          <circle cx="24" cy="30" r="2.8" fill="currentColor"/>
-          <circle cx="36" cy="24" r="2.8" fill="currentColor"/>
-          <circle cx="48" cy="30" r="2.8" fill="currentColor"/>
-          <circle cx="28" cy="42" r="2.8" fill="currentColor"/>
-          <circle cx="44" cy="42" r="2.8" fill="currentColor"/>
-          <path d="M24 30 L36 24 L48 30" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M24 30 L28 42 M48 30 L44 42 M28 42 L44 42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-        <h3>Постоянно развиваюсь</h3>
-        <div class="s-line"></div>
-        <p>Слежу за технологиями, тестирую новое и внедряю лучшие инструменты, чтобы давать вам максимум пользы.</p>
+      <div class="trust-row fi">
+        <div class="trust-row-ico">
+          <svg viewBox="0 0 72 72" fill="none">
+            <path d="M36 14 C30 14 24 17 21 22 C17 22 13 25 12 30 C10 34 11 39 14 42 C13 46 15 51 19 53 C22 56 27 57 31 55 L36 55" stroke="currentColor" stroke-width="2"/>
+            <path d="M36 14 C42 14 48 17 51 22 C55 22 59 25 60 30 C62 34 61 39 58 42 C59 46 57 51 53 53 C50 56 45 57 41 55 L36 55" stroke="currentColor" stroke-width="2"/>
+            <path d="M36 14 L36 55" stroke="currentColor" stroke-width="1.4" stroke-dasharray="3 3.5"/>
+            <circle cx="24" cy="30" r="2.8" fill="currentColor"/>
+            <circle cx="36" cy="24" r="2.8" fill="currentColor"/>
+            <circle cx="48" cy="30" r="2.8" fill="currentColor"/>
+            <circle cx="28" cy="42" r="2.8" fill="currentColor"/>
+            <circle cx="44" cy="42" r="2.8" fill="currentColor"/>
+            <path d="M24 30 L36 24 L48 30" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M24 30 L28 42 M48 30 L44 42 M28 42 L44 42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <h3>Постоянно развиваюсь</h3>
+          <p>Слежу за технологиями, тестирую новое и внедряю лучшие инструменты, чтобы давать вам максимум пользы.</p>
+        </div>
       </div>
 
     </div>
@@ -1066,60 +1068,50 @@ footer{padding:52px 0 36px;text-align:center}
   <div class="wrap" style="position:relative;z-index:2">
     <h2 class="sec-h fi" style="font-size:clamp(2.4rem,4.8vw,3.8rem)">Ваша цель — мой приоритет.<br><span style="font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.02em">Вы получаете результат.</span></h2>
     <p class="sec-sub fi">Я беру на себя всё техническое и организационное,<br>чтобы вы получили готовое решение и занимались своим бизнесом.</p>
-    <div class="res-grid">
+    <div class="res-list">
 
-      <!-- CARD 1: browser wireframe -->
-      <div class="res-card fi">
-        <div class="r-check"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-6" stroke="#a855f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <svg class="res-ico" viewBox="0 0 76 76" fill="none">
-          <rect x="6" y="10" width="64" height="50" rx="7" stroke="currentColor" stroke-width="2.3"/>
-          <path d="M6 24h64" stroke="currentColor" stroke-width="2.3"/>
-          <circle cx="16" cy="17" r="2.5" fill="currentColor"/>
-          <circle cx="24" cy="17" r="2.5" fill="currentColor"/>
-          <rect x="14" y="31" width="20" height="20" rx="3" stroke="currentColor" stroke-width="2"/>
-          <path d="M42 34h18M42 41h14M42 48h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-        <h3>Понятный и современный сайт</h3>
-        <div class="s-line"></div>
-        <p>Удобный, адаптивный и продающий сайт, который вызывает доверие у клиентов и помогает бизнесу расти.</p>
-        <div class="r-note">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-6" stroke="#a855f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Дизайн, структура и контент — всё продумано за вас
+      <!-- 1 -->
+      <div class="res-row fi">
+        <div class="res-check-lg">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12l4.5 4.5L19 8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="res-row-body">
+          <h3>Понятный и современный сайт</h3>
+          <p>Удобный, адаптивный и продающий сайт, который вызывает доверие у клиентов и помогает бизнесу расти.</p>
+          <div class="r-note">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-6" stroke="#a855f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Дизайн, структура и контент — всё продумано за вас
+          </div>
         </div>
       </div>
 
-      <!-- CARD 2: rocket -->
-      <div class="res-card fi">
-        <div class="r-check"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-6" stroke="#a855f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <svg class="res-ico" viewBox="0 0 76 76" fill="none">
-          <path d="M38 10 C38 10 52 16 52 32 L52 46 L38 56 L24 46 L24 32 C24 16 38 10 38 10Z" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"/>
-          <circle cx="38" cy="32" r="7" stroke="currentColor" stroke-width="2.3"/>
-          <path d="M24 42 L14 52 L18 56 L24 50" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M52 42 L62 52 L58 56 L52 50" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M32 56 L34 66 L38 62 L42 66 L44 56" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <h3>Быстрый запуск</h3>
-        <div class="s-line"></div>
-        <p>Запускаю проект в короткие сроки без потери качества. Чёткие этапы работы и прозрачные сроки.</p>
-        <div class="r-note">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-6" stroke="#a855f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Сдаю в срок и держу вас в курсе на каждом этапе
+      <!-- 2 -->
+      <div class="res-row fi">
+        <div class="res-check-lg">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12l4.5 4.5L19 8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="res-row-body">
+          <h3>Быстрый запуск</h3>
+          <p>Запускаю проект в короткие сроки без потери качества. Чёткие этапы работы и прозрачные сроки.</p>
+          <div class="r-note">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-6" stroke="#a855f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Сдаю в срок и держу вас в курсе на каждом этапе
+          </div>
         </div>
       </div>
 
-      <!-- CARD 3: person -->
-      <div class="res-card fi">
-        <div class="r-check"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-6" stroke="#a855f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <svg class="res-ico" viewBox="0 0 76 76" fill="none">
-          <circle cx="38" cy="24" r="13" stroke="currentColor" stroke-width="2.3"/>
-          <path d="M14 66 C14 52 25 43 38 43 C51 43 62 52 62 66" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/>
-        </svg>
-        <h3>Минимум вашего участия</h3>
-        <div class="s-line"></div>
-        <p>Беру на себя все технические и организационные моменты. От вас — только необходимые материалы.</p>
-        <div class="r-note">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-6" stroke="#a855f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Вам не нужно разбираться в технических деталях
+      <!-- 3 -->
+      <div class="res-row fi">
+        <div class="res-check-lg">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12l4.5 4.5L19 8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="res-row-body">
+          <h3>Минимум вашего участия</h3>
+          <p>Беру на себя все технические и организационные моменты. От вас — только необходимые материалы.</p>
+          <div class="r-note">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-6" stroke="#a855f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Вам не нужно разбираться в технических деталях
+          </div>
         </div>
       </div>
 
@@ -1156,7 +1148,7 @@ footer{padding:52px 0 36px;text-align:center}
 
       <!-- LEFT: image -->
       <div class="tzbot-img">
-        <img src="assets/tzbot_hero.png" alt="ИИ-бот берёт интервью для ТЗ">
+        <img src="assets/tzbot_hero.png" alt="ИИ-бот берёт интервью для ТЗ" loading="lazy" decoding="async">
       </div>
 
       <!-- RIGHT: text -->
@@ -1227,7 +1219,7 @@ footer{padding:52px 0 36px;text-align:center}
       </p>
     </div>
 
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 auto 14px;max-width:900px;text-align:left">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:0 auto 14px;max-width:900px;text-align:left">
 
       <div class="card" style="padding:12px 14px;border-radius:12px">
         <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,rgba(168,85,247,.2),rgba(124,58,237,.4));border:1px solid rgba(168,85,247,.35);display:flex;align-items:center;justify-content:center;margin-bottom:8px;box-shadow:0 0 10px rgba(168,85,247,.2)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="3"/><path d="M8 8V6a4 4 0 0 1 8 0v2"/><circle cx="9" cy="14" r="1.5" fill="#a855f7" stroke="none"/><circle cx="15" cy="14" r="1.5" fill="#a855f7" stroke="none"/><path d="M9 18h6"/><path d="M12 3v1"/></svg></div>
@@ -1294,7 +1286,7 @@ footer{padding:52px 0 36px;text-align:center}
           <span style="font-size:.76rem;color:rgba(255,255,255,.5)">Осталось 5 из 5 мест</span>
         </div>
         <button type="button" class="btn btn-primary" style="font-size:.9rem;padding:11px 28px" onclick="(function(){var m=document.getElementById('orderModal');var s=document.getElementById('fservice');for(var i=0;i<s.options.length;i++){if(s.options[i].text.startsWith('AEO')){s.selectedIndex=i;break}}document.getElementById('formWrap').style.display='';document.getElementById('formSuccess').style.display='none';document.getElementById('orderForm').reset();m.classList.add('open')})()">Заказать за 5 000 ₽</button>
-        <p style="font-size:.63rem;color:rgba(255,255,255,.28);margin:0">Когда все места займут — цена вернётся к 15 000 ₽</p>
+        <p style="font-size:.63rem;color:rgba(255,255,255,.6);margin:0">Когда все места займут — цена вернётся к 15 000 ₽</p>
       </div>
     </div>
 
@@ -1318,7 +1310,7 @@ footer{padding:52px 0 36px;text-align:center}
         </h2>
         <p class="price-sub fi">Фиксированные цены, никаких скрытых платежей.<br>По мере роста портфолио цены будут обновляться.</p>
       </div>
-      <div class="price-gear fi"><img src="assets/5.png" alt="" style="width:300px;height:300px;object-fit:contain;margin-right:-60px"></div>
+      <div class="price-gear fi"><img src="assets/5.png" alt="" loading="lazy" decoding="async" style="width:300px;height:300px;object-fit:contain;margin-right:-60px"></div>
     </div>
 
     <div class="carousel-row">
@@ -1330,7 +1322,7 @@ footer{padding:52px 0 36px;text-align:center}
       <div class="card price-card fi">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px">
           <div class="price-name" style="margin-bottom:0">Сайт-визитка</div>
-          <img src="assets/6.png" alt="" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
+          <img src="assets/6.png" alt="" loading="lazy" decoding="async" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
         </div>
         <div class="price-desc">Для специалистов, самозанятых и небольших компаний</div>
         <div class="price-amount">30 000 <span>₽</span></div>
@@ -1351,7 +1343,7 @@ footer{padding:52px 0 36px;text-align:center}
         <div class="price-badge">ПОПУЛЯРНОЕ</div>
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px">
           <div class="price-name" style="margin-bottom:0">Лендинг</div>
-          <img src="assets/7.png" alt="" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
+          <img src="assets/7.png" alt="" loading="lazy" decoding="async" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
         </div>
         <div class="price-desc">Продающая страница с акцентом на конверсию и заявки</div>
         <div class="price-amount">50 000 <span>₽</span></div>
@@ -1371,7 +1363,7 @@ footer{padding:52px 0 36px;text-align:center}
       <div class="card price-card fi">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px">
           <div class="price-name" style="margin-bottom:0">Корпоративный сайт</div>
-          <img src="assets/8.png" alt="" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
+          <img src="assets/8.png" alt="" loading="lazy" decoding="async" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
         </div>
         <div class="price-desc">Полноценный сайт для бизнеса с несколькими разделами</div>
         <div class="price-amount">90 000 <span>₽</span></div>
@@ -1391,7 +1383,7 @@ footer{padding:52px 0 36px;text-align:center}
       <div class="card price-card fi">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px">
           <div class="price-name" style="margin-bottom:0">Интернет-магазин</div>
-          <img src="assets/9.png" alt="" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
+          <img src="assets/9.png" alt="" loading="lazy" decoding="async" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
         </div>
         <div class="price-desc">Полноценный магазин с каталогом, корзиной и оплатой</div>
         <div class="price-amount">от 150 000 <span>₽</span></div>
@@ -1411,7 +1403,7 @@ footer{padding:52px 0 36px;text-align:center}
       <div class="card price-card fi">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px">
           <div class="price-name" style="margin-bottom:0">Telegram-бот</div>
-          <img src="assets/10.png" alt="" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
+          <img src="assets/10.png" alt="" loading="lazy" decoding="async" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
         </div>
         <div class="price-desc">Автоматизация продаж, поддержки или сбора заявок</div>
         <div class="price-amount">от 25 000 <span>₽</span></div>
@@ -1431,7 +1423,7 @@ footer{padding:52px 0 36px;text-align:center}
       <div class="card price-card fi">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px">
           <div class="price-name" style="margin-bottom:0">ИИ-интеграция</div>
-          <img src="assets/11.png" alt="" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
+          <img src="assets/11.png" alt="" loading="lazy" decoding="async" style="width:72px;height:72px;object-fit:contain;flex-shrink:0">
         </div>
         <div class="price-desc">Нейросети в ваш сайт или бизнес-процесс</div>
         <div class="price-amount">от 20 000 <span>₽</span></div>
@@ -1530,8 +1522,8 @@ footer{padding:52px 0 36px;text-align:center}
 
       <!-- RIGHT: photo -->
       <div class="cta-photo-wrap fi">
-        <img src="assets/photo_cta.png" alt="Александр Прохоров" class="cta-photo">
-        <img src="assets/photo_cta_mobile.png" alt="Александр Прохоров" class="cta-photo cta-photo-mobile">
+        <img src="assets/photo_cta.png" alt="Александр Прохоров" class="cta-photo" loading="lazy" decoding="async">
+        <img src="assets/photo_cta_mobile.png" alt="Александр Прохоров" class="cta-photo cta-photo-mobile" loading="lazy" decoding="async">
       </div>
     </div>
 
@@ -1637,9 +1629,8 @@ footer{padding:52px 0 36px;text-align:center}
 .faq-item p{padding:0 24px 20px;color:var(--muted);font-size:.88rem;line-height:1.75;margin:0}
 .faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
 @media(max-width:768px){.faq-grid{grid-template-columns:1fr}}
-.sticky-cta{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:1500;display:flex;align-items:center;gap:10px;padding:14px 32px;background:var(--p);color:#fff;border:none;border-radius:50px;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 0 24px rgba(168,85,247,.55),0 4px 16px rgba(0,0,0,.4);white-space:nowrap;transition:transform .2s,box-shadow .2s;animation:sticky-pulse 2.8s ease-in-out infinite}
+.sticky-cta{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:1500;display:flex;align-items:center;gap:10px;padding:14px 32px;background:var(--p);color:#fff;border:none;border-radius:50px;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 0 24px rgba(168,85,247,.55),0 4px 16px rgba(0,0,0,.4);white-space:nowrap;transition:transform .2s,box-shadow .2s}
 .sticky-cta:hover{transform:translateX(-50%) translateY(-3px);box-shadow:0 0 36px rgba(168,85,247,.8),0 8px 24px rgba(0,0,0,.5)}
-@keyframes sticky-pulse{0%,100%{box-shadow:0 0 24px rgba(168,85,247,.55),0 4px 16px rgba(0,0,0,.4)}50%{box-shadow:0 0 40px rgba(168,85,247,.85),0 4px 20px rgba(0,0,0,.45)}}
 @media(max-width:600px){.sticky-cta{bottom:16px;padding:13px 24px;font-size:.93rem}}
 </style>
 
@@ -1674,10 +1665,10 @@ footer{padding:52px 0 36px;text-align:center}
 
 <!-- ═══ ORDER MODAL ═══ -->
 <div class="modal-overlay" id="orderModal">
-  <div class="modal-box">
-    <button class="modal-close" id="modalClose">×</button>
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal-close" id="modalClose" type="button" aria-label="Закрыть">×</button>
     <div id="formWrap">
-      <div class="modal-title">Оставить заявку</div>
+      <div class="modal-title" id="modalTitle">Оставить заявку</div>
       <div class="modal-sub">Свяжусь в течение часа и обсудим детали проекта</div>
       <form id="orderForm">
         <div class="form-group">
@@ -1771,11 +1762,17 @@ footer{padding:52px 0 36px;text-align:center}
 
     // Пре-клоны вставляем в обратном порядке:
     // итог → [card1clone..card7clone, real1..real7, card1clone..card7clone]
+    function makeClone(c){
+      var cl=c.cloneNode(true);
+      cl.setAttribute('aria-hidden','true');
+      var b=cl.querySelector('button'); if(b)b.tabIndex=-1;
+      return cl;
+    }
     realCards.slice(-NC).reverse().forEach(function(c){
-      track.insertBefore(c.cloneNode(true), track.firstChild);
+      track.insertBefore(makeClone(c), track.firstChild);
     });
     realCards.slice(0, NC).forEach(function(c){
-      track.appendChild(c.cloneNode(true));
+      track.appendChild(makeClone(c));
     });
 
     var all = Array.from(track.querySelectorAll('.price-card'));
@@ -1895,8 +1892,6 @@ footer{padding:52px 0 36px;text-align:center}
     }
   });
 </script>
-<canvas id="smokeCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none;mix-blend-mode:screen"></canvas>
-<script src="assets/fluid.js"></script>
 
 <!-- COOKIE BANNER -->
 <div id="cookieBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:3000;
@@ -1928,10 +1923,10 @@ footer{padding:52px 0 36px;text-align:center}
 
 <!-- ═══ EXIT INTENT POPUP ═══ -->
 <div id="exitPopup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:2500;align-items:center;justify-content:center;padding:20px">
-  <div style="background:var(--card);border:1px solid rgba(168,85,247,.45);border-radius:20px;max-width:460px;width:100%;padding:40px 36px;text-align:center;position:relative;box-shadow:0 0 60px rgba(168,85,247,.25)">
-    <button id="exitPopupClose" style="position:absolute;top:14px;right:18px;background:none;border:none;color:rgba(255,255,255,.4);font-size:1.5rem;cursor:pointer;line-height:1" aria-label="Закрыть">×</button>
+  <div role="dialog" aria-modal="true" aria-labelledby="exitPopupTitle" style="background:var(--card);border:1px solid rgba(168,85,247,.45);border-radius:20px;max-width:460px;width:100%;padding:40px 36px;text-align:center;position:relative;box-shadow:0 0 60px rgba(168,85,247,.25)">
+    <button id="exitPopupClose" type="button" style="position:absolute;top:14px;right:18px;background:none;border:none;color:rgba(255,255,255,.4);font-size:1.5rem;cursor:pointer;line-height:1" aria-label="Закрыть">×</button>
     <div style="font-size:2rem;margin-bottom:12px">🚀</div>
-    <h3 style="color:#fff;font-size:1.35rem;font-weight:700;margin:0 0 12px;line-height:1.3">Подождите! Не уходите<br>без консультации</h3>
+    <h3 id="exitPopupTitle" style="color:#fff;font-size:1.35rem;font-weight:700;margin:0 0 12px;line-height:1.3">Подождите! Не уходите<br>без консультации</h3>
     <p style="color:var(--muted);font-size:.9rem;line-height:1.65;margin:0 0 28px">Консультация <b style="color:#fff">бесплатна</b>, отвечу в течение <b style="color:#fff">2–3 часов</b>. Расскажу, как сделать ваш проект быстро и без лишних затрат.</p>
     <button id="exitPopupCta" style="width:100%;padding:15px 24px;background:var(--p);color:#fff;border:none;border-radius:50px;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:12px;box-shadow:0 0 28px rgba(168,85,247,.5);transition:transform .2s,box-shadow .2s">Записаться на консультацию</button>
     <button id="exitPopupNo" style="width:100%;padding:11px 24px;background:transparent;color:rgba(255,255,255,.35);border:1px solid rgba(255,255,255,.12);border-radius:50px;font-size:.88rem;cursor:pointer;transition:color .2s">Нет, спасибо</button>
@@ -1972,6 +1967,38 @@ footer{padding:52px 0 36px;text-align:center}
   if('ontouchstart' in window){
     setTimeout(openPopup, 35000);
   }
+})();
+</script>
+
+<!-- modal a11y: Esc для закрытия, фокус-ловушка и возврат фокуса -->
+<script>
+(function(){
+  var FOCUSABLE='a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+  var lastFocus=null;
+  var dialogs=['orderModal','exitPopup'].map(function(id){return document.getElementById(id);}).filter(Boolean);
+  function isOpen(d){return d.id==='orderModal'?d.classList.contains('open'):(d.style.display&&d.style.display!=='none');}
+  function getF(d){return Array.prototype.slice.call(d.querySelectorAll(FOCUSABLE)).filter(function(el){return el.offsetParent!==null;});}
+  function close(d){if(d.id==='orderModal')d.classList.remove('open');else d.style.display='none';}
+  dialogs.forEach(function(d){
+    var was=isOpen(d);
+    new MutationObserver(function(){
+      var now=isOpen(d);
+      if(now&&!was){lastFocus=document.activeElement;var f=getF(d);if(f.length)f[0].focus();}
+      else if(!now&&was){if(lastFocus&&lastFocus.focus)lastFocus.focus();lastFocus=null;}
+      was=now;
+    }).observe(d,{attributes:true,attributeFilter:['class','style']});
+  });
+  document.addEventListener('keydown',function(e){
+    var open=dialogs.filter(isOpen); if(!open.length)return;
+    var d=open[open.length-1];
+    if(e.key==='Escape'){e.preventDefault();close(d);return;}
+    if(e.key==='Tab'){
+      var f=getF(d); if(!f.length)return;
+      var first=f[0],last=f[f.length-1];
+      if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+      else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+    }
+  });
 })();
 </script>
 </body>
