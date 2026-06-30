@@ -1,6 +1,6 @@
 import asyncio
-import anthropic
-from config import ANTHROPIC_API_KEY
+from openai import AsyncOpenAI
+from config import OPENROUTER_API_KEY
 from database import get_profile_fields
 
 
@@ -19,8 +19,8 @@ def build_profile_text() -> str:
 
 
 async def generate_response(job_title: str, job_description: str, source: str) -> str:
-    if not ANTHROPIC_API_KEY:
-        raise ValueError("ANTHROPIC_API_KEY не задан в .env файле")
+    if not OPENROUTER_API_KEY:
+        raise ValueError("OPENROUTER_API_KEY не задан в .env файле")
 
     profile = build_profile_text()
     prompt = (
@@ -33,12 +33,14 @@ async def generate_response(job_title: str, job_description: str, source: str) -
         "Заканчивай предложением написать в личку для деталей."
     )
 
-    client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
-    message = await asyncio.to_thread(
-        client.messages.create,
-        model="claude-haiku-4-5-20251001",
+    client = AsyncOpenAI(
+        base_url="https://openrouter.ai/api/v1",
+        api_key=OPENROUTER_API_KEY,
+    )
+    message = await client.chat.completions.create(
+        model="anthropic/claude-haiku-4-5",
         max_tokens=500,
         system=profile,
         messages=[{"role": "user", "content": prompt}],
     )
-    return message.content[0].text
+    return message.choices[0].message.content

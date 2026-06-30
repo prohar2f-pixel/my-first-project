@@ -5,7 +5,7 @@ load_dotenv()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN", "")
 USER_ID = int(os.getenv("USER_ID", "0"))
-ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "")
 
 # Telegram API credentials for reading channels (get at my.telegram.org)
 API_ID = int(os.getenv("API_ID", "0"))
