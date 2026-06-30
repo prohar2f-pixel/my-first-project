@@ -1624,6 +1624,14 @@ async function processTextBatch(userId) {
 
 // ─── MODEL SELECTION ────────────────────────────────────────────────────────
 
+// Claude Code CLI умеет запускать только модели Claude.
+// Ключ = алиас для флага --model, значение = подпись на кнопке.
+const MODELS = {
+  haiku:  "🟢 Haiku — быстрая",
+  sonnet: "🔵 Sonnet — баланс",
+  opus:   "🟣 Opus — самая умная",
+};
+
 function getCurrentModel() {
   return state.model || "sonnet";
 }
@@ -1647,12 +1655,13 @@ function settingsKeyboard() {
 }
 
 function modelKeyboard() {
-  return new InlineKeyboard()
-    .text(state.model === "haiku" ? "✅ Haiku" : "Haiku", "model_haiku")
-    .text(state.model === "sonnet" ? "✅ Sonnet" : "Sonnet", "model_sonnet")
-    .text(state.model === "opus" ? "✅ Opus" : "Opus", "model_opus")
-    .row()
-    .text("← Назад", "settings_back");
+  const kb = new InlineKeyboard();
+  for (const [id, label] of Object.entries(MODELS)) {
+    const mark = state.model === id ? "✅ " : "";
+    kb.text(mark + label, `model_${id}`).row();
+  }
+  kb.text("← Назад", "settings_back");
+  return kb;
 }
 
 function modeKeyboard() {
@@ -1753,10 +1762,10 @@ bot.callbackQuery("settings_back", async (ctx) => {
 bot.callbackQuery(/^model_/, async (ctx) => {
   await ctx.answerCallbackQuery();
   const model = ctx.callbackQuery.data.replace("model_", "");
-  if (["haiku", "sonnet", "opus"].includes(model)) {
+  if (MODELS[model]) {
     state.model = model;
     saveState(state);
-    await ctx.editMessageText("Выбери модель:", { reply_markup: modelKeyboard() });
+    await ctx.reply(`Готово! Теперь отвечаю через ${MODELS[model]}`);
   }
 });
 

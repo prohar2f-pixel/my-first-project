@@ -6,7 +6,7 @@ from aiogram.filters import Command
 from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton, BotCommand
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-from config import BOT_TOKEN, USER_ID, CHECK_INTERVAL, ANTHROPIC_API_KEY
+from config import BOT_TOKEN, USER_ID, CHECK_INTERVAL, OPENROUTER_API_KEY
 from database import (
     init_db, is_seen, is_seen_fingerprint, is_seen_url, mark_seen, get_order,
     get_channels, add_channel, remove_channel,
@@ -106,7 +106,7 @@ async def cmd_start(message: Message):
     if message.from_user.id != USER_ID:
         return
     interval_min = CHECK_INTERVAL // 60
-    api_status = "✅" if ANTHROPIC_API_KEY else "❌ ANTHROPIC_API_KEY не задан"
+    api_status = "✅" if OPENROUTER_API_KEY else "❌ OPENROUTER_API_KEY не задан"
     await message.answer(
         f"🤖 <b>Freelance Monitor Bot</b>\n\n"
         f"Мониторю: FL.ru, Kwork, Freelance.ru, Weblancer, Freelancehunt, TG-каналы\n"
@@ -172,8 +172,8 @@ async def cb_check(callback: CallbackQuery):
 async def cb_reply_manual(callback: CallbackQuery):
     if callback.from_user.id != USER_ID:
         return
-    if not ANTHROPIC_API_KEY:
-        await callback.answer("❌ ANTHROPIC_API_KEY не задан в .env", show_alert=True)
+    if not OPENROUTER_API_KEY:
+        await callback.answer("❌ OPENROUTER_API_KEY не задан в .env", show_alert=True)
         return
     pending[callback.from_user.id] = "vacancy"
     await callback.answer()
@@ -224,7 +224,7 @@ async def cb_status(callback: CallbackQuery):
         return
     await callback.answer()
     interval_min = CHECK_INTERVAL // 60
-    api_ok = "✅ подключён" if ANTHROPIC_API_KEY else "❌ ключ не задан"
+    api_ok = "✅ подключён" if OPENROUTER_API_KEY else "❌ ключ не задан"
 
     stats = get_stats_by_source()
     total = sum(cnt for _, cnt in stats)
@@ -255,8 +255,8 @@ async def cb_status(callback: CallbackQuery):
 async def cb_reply(callback: CallbackQuery):
     if callback.from_user.id != USER_ID:
         return
-    if not ANTHROPIC_API_KEY:
-        await callback.answer("❌ ANTHROPIC_API_KEY не задан в .env", show_alert=True)
+    if not OPENROUTER_API_KEY:
+        await callback.answer("❌ OPENROUTER_API_KEY не задан в .env", show_alert=True)
         return
     await callback.answer("Генерирую отклик...")
     order_id = callback.data.split(":", 1)[1]
@@ -447,8 +447,8 @@ async def handle_text(message: Message):
         await show_profile(message)
 
     elif action == "vacancy":
-        if not ANTHROPIC_API_KEY:
-            await message.answer("❌ ANTHROPIC_API_KEY не задан в .env — отклики не работают.")
+        if not OPENROUTER_API_KEY:
+            await message.answer("❌ OPENROUTER_API_KEY не задан в .env — отклики не работают.")
             return
         msg = await message.answer("✍️ Генерирую отклик...")
         try:
@@ -516,8 +516,8 @@ async def main():
     if not USER_ID:
         print("ОШИБКА: USER_ID не задан в .env файле!")
         return
-    if not ANTHROPIC_API_KEY:
-        log.warning("ANTHROPIC_API_KEY не задан — функция откликов недоступна")
+    if not OPENROUTER_API_KEY:
+        log.warning("OPENROUTER_API_KEY не задан — функция откликов недоступна")
 
     await bot.set_my_commands([
         BotCommand(command="start",    description="🏠 Главное меню"),
