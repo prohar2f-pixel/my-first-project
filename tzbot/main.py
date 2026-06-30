@@ -15,16 +15,18 @@ from telegram.ext import (
     Application, CommandHandler, MessageHandler,
     CallbackQueryHandler, filters, ContextTypes
 )
-import anthropic
+from openai import OpenAI
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-TELEGRAM_TOKEN    = os.environ["TELEGRAM_TOKEN"]
-CLAUDE_API_KEY    = os.environ["CLAUDE_API_KEY"]
-ALEXANDER_CHAT_ID = int(os.environ["ALEXANDER_CHAT_ID"])
+TELEGRAM_TOKEN     = os.environ["TELEGRAM_TOKEN"]
+OPENROUTER_API_KEY = os.environ["OPENROUTER_API_KEY"]
+ALEXANDER_CHAT_ID  = int(os.environ["ALEXANDER_CHAT_ID"])
 
-claude = anthropic.Anthropic(api_key=CLAUDE_API_KEY)
+# OpenRouter (OpenAI-совместимый шлюз). Модель меняется одной переменной LLM_MODEL.
+LLM_MODEL = os.environ.get("LLM_MODEL", "anthropic/claude-haiku-4.5")
+llm = OpenAI(base_url="https://openrouter.ai/api/v1", api_key=OPENROUTER_API_KEY)
 
 URL_RE   = re.compile(r'https?://[^\s]+')
 TOPIC_RE = re.compile(r'\[ТЕМА:(\d+)\]')
@@ -610,14 +612,33 @@ def build_messages(type_label: str, first_msg: str, steps: list, user_content) -
     return msgs
 
 
+def _to_openai_content(content):
+    """Контент Anthropic (строка или список блоков) → формат OpenAI/OpenRouter."""
+    if isinstance(content, str):
+        return content
+    out = []
+    for block in content:
+        if block["type"] == "text":
+            out.append({"type": "text", "text": block["text"]})
+        elif block["type"] == "image":
+            src = block["source"]
+            out.append({
+                "type": "image_url",
+                "image_url": {"url": f"data:{src['media_type']};base64,{src['data']}"},
+            })
+    return out
+
+
 def call_claude_sync(system: str, messages: list, max_tokens: int = 800) -> str:
-    resp = claude.messages.create(
-        model="claude-haiku-4-5-20251001",
+    oai_messages = [{"role": "system", "content": system}]
+    for m in messages:
+        oai_messages.append({"role": m["role"], "content": _to_openai_content(m["content"])})
+    resp = llm.chat.completions.create(
+        model=LLM_MODEL,
         max_tokens=max_tokens,
-        system=system,
-        messages=messages,
+        messages=oai_messages,
     )
-    return resp.content[0].text
+    return resp.choices[0].message.content
 
 
 # ─── TZ SENDER ────────────────────────────────────────────────────────────────
@@ -843,7 +864,8 @@ async def handle_type_callback(update: Update, context: ContextTypes.DEFAULT_TYP
         await query.message.reply_text(clean_first)
     except Exception as e:
         logger.error(f"handle_type_callback: {e}", exc_info=True)
-        await query.message.reply_text("❌ Ошибка. Попробуй ещё раз /start")
+        error_text = f"❌ Ошибка: {str(e)[:100]}\n\nПопробуй /start или напиши @alex_prohar"
+        await query.message.reply_text(error_text)
 
 
 async def handle_back_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
