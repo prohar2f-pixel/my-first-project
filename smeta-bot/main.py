@@ -11,7 +11,6 @@ from datetime import datetime
 
 from telegram import Update, BotCommand
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
-from openai import OpenAI
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -22,11 +21,12 @@ SERPER_API_KEY = os.environ["SERPER_API_KEY"]
 
 logger.info(f"OpenRouter API Key loaded: {OPENROUTER_API_KEY[:20]}...")
 
-client = OpenAI(
-    api_key=OPENROUTER_API_KEY,
-    base_url="https://openrouter.io/api/v1",
-    default_headers={"HTTP-Referer": "smeta-bot", "X-Title": "Smeta Bot"}
-)
+OPENROUTER_HEADERS = {
+    "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+    "HTTP-Referer": "smeta-bot",
+    "X-Title": "Smeta Bot",
+    "Content-Type": "application/json"
+}
 
 cancelled_chats: set[int] = set()
 
@@ -83,24 +83,31 @@ def extract_materials_from_pdf(pdf_bytes: bytes) -> list[str]:
 
     logger.info("Calling OpenRouter API for material extraction...")
     try:
-        response = client.chat.completions.create(
-            model="anthropic/claude-opus-4.8",
-            max_tokens=2000,
-            messages=[{
-                "role": "user",
-                "content": f"""Из текста строительного проекта извлеки все наименования строительных материалов.
+        resp = httpx.post(
+            "https://openrouter.io/api/v1/chat/completions",
+            headers=OPENROUTER_HEADERS,
+            json={
+                "model": "anthropic/claude-opus-4.8",
+                "max_tokens": 2000,
+                "messages": [{
+                    "role": "user",
+                    "content": f"""Из текста строительного проекта извлеки все наименования строительных материалов.
 Верни ТОЛЬКО JSON-массив строк, без пояснений. Пример: ["Кирпич М150", "Цемент ПЦ 400", "Арматура А500С"]
 
 Текст проекта:
 {text[:8000]}"""
-            }]
+                }]
+            },
+            timeout=30
         )
+        resp.raise_for_status()
+        data = resp.json()
         logger.info("OpenRouter API responded successfully")
     except Exception as e:
         logger.error(f"OpenRouter API error: {type(e).__name__}: {str(e)}", exc_info=True)
         raise
 
-    raw = response.choices[0].message.content.strip()
+    raw = data["choices"][0]["message"]["content"].strip()
     try:
         if "```" in raw:
             raw = raw.split("```")[1].replace("json", "").strip()
@@ -122,12 +129,15 @@ def analyze_suppliers(material: str, search_results: list[dict], region: str) ->
         for r in search_results
     ])
 
-    response = client.chat.completions.create(
-        model="anthropic/claude-opus-4.8",
-        max_tokens=1500,
-        messages=[{
-            "role": "user",
-            "content": f"""Проанализируй результаты поиска поставщиков материала "{material}" с приоритетом региона {region}.
+    resp = httpx.post(
+        "https://openrouter.io/api/v1/chat/completions",
+        headers=OPENROUTER_HEADERS,
+        json={
+            "model": "anthropic/claude-opus-4.8",
+            "max_tokens": 1500,
+            "messages": [{
+                "role": "user",
+                "content": f"""Проанализируй результаты поиска поставщиков материала "{material}" с приоритетом региона {region}.
 
 Результаты поиска (включая отзывы и рейтинги):
 {snippets}
@@ -149,10 +159,14 @@ def analyze_suppliers(material: str, search_results: list[dict], region: str) ->
 }}
 
 {region} и область ставь первыми. Максимум 5 поставщиков. Учитывай отзывы при оценке надёжности."""
-        }]
+            }]
+        },
+        timeout=30
     )
+    resp.raise_for_status()
+    data = resp.json()
 
-    raw = response.choices[0].message.content.strip()
+    raw = data["choices"][0]["message"]["content"].strip()
     try:
         if "```" in raw:
             raw = raw.split("```")[1].replace("json", "").strip()
@@ -284,11 +298,16 @@ async def test_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text("🔄 Проверяю соединение с OpenRouter API...")
     try:
         await asyncio.to_thread(
-            lambda: client.chat.completions.create(
-                model="anthropic/claude-opus-4.8",
-                max_tokens=10,
-                messages=[{"role": "user", "content": "ping"}]
-            )
+            lambda: httpx.post(
+                "https://openrouter.io/api/v1/chat/completions",
+                headers=OPENROUTER_HEADERS,
+                json={
+                    "model": "anthropic/claude-opus-4.8",
+                    "max_tokens": 10,
+                    "messages": [{"role": "user", "content": "ping"}]
+                },
+                timeout=10
+            ).raise_for_status()
         )
         await update.message.reply_text("✅ OpenRouter API работает!")
     except Exception as e:
