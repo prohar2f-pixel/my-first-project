@@ -1,35 +1,26 @@
 import os
-from fastapi import FastAPI, HTTPException, UploadFile, File, Depends
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
-from dotenv import load_dotenv
-import httpx
-import pandas as pd
+import json
+import urllib.request
+import urllib.error
 from datetime import datetime
 import logging
+from typing import Optional, List
 
-# Загрузить переменные окружения
-load_dotenv()
+# Загрузить переменные окружения из .env
+def load_env():
+    if os.path.exists('.env'):
+        with open('.env') as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#'):
+                    key, value = line.split('=', 1)
+                    os.environ[key] = value
+
+load_env()
 
 # Настройка логирования
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-# Инициализация FastAPI
-app = FastAPI(
-    title="Accounting Assistant API",
-    description="API для ассистента бухгалтера",
-    version="1.0.0"
-)
-
-# CORS
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 # Переменные окружения
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
@@ -38,6 +29,16 @@ OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 
 if not OPENROUTER_API_KEY:
     raise ValueError("OPENROUTER_API_KEY not found in .env")
+
+# Импортируем FastAPI если доступен, иначе используем встроенный HTTP сервер
+try:
+    from fastapi import FastAPI, HTTPException, UploadFile, File
+    from fastapi.middleware.cors import CORSMiddleware
+    from pydantic import BaseModel
+    FASTAPI_AVAILABLE = True
+except ImportError:
+    FASTAPI_AVAILABLE = False
+    logger.warning("FastAPI не установлен, используется упрощённая версия")
 
 # Модели данных
 from pydantic import BaseModel
