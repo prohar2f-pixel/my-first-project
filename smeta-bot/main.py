@@ -28,7 +28,8 @@ OPENROUTER_HEADERS = {
     "Content-Type": "application/json"
 }
 
-logger.info(f"OpenRouter Headers: {{'Authorization': 'Bearer {OPENROUTER_API_KEY[:10]}...', 'HTTP-Referer': 'smeta-bot', 'X-Title': 'Smeta Bot'}}")
+logger.info(f"OpenRouter Headers configured")
+logger.info(f"OpenRouter API Base URL: https://openrouter.io/api/v1/chat/completions")
 
 cancelled_chats: set[int] = set()
 
@@ -300,19 +301,21 @@ async def cancel_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
 async def test_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text("🔄 Проверяю соединение с OpenRouter API...")
     try:
+        url = "https://openrouter.io/api/v1/chat/completions"
+        payload = {
+            "model": "anthropic/claude-opus-4.8",
+            "max_tokens": 10,
+            "messages": [{"role": "user", "content": "ping"}]
+        }
+        logger.info(f"Sending request to: {url}")
+        logger.info(f"Headers: {list(OPENROUTER_HEADERS.keys())}")
+        logger.info(f"Payload: {payload}")
+
         resp = await asyncio.to_thread(
-            lambda: httpx.post(
-                "https://openrouter.io/api/v1/chat/completions",
-                headers=OPENROUTER_HEADERS,
-                json={
-                    "model": "anthropic/claude-opus-4.8",
-                    "max_tokens": 10,
-                    "messages": [{"role": "user", "content": "ping"}]
-                },
-                timeout=10
-            )
+            lambda: httpx.post(url, headers=OPENROUTER_HEADERS, json=payload, timeout=10)
         )
         logger.info(f"OpenRouter response status: {resp.status_code}")
+        logger.info(f"OpenRouter response headers: {dict(resp.headers)}")
         logger.info(f"OpenRouter response body: {resp.text[:500]}")
         resp.raise_for_status()
         await update.message.reply_text("✅ OpenRouter API работает!")
