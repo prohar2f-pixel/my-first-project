@@ -56,7 +56,7 @@ DEBUG=False
 
 **Frontend** (`.env`):
 ```
-REACT_APP_API_URL=http://localhost:8000
+VITE_API_URL=http://localhost:8000
 ```
 
 ### 4. Запусти приложение
@@ -70,10 +70,10 @@ python main.py
 **Frontend** (в другом терминале):
 ```bash
 cd frontend
-npm start
+npm run dev
 ```
 
-Приложение будет доступно на `http://localhost:3000`
+Приложение будет доступно на `http://localhost:3030`
 
 ## Архитектура
 

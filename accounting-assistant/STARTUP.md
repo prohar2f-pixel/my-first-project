@@ -104,14 +104,14 @@ npm run dev
 Увидишь:
 ```
 VITE v5.0.8  ready in 123 ms
-➜  Local:   http://localhost:3000/
+➜  Local:   http://localhost:3030/
 ```
 
 ---
 
 ## Шаг 3: Открыть приложение
 
-1. Открой браузер: http://localhost:3000
+1. Открой браузер: http://localhost:3030
 2. Введи пароль (тот, что указал в `SECRET_KEY`)
 3. Готово! 🎉
 
