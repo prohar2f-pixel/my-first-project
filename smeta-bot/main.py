@@ -20,6 +20,8 @@ TELEGRAM_TOKEN = os.environ["TELEGRAM_TOKEN"]
 OPENROUTER_API_KEY = os.environ["OPENROUTER_API_KEY"]
 SERPER_API_KEY = os.environ["SERPER_API_KEY"]
 
+logger.info(f"OpenRouter API Key loaded: {OPENROUTER_API_KEY[:20]}...")
+
 client = OpenAI(
     api_key=OPENROUTER_API_KEY,
     base_url="https://openrouter.io/api/v1",
