@@ -77,7 +77,7 @@ def extract_materials_from_pdf(pdf_bytes: bytes) -> list[str]:
 
     logger.info("Calling Claude API for material extraction...")
     response = client.chat.completions.create(
-        model="anthropic/claude-3.5-sonnet",
+        model="anthropic/claude-opus-4.8",
         max_tokens=2000,
         messages=[{
             "role": "user",
@@ -113,7 +113,7 @@ def analyze_suppliers(material: str, search_results: list[dict], region: str) ->
     ])
 
     response = client.chat.completions.create(
-        model="anthropic/claude-3.5-sonnet",
+        model="anthropic/claude-opus-4.8",
         max_tokens=1500,
         messages=[{
             "role": "user",
@@ -275,7 +275,7 @@ async def test_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     try:
         await asyncio.to_thread(
             lambda: client.chat.completions.create(
-                model="anthropic/claude-3.5-sonnet",
+                model="anthropic/claude-opus-4.8",
                 max_tokens=10,
                 messages=[{"role": "user", "content": "ping"}]
             )
