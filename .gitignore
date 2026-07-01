@@ -18,3 +18,4 @@ drafts/
 !inna-therapy/images/*.png
 .gstack/
 .superpowers/
+smeta-bot/.env*
