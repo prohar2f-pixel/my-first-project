@@ -19,7 +19,7 @@ TELEGRAM_TOKEN = os.environ["TELEGRAM_TOKEN"]
 OPENROUTER_API_KEY = os.environ["OPENROUTER_API_KEY"]
 SERPER_API_KEY = os.environ["SERPER_API_KEY"]
 
-logger.info(f"OpenRouter API Key loaded: {OPENROUTER_API_KEY[:20]}...")
+logger.info(f"OpenRouter API Key loaded: {OPENROUTER_API_KEY[:20]}... (length: {len(OPENROUTER_API_KEY)})")
 
 OPENROUTER_HEADERS = {
     "Authorization": f"Bearer {OPENROUTER_API_KEY}",
@@ -27,6 +27,8 @@ OPENROUTER_HEADERS = {
     "X-Title": "Smeta Bot",
     "Content-Type": "application/json"
 }
+
+logger.info(f"OpenRouter Headers: {{'Authorization': 'Bearer {OPENROUTER_API_KEY[:10]}...', 'HTTP-Referer': 'smeta-bot', 'X-Title': 'Smeta Bot'}}")
 
 cancelled_chats: set[int] = set()
 
