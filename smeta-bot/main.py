@@ -20,7 +20,11 @@ TELEGRAM_TOKEN = os.environ["TELEGRAM_TOKEN"]
 OPENROUTER_API_KEY = os.environ["OPENROUTER_API_KEY"]
 SERPER_API_KEY = os.environ["SERPER_API_KEY"]
 
-client = OpenAI(api_key=OPENROUTER_API_KEY, base_url="https://openrouter.io/api/v1")
+client = OpenAI(
+    api_key=OPENROUTER_API_KEY,
+    base_url="https://openrouter.io/api/v1",
+    default_headers={"HTTP-Referer": "smeta-bot", "X-Title": "Smeta Bot"}
+)
 
 cancelled_chats: set[int] = set()
 
