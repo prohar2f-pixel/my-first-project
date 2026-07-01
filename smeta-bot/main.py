@@ -102,6 +102,7 @@ def extract_materials_from_pdf(pdf_bytes: bytes) -> list[str]:
             },
             timeout=30
         )
+        logger.info(f"OpenRouter response: {resp.status_code} - {resp.text[:300]}")
         resp.raise_for_status()
         data = resp.json()
         logger.info("OpenRouter API responded successfully")
@@ -299,7 +300,7 @@ async def cancel_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
 async def test_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text("🔄 Проверяю соединение с OpenRouter API...")
     try:
-        await asyncio.to_thread(
+        resp = await asyncio.to_thread(
             lambda: httpx.post(
                 "https://openrouter.io/api/v1/chat/completions",
                 headers=OPENROUTER_HEADERS,
@@ -309,10 +310,14 @@ async def test_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                     "messages": [{"role": "user", "content": "ping"}]
                 },
                 timeout=10
-            ).raise_for_status()
+            )
         )
+        logger.info(f"OpenRouter response status: {resp.status_code}")
+        logger.info(f"OpenRouter response body: {resp.text[:500]}")
+        resp.raise_for_status()
         await update.message.reply_text("✅ OpenRouter API работает!")
     except Exception as e:
+        logger.error(f"OpenRouter test error: {type(e).__name__}: {str(e)}", exc_info=True)
         await update.message.reply_text(f"❌ Ошибка OpenRouter API: {str(e)[:300]}")
 
 
