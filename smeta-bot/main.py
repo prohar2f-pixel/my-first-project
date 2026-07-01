@@ -81,20 +81,24 @@ def extract_materials_from_pdf(pdf_bytes: bytes) -> list[str]:
     if not text.strip():
         return []
 
-    logger.info("Calling Claude API for material extraction...")
-    response = client.chat.completions.create(
-        model="anthropic/claude-opus-4.8",
-        max_tokens=2000,
-        messages=[{
-            "role": "user",
-            "content": f"""Из текста строительного проекта извлеки все наименования строительных материалов.
+    logger.info("Calling OpenRouter API for material extraction...")
+    try:
+        response = client.chat.completions.create(
+            model="anthropic/claude-opus-4.8",
+            max_tokens=2000,
+            messages=[{
+                "role": "user",
+                "content": f"""Из текста строительного проекта извлеки все наименования строительных материалов.
 Верни ТОЛЬКО JSON-массив строк, без пояснений. Пример: ["Кирпич М150", "Цемент ПЦ 400", "Арматура А500С"]
 
 Текст проекта:
 {text[:8000]}"""
-        }]
-    )
-    logger.info("Claude API responded successfully")
+            }]
+        )
+        logger.info("OpenRouter API responded successfully")
+    except Exception as e:
+        logger.error(f"OpenRouter API error: {type(e).__name__}: {str(e)}", exc_info=True)
+        raise
 
     raw = response.choices[0].message.content.strip()
     try:
