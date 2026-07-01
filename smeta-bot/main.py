@@ -29,7 +29,7 @@ OPENROUTER_HEADERS = {
 }
 
 logger.info(f"OpenRouter Headers configured")
-logger.info(f"OpenRouter API Base URL: https://openrouter.io/api/v1/chat/completions")
+logger.info(f"OpenRouter API Base URL: https://openrouter.ai/api/v1/chat/completions")
 
 cancelled_chats: set[int] = set()
 
@@ -87,7 +87,7 @@ def extract_materials_from_pdf(pdf_bytes: bytes) -> list[str]:
     logger.info("Calling OpenRouter API for material extraction...")
     try:
         resp = httpx.post(
-            "https://openrouter.io/api/v1/chat/completions",
+            "https://openrouter.ai/api/v1/chat/completions",
             headers=OPENROUTER_HEADERS,
             json={
                 "model": "anthropic/claude-opus-4.8",
@@ -134,7 +134,7 @@ def analyze_suppliers(material: str, search_results: list[dict], region: str) ->
     ])
 
     resp = httpx.post(
-        "https://openrouter.io/api/v1/chat/completions",
+        "https://openrouter.ai/api/v1/chat/completions",
         headers=OPENROUTER_HEADERS,
         json={
             "model": "anthropic/claude-opus-4.8",
@@ -301,7 +301,7 @@ async def cancel_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
 async def test_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text("🔄 Проверяю соединение с OpenRouter API...")
     try:
-        url = "https://openrouter.io/api/v1/chat/completions"
+        url = "https://openrouter.ai/api/v1/chat/completions"
         payload = {
             "model": "anthropic/claude-opus-4.8",
             "max_tokens": 10,
