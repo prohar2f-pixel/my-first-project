@@ -13,18 +13,18 @@
 
 ```
 TELEGRAM_TOKEN=токен_от_BotFather
-CLAUDE_API_KEY=ключ_от_console.anthropic.com
+OPENROUTER_API_KEY=ключ_от_openrouter.io
 SERPER_API_KEY=ключ_от_serper.dev
 ```
 
 ## Стек
 
 - python-telegram-bot — интерфейс
-- anthropic — анализ и извлечение данных
+- openai — клиент для OpenRouter API
 - pdfplumber — парсинг PDF
 - httpx — запросы к Serper API
 - openpyxl — создание Excel-таблиц
 
 ## Статус
 
-Ожидает Claude API ключ для начала разработки.
+Готов к запуску. Требует ключи для Telegram, OpenRouter и Serper.

@@ -11,16 +11,16 @@ from datetime import datetime
 
 from telegram import Update, BotCommand
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
-import anthropic
+from openai import OpenAI
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 TELEGRAM_TOKEN = os.environ["TELEGRAM_TOKEN"]
-CLAUDE_API_KEY = os.environ["CLAUDE_API_KEY"]
+OPENROUTER_API_KEY = os.environ["OPENROUTER_API_KEY"]
 SERPER_API_KEY = os.environ["SERPER_API_KEY"]
 
-claude = anthropic.Anthropic(api_key=CLAUDE_API_KEY)
+client = OpenAI(api_key=OPENROUTER_API_KEY, base_url="https://openrouter.io/api/v1")
 
 cancelled_chats: set[int] = set()
 
@@ -76,8 +76,8 @@ def extract_materials_from_pdf(pdf_bytes: bytes) -> list[str]:
         return []
 
     logger.info("Calling Claude API for material extraction...")
-    response = claude.messages.create(
-        model="claude-haiku-4-5-20251001",
+    response = client.chat.completions.create(
+        model="anthropic/claude-3.5-sonnet",
         max_tokens=2000,
         messages=[{
             "role": "user",
@@ -90,7 +90,7 @@ def extract_materials_from_pdf(pdf_bytes: bytes) -> list[str]:
     )
     logger.info("Claude API responded successfully")
 
-    raw = response.content[0].text.strip()
+    raw = response.choices[0].message.content.strip()
     try:
         if "```" in raw:
             raw = raw.split("```")[1].replace("json", "").strip()
@@ -112,8 +112,8 @@ def analyze_suppliers(material: str, search_results: list[dict], region: str) ->
         for r in search_results
     ])
 
-    response = claude.messages.create(
-        model="claude-haiku-4-5-20251001",
+    response = client.chat.completions.create(
+        model="anthropic/claude-3.5-sonnet",
         max_tokens=1500,
         messages=[{
             "role": "user",
@@ -142,7 +142,7 @@ def analyze_suppliers(material: str, search_results: list[dict], region: str) ->
         }]
     )
 
-    raw = response.content[0].text.strip()
+    raw = response.choices[0].message.content.strip()
     try:
         if "```" in raw:
             raw = raw.split("```")[1].replace("json", "").strip()
@@ -271,18 +271,18 @@ async def cancel_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
 
 
 async def test_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    await update.message.reply_text("🔄 Проверяю соединение с Claude API...")
+    await update.message.reply_text("🔄 Проверяю соединение с OpenRouter API...")
     try:
         await asyncio.to_thread(
-            lambda: claude.messages.create(
-                model="claude-haiku-4-5-20251001",
+            lambda: client.chat.completions.create(
+                model="anthropic/claude-3.5-sonnet",
                 max_tokens=10,
                 messages=[{"role": "user", "content": "ping"}]
             )
         )
-        await update.message.reply_text("✅ Claude API работает!")
+        await update.message.reply_text("✅ OpenRouter API работает!")
     except Exception as e:
-        await update.message.reply_text(f"❌ Ошибка Claude API: {str(e)[:300]}")
+        await update.message.reply_text(f"❌ Ошибка OpenRouter API: {str(e)[:300]}")
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
