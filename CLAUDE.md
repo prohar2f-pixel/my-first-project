@@ -23,3 +23,9 @@
 - For multi-step tasks — create a brief plan and confirm it first.
 - After completing, check against the original request to make sure nothing is missing.
 - Effectiveness is measured by: fewer unnecessary changes, fewer rewrites, clarifying questions asked before implementation.
+
+## 5. Never Commit Secrets
+- Real API keys, tokens, and passwords live only in `.env`, and `.env` must be in `.gitignore`. Never put them in code.
+- `.env.example` holds only placeholders like `YOUR_TOKEN_HERE` — never a real value.
+- Every repo that can hold secrets needs `.env` in its `.gitignore`.
+- Any secret that once reached a commit is compromised forever (git history is public): rotate it, don't just delete the line.
