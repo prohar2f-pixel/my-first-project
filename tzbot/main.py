@@ -16,6 +16,7 @@ from telegram.ext import (
     CallbackQueryHandler, filters, ContextTypes
 )
 from openai import OpenAI
+import asr
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -1067,6 +1068,37 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
         )
 
 
+async def _transcribe_and_reply(update: Update, data: bytes,
+                                filename: str, emoji: str) -> str | None:
+    """Распознаёт аудио, показывает текст пользователю (без Markdown, кусками).
+    Возвращает текст или None, если распознать не удалось (пользователю уже ответили)."""
+    try:
+        text = await asyncio.to_thread(asr.transcribe, data, filename)
+    except asr.RateLimited:
+        await update.message.reply_text(
+            "⏳ Слишком много запросов — подождите минуту и отправьте ещё раз, "
+            "или напишите текстом."
+        )
+        return None
+    except Exception as e:
+        logger.error(f"Transcription error: {e}", exc_info=True)
+        await update.message.reply_text(
+            "❌ Не удалось распознать — попробуйте ещё раз или напишите текстом."
+        )
+        return None
+
+    if not text:
+        await update.message.reply_text(
+            "🤔 Не расслышал — повторите, пожалуйста, или напишите текстом."
+        )
+        return None
+
+    # без parse_mode: в сыром транскрипте могут быть _ и *, ломающие Markdown
+    for chunk in asr.split_for_telegram(f"{emoji} «{text}»"):
+        await update.message.reply_text(chunk)
+    return text
+
+
 async def handle_voice(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     chat_id = update.effective_chat.id
     session = db_get(chat_id)
@@ -1074,33 +1106,21 @@ async def handle_voice(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
         await update.message.reply_text(**_no_session_reply(context))
         return
 
+    voice = update.message.voice
+    if voice.duration and voice.duration > 600:
+        await update.message.reply_text(
+            "⏱ Запись длиннее 10 минут — расскажите короче или напишите текстом."
+        )
+        return
+
     await update.message.reply_text("🎤 Распознаю голос... ⏳")
-    voice   = update.message.voice
     tg_file = await context.bot.get_file(voice.file_id)
     buf     = BytesIO()
     await tg_file.download_to_memory(buf)
 
-    def transcribe(data: bytes) -> str:
-        import speech_recognition as sr
-        from pydub import AudioSegment
-        audio = AudioSegment.from_ogg(BytesIO(data))
-        wav   = BytesIO()
-        audio.export(wav, format="wav")
-        wav.seek(0)
-        r = sr.Recognizer()
-        with sr.AudioFile(wav) as src:
-            audio_data = r.record(src)
-        return r.recognize_google(audio_data, language="ru-RU")
-
-    try:
-        text = await asyncio.to_thread(transcribe, buf.getvalue())
-    except Exception as e:
-        logger.error(f"Voice transcription error: {e}")
-        await update.message.reply_text("❌ Не удалось распознать — попробуйте ещё раз или напишите текстом.")
-        return
-
-    await update.message.reply_text(f"🎤 _«{text}»_", parse_mode="Markdown")
-    await _process(update, context, session, text, f"[🎤 Голосовое] {text}")
+    text = await _transcribe_and_reply(update, buf.getvalue(), "voice.ogg", "🎤")
+    if text:
+        await _process(update, context, session, text, f"[🎤 Голосовое] {text}")
 
 
 async def handle_other(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
