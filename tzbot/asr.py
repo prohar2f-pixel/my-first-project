@@ -58,7 +58,7 @@ def _call(client: OpenAI, data: bytes, filename: str) -> str:
 
 def _retry_after_seconds(e: RateLimitError) -> float:
     try:
-        return float(e.response.headers.get("retry-after", 5))
+        return max(0.0, float(e.response.headers.get("retry-after", 5)))
     except (TypeError, ValueError, AttributeError):
         return 5.0
 
@@ -72,6 +72,7 @@ def transcribe(data: bytes, filename: str, client: OpenAI | None = None) -> str:
         wait = _retry_after_seconds(e)
         logger.warning(f"Groq 429, повтор через {wait}с")
         time.sleep(wait)
+        # ровно один повтор на вызов: не-429 ошибка второй попытки уходит наверх как есть
         try:
             return _call(client, data, filename)
         except RateLimitError:

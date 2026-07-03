@@ -96,3 +96,38 @@ def test_transcribe_network_error_twice_propagates(no_sleep):
     client = FakeClient([ConnectionError("boom"), ConnectionError("boom")])
     with pytest.raises(ConnectionError):
         asr.transcribe(b"ogg", "voice.ogg", client=client)
+
+
+def test_retry_after_missing_header_defaults_to_5(no_sleep):
+    req = httpx.Request("POST", "https://api.groq.com/openai/v1/audio/transcriptions")
+    resp = httpx.Response(429, request=req)
+    err = RateLimitError("rate limited", response=resp, body=None)
+    client = FakeClient([err, "ок"])
+    assert asr.transcribe(b"ogg", "voice.ogg", client=client) == "ок"
+    assert no_sleep == [5.0]
+
+
+def test_retry_after_garbage_header_defaults_to_5(no_sleep):
+    client = FakeClient([_rate_limit_error("banana"), "ок"])
+    assert asr.transcribe(b"ogg", "voice.ogg", client=client) == "ок"
+    assert no_sleep == [5.0]
+
+
+def test_retry_after_negative_header_clamped_to_zero(no_sleep):
+    client = FakeClient([_rate_limit_error("-3"), "ок"])
+    assert asr.transcribe(b"ogg", "voice.ogg", client=client) == "ок"
+    assert no_sleep == [0.0]
+
+
+def test_429_then_network_error_propagates_raw(no_sleep):
+    client = FakeClient([_rate_limit_error("1"), ConnectionError("boom")])
+    with pytest.raises(ConnectionError):
+        asr.transcribe(b"ogg", "voice.ogg", client=client)
+    assert no_sleep == [1.0]
+    assert client.calls == 2
+
+
+def test_network_error_retry_counts_calls(no_sleep):
+    client = FakeClient([ConnectionError("boom"), "ок"])
+    assert asr.transcribe(b"ogg", "voice.ogg", client=client) == "ок"
+    assert client.calls == 2
