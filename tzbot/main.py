@@ -1123,12 +1123,30 @@ async def handle_voice(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
         await _process(update, context, session, text, f"[🎤 Голосовое] {text}")
 
 
+async def handle_video_note(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    chat_id = update.effective_chat.id
+    session = db_get(chat_id)
+    if not session:
+        await update.message.reply_text(**_no_session_reply(context))
+        return
+
+    await update.message.reply_text("🎥 Распознаю кружочек... ⏳")
+    note    = update.message.video_note
+    tg_file = await context.bot.get_file(note.file_id)
+    buf     = BytesIO()
+    await tg_file.download_to_memory(buf)
+
+    text = await _transcribe_and_reply(update, buf.getvalue(), "note.mp4", "📹")
+    if text:
+        await _process(update, context, session, text, f"[📹 Кружочек] {text}")
+
+
 async def handle_other(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     chat_id = update.effective_chat.id
     session = db_get(chat_id)
     if session:
         await update.message.reply_text(
-            "📝 Я понимаю текст, голосовые, изображения, PDF и ссылки.\n"
+            "📝 Я понимаю текст, голосовые, кружочки, изображения, PDF и ссылки.\n"
             "Напишите ответ, запишите голосовое или пришлите скриншот / файл."
         )
     else:
@@ -1169,6 +1187,7 @@ def main() -> None:
     app.add_handler(MessageHandler(filters.PHOTO,        handle_photo))
     app.add_handler(MessageHandler(filters.Document.ALL, handle_document))
     app.add_handler(MessageHandler(filters.VOICE,        handle_voice))
+    app.add_handler(MessageHandler(filters.VIDEO_NOTE,   handle_video_note))
     app.add_handler(MessageHandler(~filters.TEXT & ~filters.COMMAND, handle_other))
 
     app.add_error_handler(error_handler)
