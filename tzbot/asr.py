@@ -1,4 +1,4 @@
-"""Распознавание речи: Whisper large-v3 через Groq (OpenAI-совместимый API)."""
+"""Распознавание речи: Whisper через OpenRouter (OpenAI-совместимый API)."""
 import os
 import time
 import logging
@@ -7,8 +7,6 @@ from io import BytesIO
 from openai import OpenAI, RateLimitError
 
 logger = logging.getLogger(__name__)
-
-ASR_MODEL = os.environ.get("ASR_MODEL", "whisper-large-v3")
 
 TG_LIMIT = 3500  # лимит Telegram 4096, берём с запасом на эмодзи и кавычки
 
@@ -30,7 +28,7 @@ def split_for_telegram(text: str, limit: int = TG_LIMIT) -> list[str]:
 
 
 class RateLimited(Exception):
-    """Groq отдал 429 и после повтора — показать «подождите минуту»."""
+    """API отдал 429 и после повтора — показать «подождите минуту»."""
 
 
 _client: OpenAI | None = None
@@ -40,15 +38,15 @@ def _get_client() -> OpenAI:
     global _client
     if _client is None:
         _client = OpenAI(
-            base_url="https://api.groq.com/openai/v1",
-            api_key=os.environ["GROQ_API_KEY"],
+            base_url="https://openrouter.ai/api/v1",
+            api_key=os.environ["OPENROUTER_API_KEY"],
         )
     return _client
 
 
 def _call(client: OpenAI, data: bytes, filename: str) -> str:
     resp = client.audio.transcriptions.create(
-        model=ASR_MODEL,
+        model="openai/whisper-1",  # OpenRouter проксирует OpenAI Whisper
         file=(filename, BytesIO(data)),  # имя с расширением обязательно — по нему API определяет формат
         language="ru",
         temperature=0,
@@ -70,7 +68,7 @@ def transcribe(data: bytes, filename: str, client: OpenAI | None = None) -> str:
         return _call(client, data, filename)
     except RateLimitError as e:
         wait = _retry_after_seconds(e)
-        logger.warning(f"Groq 429, повтор через {wait}с")
+        logger.warning(f"OpenRouter 429, повтор через {wait}с")
         time.sleep(wait)
         # ровно один повтор на вызов: не-429 ошибка второй попытки уходит наверх как есть
         try:
@@ -78,6 +76,6 @@ def transcribe(data: bytes, filename: str, client: OpenAI | None = None) -> str:
         except RateLimitError:
             raise RateLimited() from None
     except Exception as e:
-        logger.warning(f"Groq error ({e!r}), повтор через 2с")
+        logger.warning(f"OpenRouter error ({e!r}), повтор через 2с")
         time.sleep(2)
         return _call(client, data, filename)
