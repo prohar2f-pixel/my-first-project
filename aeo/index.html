@@ -334,6 +334,180 @@ h1, h2, .score-circle .grade, .card-score {
   display: none;
 }
 
+/* ── About Section ── */
+.about-section {
+  background: linear-gradient(135deg, rgba(88,28,135,.08), rgba(109,40,217,.04));
+  border: 1px solid rgba(168,85,247,.2);
+  border-radius: 16px;
+  padding: 40px;
+  margin: 60px 0 40px;
+}
+.about-section h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #f1f5f9;
+}
+.about-section p {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #cbd5e1;
+  margin-bottom: 16px;
+}
+.about-section ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+.about-section li {
+  font-size: 16px;
+  color: #cbd5e1;
+  margin-bottom: 12px;
+  padding-left: 28px;
+  position: relative;
+}
+
+/* ── Services Section ── */
+.services-section {
+  margin: 60px 0;
+}
+.services-section h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 32px;
+  text-align: center;
+  color: #f1f5f9;
+}
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+.service-card {
+  background: #0f1a2e;
+  border: 1px solid #1e3a5f;
+  border-radius: 14px;
+  padding: 24px;
+  transition: all .3s;
+}
+.service-card:hover {
+  border-color: rgba(168,85,247,.5);
+  background: rgba(88,28,135,.1);
+}
+.service-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #f1f5f9;
+}
+.service-card p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #cbd5e1;
+  margin-bottom: 12px;
+}
+.service-card strong {
+  color: #c084fc;
+}
+
+/* ── Cases Section ── */
+.cases-section {
+  margin: 60px 0;
+}
+.cases-section h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 32px;
+  text-align: center;
+  color: #f1f5f9;
+}
+.cases-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 24px;
+}
+.case-card {
+  background: linear-gradient(135deg, #0f1a2e, #130a24);
+  border: 1px solid #2d1f5e;
+  border-radius: 14px;
+  padding: 24px;
+  position: relative;
+}
+.case-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(168,85,247,.2);
+  color: #c084fc;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.case-card h3 {
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #f1f5f9;
+  padding-right: 80px;
+}
+.case-card p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #cbd5e1;
+  margin-bottom: 12px;
+}
+.case-card strong {
+  color: #94a3b8;
+  display: block;
+  margin-top: 8px;
+}
+.cases-note {
+  text-align: center;
+  font-size: 14px;
+  color: #475569;
+}
+
+/* ── FAQ Section ── */
+.faq-section {
+  margin: 60px 0;
+}
+.faq-section h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 32px;
+  text-align: center;
+  color: #f1f5f9;
+}
+.faq-items {
+  display: grid;
+  gap: 16px;
+}
+.faq-item {
+  background: #0f1a2e;
+  border: 1px solid #1e3a5f;
+  border-radius: 12px;
+  padding: 20px;
+  transition: border-color .2s;
+}
+.faq-item:hover {
+  border-color: rgba(168,85,247,.3);
+}
+.faq-item h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #f1f5f9;
+}
+.faq-item p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #cbd5e1;
+}
+
 /* ── Design system overrides ── */
 body { background: var(--bg); color: var(--text); }
 .hero h1 { font-family: 'Oswald', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: .02em; }
@@ -406,7 +580,160 @@ body { background: var(--bg); color: var(--text); }
   <!-- Results -->
   <div id="results"></div>
 
+  <!-- О сервисе -->
+  <section class="about-section">
+    <h2>Что такое AEO и зачем это нужно?</h2>
+    <p>AEO (AI Engine Optimization) — оптимизация сайта для видимости в AI-поисковиках типа ChatGPT, Perplexity, Claude и Яндекс ИИ. Если раньше весь трафик шёл из Google, то теперь растет доля пользователей, которые ищут ответы в AI-моделях.</p>
+    <p>AI читают сайты иначе, чем обычные поисковики. Им важен <strong>качественный контент, чёткая структура, и доступность информации</strong>. Сайт, оптимизированный под AEO, получает:</p>
+    <ul>
+      <li>📈 Упоминания в ответах ChatGPT и Perplexity</li>
+      <li>🤖 Индексацию в Яндекс ИИ и Claude</li>
+      <li>💬 Больше трафика через диалоговые интерфейсы</li>
+      <li>✨ Повышение авторитета бренда</li>
+    </ul>
+  </section>
+
+  <!-- Услуги -->
+  <section class="services-section">
+    <h2>Наши услуги</h2>
+    <div class="services-grid">
+      <div class="service-card">
+        <h3>🔍 AEO + SEO Аудит</h3>
+        <p>Полный анализ вашего сайта на готовность к эпохе ИИ-поиска. Проверяем 11 критериев: скорость, SEO-теги, структуру контента, видимость в AI-поисковиках.</p>
+        <p><strong>Результат:</strong> Отчёт с приоритетами и планом исправления.</p>
+      </div>
+      <div class="service-card">
+        <h3>⚡ Оптимизация структуры</h3>
+        <p>Улучшение архитектуры сайта, добавление Schema.org разметки, оптимизация заголовков и описаний для AI-моделей.</p>
+        <p><strong>Результат:</strong> Сайт становится видим ChatGPT и Perplexity.</p>
+      </div>
+      <div class="service-card">
+        <h3>📝 Контент для AI</h3>
+        <p>Создание и редактирование контента, который нравится AI-моделям: понятные объяснения, примеры, чёткая логическая структура.</p>
+        <p><strong>Результат:</strong> Сайт процитируют в ответах AI-поисковиков.</p>
+      </div>
+      <div class="service-card">
+        <h3>🚀 Полная оптимизация</h3>
+        <p>Комплексное решение: аудит + исправление + контент + мониторинг. Для амбициозных компаний, которые хотят лидировать в AI-поиске.</p>
+        <p><strong>Результат:</strong> +30–50% трафика из AI-источников за 2–3 месяца.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Кейсы -->
+  <section class="cases-section">
+    <h2>Наши кейсы</h2>
+    <div class="cases-grid">
+      <div class="case-card">
+        <div class="case-badge">В работе</div>
+        <h3>Онлайн-школа программирования</h3>
+        <p><strong>Проблема:</strong> Сайт не индексировался в ChatGPT и Perplexity, контент был невидим для AI.</p>
+        <p><strong>Решение:</strong> Оптимизация структуры, добавление Schema.org разметки курсов, переработка описаний.</p>
+        <p><strong>Результат:</strong> (ожидается) Упоминания в ответах AI по запросам типа "где учиться программированию онлайн".</p>
+      </div>
+      <div class="case-card">
+        <div class="case-badge">В работе</div>
+        <h3>SaaS-платформа для аналитики</h3>
+        <p><strong>Проблема:</strong> Нет SEO, нет AEO, потеря трафика конкурентам.</p>
+        <p><strong>Решение:</strong> Полный аудит, оптимизация Lighthouse, добавление FAQ для AI.</p>
+        <p><strong>Результат:</strong> (ожидается) Видимость в Perplexity и упоминания в ChatGPT по нишевым запросам.</p>
+      </div>
+      <div class="case-card">
+        <div class="case-badge">В работе</div>
+        <h3>Блог про нейросети</h3>
+        <p><strong>Проблема:</strong> Хороший контент, но сайт конкурирует с Wikipedia и Reddit в Google. Нужны новые источники трафика.</p>
+        <p><strong>Решение:</strong> AEO оптимизация, структурирование статей, добавление примеров кода и практических советов.</p>
+        <p><strong>Результат:</strong> (ожидается) Регулярные цитирования в ответах ChatGPT и Claude.</p>
+      </div>
+    </div>
+    <p class="cases-note">🔄 Проекты в активной работе. Результаты и цифры появятся к концу июля 2026.</p>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+    <h2>Часто задаваемые вопросы</h2>
+    <div class="faq-items">
+      <div class="faq-item">
+        <h3>Что такое AEO и чем оно отличается от SEO?</h3>
+        <p>SEO — оптимизация для Google поиска. AEO — оптимизация для AI-моделей типа ChatGPT, Perplexity и Claude. Они читают сайты по-разному, поэтому нужны разные подходы. Хорошая новость: если сайт оптимизирован под AEO, обычно улучшается и SEO.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Будет ли AI-трафик эффективнее Google-трафика?</h3>
+        <p>AI-трафик уже растет. По прогнозам аналитиков, к 2026–2027 году 30–40% веб-трафика пойдет через AI-интерфейсы. Более целевая аудитория = выше конверсия. Эффективнее? Часто да.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Сколько времени занимает оптимизация?</h3>
+        <p>Зависит от размера сайта и текущего состояния. Аудит — несколько часов. Исправление найденных проблем — 1–4 недели. Полная оптимизация + контент — 1–3 месяца.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Как вы измеряете результаты AEO?</h3>
+        <p>Через упоминания в ответах ChatGPT/Perplexity (используем специальные инструменты), индексацию в Яндекс ИИ (через Яндекс Вебмастер), и трафик из AI-источников (через аналитику).</p>
+      </div>
+      <div class="faq-item">
+        <h3>Можно ли оптимизировать любой сайт?</h3>
+        <p>Почти любой. Исключение — информационные сайты, которые состоят только из картинок без текста, или сайты без уникального контента. Если есть текст — есть что оптимизировать.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Какая цена на услуги?</h3>
+        <p>Аудит AEO+SEO — от 5000 ₽. Оптимизация — от 15000 ₽. Полный пакет (аудит + исправление + контент) — от 50000 ₽. Пишите в Telegram для индивидуального предложения.</p>
+      </div>
+    </div>
+  </section>
+
 </div>
+
+<!-- Schema.org разметка для услуг -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Organization",
+  "name": "Александр Прохоров — AEO Оптимизация",
+  "url": "https://aiprohar.ru/",
+  "image": "https://aiprohar.ru/assets/logo.png",
+  "description": "AEO + SEO аудит и оптимизация сайтов для ChatGPT, Perplexity и Яндекс ИИ",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "Customer Support",
+    "url": "https://t.me/prohar2f"
+  },
+  "sameAs": ["https://t.me/prohar2f"],
+  "service": [
+    {
+      "@type": "Service",
+      "name": "AEO + SEO Аудит",
+      "description": "Полный анализ сайта на готовность к эпохе ИИ-поиска. Проверяем 11 критериев: скорость, SEO-теги, структуру контента, видимость в AI-поисковиках.",
+      "provider": {
+        "@type": "Organization",
+        "name": "Александр Прохоров"
+      },
+      "areaServed": "RU",
+      "priceRange": "5000–15000"
+    },
+    {
+      "@type": "Service",
+      "name": "AEO Оптимизация",
+      "description": "Улучшение архитектуры сайта, добавление Schema.org разметки, оптимизация для видимости в ChatGPT, Perplexity и Яндекс ИИ.",
+      "provider": {
+        "@type": "Organization",
+        "name": "Александр Прохоров"
+      },
+      "areaServed": "RU",
+      "priceRange": "15000–100000"
+    },
+    {
+      "@type": "Service",
+      "name": "Полная оптимизация сайта",
+      "description": "Комплексное решение: аудит + исправление + контент + мониторинг для лидерства в AI-поиске.",
+      "provider": {
+        "@type": "Organization",
+        "name": "Александр Прохоров"
+      },
+      "areaServed": "RU",
+      "priceRange": "50000+"
+    }
+  ]
+}
+</script>
 
 <script>
 // ── Замени на свой URL Railway после деплоя ──
