@@ -4,6 +4,7 @@ import logging
 import json
 import base64
 import re
+import signal
 from io import BytesIO
 from datetime import date
 
@@ -15,10 +16,14 @@ from telegram.ext import (
     Application, CommandHandler, MessageHandler,
     CallbackQueryHandler, filters, ContextTypes
 )
+from telegram.error import Conflict
 from openai import OpenAI
 import asr
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+)
 logger = logging.getLogger(__name__)
 
 TELEGRAM_TOKEN     = os.environ["TELEGRAM_TOKEN"]
@@ -1154,7 +1159,12 @@ async def handle_other(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 
 
 async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
-    logger.error("Exception while handling update:", exc_info=context.error)
+    error = context.error
+    if isinstance(error, Conflict):
+        logger.error(f"⚠️  Conflict error — another bot instance is running. Waiting before retry... {error}")
+        await asyncio.sleep(5)
+    else:
+        logger.error("Exception while handling update:", exc_info=error)
 
 
 async def post_init(app: Application) -> None:
@@ -1191,7 +1201,28 @@ def main() -> None:
     app.add_handler(MessageHandler(~filters.TEXT & ~filters.COMMAND, handle_other))
 
     app.add_error_handler(error_handler)
-    app.run_polling(allowed_updates=Update.ALL_TYPES, drop_pending_updates=True)
+
+    def stop_signal_handler(signum, frame):
+        logger.info("⏹️  Graceful shutdown signal received")
+        app.stop()
+
+    signal.signal(signal.SIGTERM, stop_signal_handler)
+    signal.signal(signal.SIGINT, stop_signal_handler)
+
+    try:
+        app.run_polling(
+            allowed_updates=Update.ALL_TYPES,
+            drop_pending_updates=True,
+            timeout=10,
+            read_timeout=10,
+            connect_timeout=10,
+            write_timeout=10,
+        )
+    except KeyboardInterrupt:
+        logger.info("⏹️  Bot stopped by user")
+    except Exception as e:
+        logger.error(f"Fatal error: {e}", exc_info=True)
+        raise
 
 
 if __name__ == "__main__":
