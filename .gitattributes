@@ -1,0 +1,22 @@
+* text=auto
+
+# HTML, CSS, JS — с окончаниями строк по умолчанию системы
+*.html text eol=crlf
+*.css text eol=crlf
+*.js text eol=crlf
+*.json text eol=crlf
+*.md text eol=crlf
+*.py text eol=crlf
+*.tsx text eol=crlf
+*.ts text eol=crlf
+
+# Бинарные файлы
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.gif binary
+*.svg text
+
+# Git должен оставлять окончания как есть
+.git* text eol=crlf
