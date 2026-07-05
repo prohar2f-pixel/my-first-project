@@ -4,7 +4,6 @@ import logging
 import json
 import base64
 import re
-import signal
 from io import BytesIO
 from datetime import date
 
@@ -16,14 +15,10 @@ from telegram.ext import (
     Application, CommandHandler, MessageHandler,
     CallbackQueryHandler, filters, ContextTypes
 )
-from telegram.error import Conflict
 from openai import OpenAI
 import asr
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s [%(levelname)s] %(name)s: %(message)s'
-)
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 TELEGRAM_TOKEN     = os.environ["TELEGRAM_TOKEN"]
@@ -1159,47 +1154,19 @@ async def handle_other(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 
 
 async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
-    error = context.error
-    if isinstance(error, Conflict):
-        logger.error(f"⚠️  Conflict error — another bot instance is running. Waiting before retry... {error}")
-        await asyncio.sleep(5)
-    else:
-        logger.error("Exception while handling update:", exc_info=error)
+    logger.error("Exception while handling update:", exc_info=context.error)
 
 
 async def post_init(app: Application) -> None:
     db_init()
-
-    logger.info("🔄 Очищаю webhook состояние...")
-    try:
-        # Убедиться что нет webhook'а
-        await app.bot.delete_webhook(drop_pending_updates=True)
-        logger.info("✅ Webhook удалён, pending updates очищены")
-    except Exception as e:
-        logger.warning(f"⚠️  Ошибка при удалении webhook: {e}")
-
-    # Подождать чтобы Telegram обработал удаление
-    await asyncio.sleep(2)
-
-    # Попытаться получить обновления чтобы очистить очередь
-    try:
-        logger.info("🔄 Очищаю очередь обновлений...")
-        updates = await app.bot.get_updates(timeout=1, read_timeout=2)
-        if updates:
-            logger.info(f"✅ Очищено {len(updates)} pending обновлений")
-    except Exception as e:
-        logger.warning(f"⚠️  Ошибка при очистке очереди: {e}")
-
-    await asyncio.sleep(1)
     await app.bot.set_my_commands([
         BotCommand("start",  "Начать сбор ТЗ"),
         BotCommand("finish", "Завершить интервью и получить ТЗ"),
         BotCommand("reset",  "Начать заново"),
     ])
-    logger.info("✅ Bot ready!")
 
 
-async def main_async() -> None:
+def main() -> None:
     app = Application.builder().token(TELEGRAM_TOKEN).post_init(post_init).build()
 
     app.add_handler(CommandHandler("start",  start))
@@ -1224,48 +1191,7 @@ async def main_async() -> None:
     app.add_handler(MessageHandler(~filters.TEXT & ~filters.COMMAND, handle_other))
 
     app.add_error_handler(error_handler)
-
-    def stop_signal_handler(signum, frame):
-        logger.info("⏹️  Graceful shutdown signal received")
-        app.stop()
-
-    signal.signal(signal.SIGTERM, stop_signal_handler)
-    signal.signal(signal.SIGINT, stop_signal_handler)
-
-    retry_count = 0
-    max_retries = 5
-
-    while retry_count < max_retries:
-        try:
-            logger.info(f"🚀 Запуск polling (попытка {retry_count + 1}/{max_retries})...")
-            app.run_polling(
-                allowed_updates=Update.ALL_TYPES,
-                drop_pending_updates=False,
-                timeout=15,
-                read_timeout=15,
-                connect_timeout=15,
-                write_timeout=15,
-            )
-            break  # Успешный запуск
-        except Conflict as e:
-            retry_count += 1
-            wait_time = 10 * (2 ** (retry_count - 1))  # Exponential backoff: 10s, 20s, 40s...
-            logger.warning(f"⚠️  Conflict: {e}")
-            logger.info(f"⏳ Ожидание {wait_time}с перед повтором (попытка {retry_count}/{max_retries})...")
-            await asyncio.sleep(wait_time)
-            if retry_count >= max_retries:
-                logger.error("❌ Не удалось запустить бота после нескольких попыток")
-                raise
-        except KeyboardInterrupt:
-            logger.info("⏹️  Bot stopped by user")
-            break
-        except Exception as e:
-            logger.error(f"Fatal error: {e}", exc_info=True)
-            raise
-
-
-def main() -> None:
-    asyncio.run(main_async())
+    app.run_polling(allowed_updates=Update.ALL_TYPES, drop_pending_updates=True)
 
 
 if __name__ == "__main__":
