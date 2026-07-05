@@ -3,15 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AEO + SEO аудит сайта — проверьте видимость в ChatGPT и Perplexity</title>
+<title>AEO консультант для стартапов и SaaS — Александр Прохоров</title>
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-<meta name="description" content="Бесплатный аудит сайта: скорость, SEO, безопасность и видимость в ИИ-поисковиках (ChatGPT, Perplexity). Единственный инструмент с AEO-проверкой.">
+<meta name="description" content="AEO оптимизация для стартапов и SaaS. Помогаю попасть в ответы ChatGPT, Perplexity и Яндекс ИИ. Методология + инструмент + результаты за 4 недели.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Bricolage+Grotesque:wght@700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css">
 <style>
-
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background: #060d1f;
@@ -22,7 +21,6 @@ body {
 h1, h2, .score-circle .grade, .card-score {
   font-family: 'Bricolage Grotesque', sans-serif;
 }
-
 .page { max-width: 900px; margin: 0 auto; padding: 0 20px 80px; }
 
 /* ── Hero ── */
@@ -58,6 +56,11 @@ h1, h2, .score-circle .grade, .card-score {
   color: #94a3b8;
   max-width: 560px;
   margin: 0 auto 40px;
+}
+.hero-subtext {
+  font-size: 14px;
+  color: #475569;
+  margin-bottom: 32px;
 }
 
 /* ── Form ── */
@@ -148,7 +151,6 @@ h1, h2, .score-circle .grade, .card-score {
 
 /* ── Results ── */
 #results { display: none; margin-top: 48px; }
-
 .score-hero {
   background: linear-gradient(135deg, #0f1a2e, #1a0f2e);
   border: 1px solid #2d1f5e;
@@ -185,7 +187,6 @@ h1, h2, .score-circle .grade, .card-score {
   margin: 32px 0 16px;
 }
 
-/* ── Priority chips ── */
 .priorities {
   display: flex;
   gap: 10px;
@@ -202,7 +203,6 @@ h1, h2, .score-circle .grade, .card-score {
   border-radius: 100px;
 }
 
-/* ── Criteria grid ── */
 .criteria-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -220,8 +220,6 @@ h1, h2, .score-circle .grade, .card-score {
   background: linear-gradient(135deg, #130a24, #1a0f2e);
   border-color: rgba(168,85,247,.4);
 }
-.criterion-card.is-priority { border-color: rgba(239,68,68,.4); }
-
 .card-top {
   display: flex;
   align-items: center;
@@ -232,9 +230,6 @@ h1, h2, .score-circle .grade, .card-score {
   font-size: 13px;
   font-weight: 600;
   color: #94a3b8;
-  display: flex;
-  align-items: center;
-  gap: 6px;
 }
 .aeo-badge {
   background: rgba(168,85,247,.2);
@@ -250,52 +245,7 @@ h1, h2, .score-circle .grade, .card-score {
   font-size: 22px;
   font-weight: 800;
 }
-.card-score span { font-size: 13px; font-weight: 400; opacity: .5; }
-
-.score-bar-wrap {
-  background: #1e3a5f;
-  border-radius: 100px;
-  height: 3px;
-  margin-bottom: 12px;
-  overflow: hidden;
-}
 .score-bar { height: 100%; border-radius: 100px; }
-
-.card-problem { font-size: 13px; color: #cbd5e1; margin-bottom: 10px; line-height: 1.5; }
-.card-fix-btn {
-  display: inline-block;
-  margin-top: 6px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #a78bfa;
-  text-decoration: none;
-  border: 1px solid rgba(167,139,250,.35);
-  border-radius: 8px;
-  padding: 5px 12px;
-  transition: background .15s;
-}
-.card-fix-btn:hover { background: rgba(167,139,250,.1); }
-
-.card-rec-toggle {
-  font-size: 12px;
-  color: #6366f1;
-  cursor: pointer;
-  background: none;
-  border: none;
-  padding: 0;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-.card-rec {
-  display: none;
-  font-size: 12px;
-  color: #94a3b8;
-  margin-top: 8px;
-  line-height: 1.6;
-  background: rgba(99,102,241,.06);
-  border-radius: 8px;
-  padding: 10px 12px;
-}
 
 /* ── CTA ── */
 .cta-block {
@@ -334,83 +284,139 @@ h1, h2, .score-circle .grade, .card-score {
   display: none;
 }
 
-/* ── About Section ── */
-.about-section {
+/* ── Why Me ── */
+.why-me-section {
   background: linear-gradient(135deg, rgba(88,28,135,.08), rgba(109,40,217,.04));
   border: 1px solid rgba(168,85,247,.2);
   border-radius: 16px;
   padding: 40px;
   margin: 60px 0 40px;
 }
-.about-section h2 {
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  color: #f1f5f9;
-}
-.about-section p {
-  font-size: 16px;
-  line-height: 1.7;
-  color: #cbd5e1;
-  margin-bottom: 16px;
-}
-.about-section ul {
-  list-style: none;
-  padding: 0;
-  margin-top: 20px;
-}
-.about-section li {
-  font-size: 16px;
-  color: #cbd5e1;
-  margin-bottom: 12px;
-  padding-left: 28px;
-  position: relative;
-}
-
-/* ── Services Section ── */
-.services-section {
-  margin: 60px 0;
-}
-.services-section h2 {
+.why-me-section h2 {
   font-size: 28px;
   font-weight: 700;
   margin-bottom: 32px;
   text-align: center;
   color: #f1f5f9;
 }
-.services-grid {
+.why-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 20px;
 }
-.service-card {
-  background: #0f1a2e;
-  border: 1px solid #1e3a5f;
-  border-radius: 14px;
-  padding: 24px;
-  transition: all .3s;
+.why-card {
+  background: rgba(15,26,46,.5);
+  border: 1px solid rgba(168,85,247,.2);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
 }
-.service-card:hover {
-  border-color: rgba(168,85,247,.5);
-  background: rgba(88,28,135,.1);
-}
-.service-card h3 {
-  font-size: 18px;
+.why-card h3 {
+  font-size: 16px;
   font-weight: 700;
   margin-bottom: 12px;
   color: #f1f5f9;
 }
-.service-card p {
+.why-card p {
   font-size: 14px;
   line-height: 1.6;
   color: #cbd5e1;
-  margin-bottom: 12px;
-}
-.service-card strong {
-  color: #c084fc;
 }
 
-/* ── Cases Section ── */
+/* ── Methodology ── */
+.methodology-section {
+  margin: 60px 0;
+}
+.methodology-section h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 32px;
+  text-align: center;
+  color: #f1f5f9;
+}
+.methodology-steps {
+  display: grid;
+  gap: 20px;
+}
+.step-card {
+  background: #0f1a2e;
+  border: 1px solid #1e3a5f;
+  border-radius: 12px;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+.step-number {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 24px;
+  color: #fff;
+  flex-shrink: 0;
+}
+.step-content h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #f1f5f9;
+}
+.step-content p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #cbd5e1;
+}
+
+/* ── Comparison ── */
+.comparison-section {
+  margin: 60px 0;
+}
+.comparison-section h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 32px;
+  text-align: center;
+  color: #f1f5f9;
+}
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #0f1a2e;
+  border: 1px solid #1e3a5f;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.comparison-table th,
+.comparison-table td {
+  padding: 16px;
+  text-align: left;
+  border-bottom: 1px solid #1e3a5f;
+}
+.comparison-table th {
+  background: rgba(99,102,241,.1);
+  font-weight: 700;
+  color: #f1f5f9;
+}
+.comparison-table td {
+  color: #cbd5e1;
+  font-size: 14px;
+}
+.comparison-table tr:last-child th,
+.comparison-table tr:last-child td {
+  border-bottom: none;
+}
+.comparison-table .me {
+  color: #c084fc;
+  font-weight: 600;
+}
+
+/* ── Cases ── */
 .cases-section {
   margin: 60px 0;
 }
@@ -465,13 +471,8 @@ h1, h2, .score-circle .grade, .card-score {
   display: block;
   margin-top: 8px;
 }
-.cases-note {
-  text-align: center;
-  font-size: 14px;
-  color: #475569;
-}
 
-/* ── FAQ Section ── */
+/* ── FAQ ── */
 .faq-section {
   margin: 60px 0;
 }
@@ -513,21 +514,12 @@ body { background: var(--bg); color: var(--text); }
 .hero h1 { font-family: 'Oswald', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: .02em; }
 .page { background: none; }
 .criterion-card { background: var(--card); border-color: var(--border); }
-.criterion-card:hover { border-color: rgba(168,85,247,.28); }
-.criterion-card.is-aeo { background: linear-gradient(135deg,rgba(88,28,135,.15),rgba(109,40,217,.08)); border-color: rgba(168,85,247,.4); }
-.score-hero { background: linear-gradient(135deg,rgba(255,255,255,.03),rgba(88,28,135,.08)); border-color: var(--border); }
-.progress-wrap { background: var(--card); border-color: var(--border); }
-.progress-bar-wrap { background: rgba(255,255,255,.08); }
-.progress-spinner { border-color: rgba(255,255,255,.08); border-top-color: var(--p); }
+.step-card { background: var(--card); border-color: var(--border); }
 .url-input { background: rgba(255,255,255,.04); border-color: rgba(168,85,247,.2); color: var(--text); }
 .url-input::placeholder { color: var(--muted); }
 .url-input:focus { border-color: var(--p); }
 .btn-audit { background: var(--p-gradient); }
-.btn-audit:hover { opacity: .88; }
 .btn-tg { background: var(--p-gradient); }
-.btn-tg:hover { opacity: .88; transform: translateY(-2px); }
-.cta-block { background: linear-gradient(135deg,rgba(255,255,255,.03),rgba(88,28,135,.08)); border-color: rgba(168,85,247,.3); }
-.section-title { color: var(--muted); }
 </style>
 </head>
 <body>
@@ -537,7 +529,7 @@ body { background: var(--bg); color: var(--text); }
   </a>
   <nav class="site-nav" id="siteNav">
     <a href="/">Главная</a>
-    <a href="/aeo/" class="active">Аудит</a>
+    <a href="/aeo/" class="active">AEO Консультант</a>
     <a href="https://aeo.aiprohar.ru/">AEO Generator</a>
   </nav>
   <button class="nav-toggle" id="navToggle" aria-label="Меню">
@@ -552,16 +544,19 @@ body { background: var(--bg); color: var(--text); }
   <div class="hero">
     <div class="hero-badge">
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#c084fc" stroke-width="1.5"/><path d="M6 4v2.5L7.5 8" stroke="#c084fc" stroke-width="1.5" stroke-linecap="round"/></svg>
-      Единственный аудит с AEO-проверкой
+      Специалист по AEO для стартапов и SaaS
     </div>
-    <h1>Проверьте сайт на готовность<br>к эпохе ИИ-поиска</h1>
-    <p>SEO, скорость, безопасность — и главное: увидят ли ваш сайт ChatGPT, Perplexity и Яндекс ИИ</p>
+    <h1>Попадите в ответы ChatGPT и Perplexity за 4 недели</h1>
+    <p>Я не классическое SEO-агентство. Я специалист, который разбирается в AI, имею собственный инструмент для AEO аудита и помогаю стартапам/SaaS быть видимыми в era AI-поиска.</p>
+    <div class="hero-subtext">
+      ✓ Методология для AEO (не просто SEO) · ✓ Инструмент AEO Generator · ✓ Эксперт в AI/API/контексте
+    </div>
 
     <div class="form-wrap">
       <input class="url-input" id="urlInput" type="text" placeholder="https://example.com" autocomplete="off">
       <button class="btn-audit" id="auditBtn" onclick="startAudit()">Проверить</button>
     </div>
-    <div class="form-hint">Бесплатно · Занимает ~60 секунд · 11 критериев</div>
+    <div class="form-hint">Бесплатный AEO аудит · ~60 сек · 11 критериев</div>
   </div>
 
   <!-- Error -->
@@ -572,7 +567,7 @@ body { background: var(--bg); color: var(--text); }
     <div class="progress-wrap">
       <div class="progress-spinner"></div>
       <div class="progress-step" id="progressStep">Загружаю страницу...</div>
-      <div class="progress-sub" id="progressSub">Ищу заголовки, SEO-теги, формы, CTA-кнопки</div>
+      <div class="progress-sub" id="progressSub">Проверяю видимость в ChatGPT, Perplexity, Яндекс ИИ</div>
       <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
     </div>
   </div>
@@ -580,73 +575,181 @@ body { background: var(--bg); color: var(--text); }
   <!-- Results -->
   <div id="results"></div>
 
-  <!-- О сервисе -->
-  <section class="about-section">
-    <h2>Что такое AEO и зачем это нужно?</h2>
-    <p>AEO (AI Engine Optimization) — оптимизация сайта для видимости в AI-поисковиках типа ChatGPT, Perplexity, Claude и Яндекс ИИ. Если раньше весь трафик шёл из Google, то теперь растет доля пользователей, которые ищут ответы в AI-моделях.</p>
-    <p>AI читают сайты иначе, чем обычные поисковики. Им важен <strong>качественный контент, чёткая структура, и доступность информации</strong>. Сайт, оптимизированный под AEO, получает:</p>
-    <ul>
-      <li>📈 Упоминания в ответах ChatGPT и Perplexity</li>
-      <li>🤖 Индексацию в Яндекс ИИ и Claude</li>
-      <li>💬 Больше трафика через диалоговые интерфейсы</li>
-      <li>✨ Повышение авторитета бренда</li>
-    </ul>
-  </section>
-
-  <!-- Услуги -->
-  <section class="services-section">
-    <h2>Наши услуги</h2>
-    <div class="services-grid">
-      <div class="service-card">
-        <h3>🔍 AEO + SEO Аудит</h3>
-        <p>Полный анализ вашего сайта на готовность к эпохе ИИ-поиска. Проверяем 11 критериев: скорость, SEO-теги, структуру контента, видимость в AI-поисковиках.</p>
-        <p><strong>Результат:</strong> Отчёт с приоритетами и планом исправления.</p>
+  <!-- Почему я -->
+  <section class="why-me-section">
+    <h2>Почему именно я?</h2>
+    <div class="why-grid">
+      <div class="why-card">
+        <h3>🤖 Разбираюсь в AI</h3>
+        <p>Не просто SEO-шник с новым названием. Работаю с Claude API, OpenRouter, интегрирую AI в процессы.</p>
       </div>
-      <div class="service-card">
-        <h3>⚡ Оптимизация структуры</h3>
-        <p>Улучшение архитектуры сайта, добавление Schema.org разметки, оптимизация заголовков и описаний для AI-моделей.</p>
-        <p><strong>Результат:</strong> Сайт становится видим ChatGPT и Perplexity.</p>
+      <div class="why-card">
+        <h3>⚡ Быстро результаты</h3>
+        <p>Стартапы ждут недель, а не месяцев. Первые результаты за 4 недели или деньги назад.</p>
       </div>
-      <div class="service-card">
-        <h3>📝 Контент для AI</h3>
-        <p>Создание и редактирование контента, который нравится AI-моделям: понятные объяснения, примеры, чёткая логическая структура.</p>
-        <p><strong>Результат:</strong> Сайт процитируют в ответах AI-поисковиков.</p>
+      <div class="why-card">
+        <h3>🧠 Методология</h3>
+        <p>Не случайные советы. У меня есть система из 7 шагов, которая работает для SaaS и стартапов.</p>
       </div>
-      <div class="service-card">
-        <h3>🚀 Полная оптимизация</h3>
-        <p>Комплексное решение: аудит + исправление + контент + мониторинг. Для амбициозных компаний, которые хотят лидировать в AI-поиске.</p>
-        <p><strong>Результат:</strong> +30–50% трафика из AI-источников за 2–3 месяца.</p>
+      <div class="why-card">
+        <h3>🛠️ Есть инструмент</h3>
+        <p>AEO Generator — сам использую для аудитов. Ты видишь точно, что нужно исправить.</p>
+      </div>
+      <div class="why-card">
+        <h3>💰 Дешевле агентств</h3>
+        <p>Rush/TexTerra берут 500k+. Я помогаю за 50–150k. Не потому что хуже, а потому что молодой рынок.</p>
+      </div>
+      <div class="why-card">
+        <h3>📞 Без посредников</h3>
+        <p>Работаешь напрямую со мной, не с менеджером. Вопросы решаем в Telegram за час.</p>
       </div>
     </div>
+  </section>
+
+  <!-- Методология -->
+  <section class="methodology-section">
+    <h2>Моя методология: 7 шагов к видимости в AI</h2>
+    <div class="methodology-steps">
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h3>Аудит текущего состояния</h3>
+          <p>Проверяю сайт через AEO Generator: скорость, SEO-теги, структуру, видимость в ChatGPT/Perplexity. Дам отчёт с приоритетами.</p>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h3>Entity Optimization</h3>
+          <p>Структурирую сайт так, чтобы AI понял, кто ты и что ты делаешь. Schema.org разметка + чёткая архитектура.</p>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h3>Контент для AI</h3>
+          <p>Переписываю/создаю контент, который нравится AI: понятные объяснения, примеры, логичная структура. Никакого "воды".</p>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <h3>Внешние сигналы</h3>
+          <p>Работаю с упоминаниями: Reddit, Хабр, LinkedIn, медиа. AI ищет источники информации о тебе вне сайта.</p>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-number">5</div>
+        <div class="step-content">
+          <h3>FAQ + Rich Snippets</h3>
+          <p>Создаю FAQ, которые ищут в ChatGPT/Perplexity. Добавляю rich snippets для лучшей видимости.</p>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-number">6</div>
+        <div class="step-content">
+          <h3>Мониторинг в AI</h3>
+          <p>Отслеживаю, как часто тебя цитируют в ответах ChatGPT/Perplexity. Ежемесячный отчёт с метриками.</p>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-number">7</div>
+        <div class="step-content">
+          <h3>Итерация и оптимизация</h3>
+          <p>Рынок AI меняется каждый месяц. Мы постоянно тестируем и оптимизируем подход. Результаты растут.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Сравнение -->
+  <section class="comparison-section">
+    <h2>Сравнение: я vs конкуренты</h2>
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Параметр</th>
+          <th>Rush Agency</th>
+          <th>TexTerra</th>
+          <th class="me">Я (Александр)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Стоимость</td>
+          <td>500k–5M ₽</td>
+          <td>300k–1M ₽</td>
+          <td class="me">50–150k ₽</td>
+        </tr>
+        <tr>
+          <td>Срок первых результатов</td>
+          <td>2–3 месяца</td>
+          <td>1–2 месяца</td>
+          <td class="me">4 недели</td>
+        </tr>
+        <tr>
+          <td>Фокус на AEO</td>
+          <td>SEO + немного AI</td>
+          <td>Контент + немного AI</td>
+          <td class="me">100% AEO</td>
+        </tr>
+        <tr>
+          <td>Инструмент для анализа</td>
+          <td>Свой (закрытый)</td>
+          <td>Нет</td>
+          <td class="me">AEO Generator (открытый)</td>
+        </tr>
+        <tr>
+          <td>Компетенция в AI/API</td>
+          <td>Базовая</td>
+          <td>Базовая</td>
+          <td class="me">Глубокая</td>
+        </tr>
+        <tr>
+          <td>Прямая коммуникация</td>
+          <td>Менеджер</td>
+          <td>Account Manager</td>
+          <td class="me">Напрямую в Telegram</td>
+        </tr>
+        <tr>
+          <td>Лучше всего для</td>
+          <td>Крупный бизнес</td>
+          <td>Личные бренды</td>
+          <td class="me">Стартапы, SaaS</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="text-align: center; color: #475569; margin-top: 20px; font-size: 14px;">
+      ✓ Rush и TexTerra — отличные агентства. Я специализируюсь на другой нише и делаю AEO иначе.
+    </p>
   </section>
 
   <!-- Кейсы -->
   <section class="cases-section">
-    <h2>Наши кейсы</h2>
+    <h2>Кейсы и примеры</h2>
     <div class="cases-grid">
       <div class="case-card">
         <div class="case-badge">В работе</div>
-        <h3>Онлайн-школа программирования</h3>
-        <p><strong>Проблема:</strong> Сайт не индексировался в ChatGPT и Perplexity, контент был невидим для AI.</p>
-        <p><strong>Решение:</strong> Оптимизация структуры, добавление Schema.org разметки курсов, переработка описаний.</p>
-        <p><strong>Результат:</strong> (ожидается) Упоминания в ответах AI по запросам типа "где учиться программированию онлайн".</p>
+        <h3>SaaS для аналитики</h3>
+        <p><strong>Задача:</strong> Стартап не находился в Perplexity, теряла лиды конкурентам.</p>
+        <p><strong>Решение:</strong> Entity optimization + FAQ под AI + контент о конкурентном анализе.</p>
+        <p><strong>Результат:</strong> (ожидается к концу июля) Упоминания в ответах про "tools for data analysis".</p>
       </div>
       <div class="case-card">
         <div class="case-badge">В работе</div>
-        <h3>SaaS-платформа для аналитики</h3>
-        <p><strong>Проблема:</strong> Нет SEO, нет AEO, потеря трафика конкурентам.</p>
-        <p><strong>Решение:</strong> Полный аудит, оптимизация Lighthouse, добавление FAQ для AI.</p>
-        <p><strong>Результат:</strong> (ожидается) Видимость в Perplexity и упоминания в ChatGPT по нишевым запросам.</p>
+        <h3>B2B платформа</h3>
+        <p><strong>Задача:</strong> Нужна видимость в ChatGPT для нишевых B2B запросов.</p>
+        <p><strong>Решение:</strong> Schema.org разметка + external mentions + rich snippets.</p>
+        <p><strong>Результат:</strong> (ожидается) Процитирование в ответах ChatGPT на вопросы про "B2B integration".</p>
       </div>
       <div class="case-card">
-        <div class="case-badge">В работе</div>
-        <h3>Блог про нейросети</h3>
-        <p><strong>Проблема:</strong> Хороший контент, но сайт конкурирует с Wikipedia и Reddit в Google. Нужны новые источники трафика.</p>
-        <p><strong>Решение:</strong> AEO оптимизация, структурирование статей, добавление примеров кода и практических советов.</p>
-        <p><strong>Результат:</strong> (ожидается) Регулярные цитирования в ответах ChatGPT и Claude.</p>
+        <div class="case-badge">Демо</div>
+        <h3>Пример аудита (свой сайт)</h3>
+        <p><strong>Пример:</strong> Сам оптимизировал aiprohar.ru под AEO. Процесс полностью прозрачен.</p>
+        <p><strong>Инструмент:</strong> Используешь AEO Generator и видишь, как это работает.</p>
+        <p><strong>Доступно:</strong> Может вести live-аудит твоего сайта прямо в Telegram.</p>
       </div>
     </div>
-    <p class="cases-note">🔄 Проекты в активной работе. Результаты и цифры появятся к концу июля 2026.</p>
   </section>
 
   <!-- FAQ -->
@@ -654,96 +757,56 @@ body { background: var(--bg); color: var(--text); }
     <h2>Часто задаваемые вопросы</h2>
     <div class="faq-items">
       <div class="faq-item">
-        <h3>Что такое AEO и чем оно отличается от SEO?</h3>
-        <p>SEO — оптимизация для Google поиска. AEO — оптимизация для AI-моделей типа ChatGPT, Perplexity и Claude. Они читают сайты по-разному, поэтому нужны разные подходы. Хорошая новость: если сайт оптимизирован под AEO, обычно улучшается и SEO.</p>
+        <h3>Почему я должен обратиться к тебе, а не в Rush/TexTerra?</h3>
+        <p>Rush и TexTerra — классические агентства, отличаются по SEO. Я специалист именно по AEO и работаю только со стартапами/SaaS. Дешевле, быстрее, понимаю AI на глубинном уровне.</p>
       </div>
       <div class="faq-item">
-        <h3>Будет ли AI-трафик эффективнее Google-трафика?</h3>
-        <p>AI-трафик уже растет. По прогнозам аналитиков, к 2026–2027 году 30–40% веб-трафика пойдет через AI-интерфейсы. Более целевая аудитория = выше конверсия. Эффективнее? Часто да.</p>
+        <h3>Гарантируешь ли ты результаты?</h3>
+        <p>Честно: в AEO нет 100% гарантий (AI меняют алгоритмы). Но если соблюдаем методологию 7 шагов, результаты есть всегда. Если нет результатов за 4 недели — вернём часть денег.</p>
       </div>
       <div class="faq-item">
         <h3>Сколько времени занимает оптимизация?</h3>
-        <p>Зависит от размера сайта и текущего состояния. Аудит — несколько часов. Исправление найденных проблем — 1–4 недели. Полная оптимизация + контент — 1–3 месяца.</p>
+        <p>Первые результаты — 4 недели. Полная видимость в ChatGPT/Perplexity — 2–3 месяца. Это зависит от размера сайта и ниши.</p>
       </div>
       <div class="faq-item">
-        <h3>Как вы измеряете результаты AEO?</h3>
-        <p>Через упоминания в ответах ChatGPT/Perplexity (используем специальные инструменты), индексацию в Яндекс ИИ (через Яндекс Вебмастер), и трафик из AI-источников (через аналитику).</p>
+        <h3>Какой минимальный бюджет?</h3>
+        <p>Аудит: 5000 ₽. Оптимизация (месячная): 50k–150k ₽. Полный пакет (аудит + 3 месяца оптимизации): 150k–300k ₽.</p>
       </div>
       <div class="faq-item">
-        <h3>Можно ли оптимизировать любой сайт?</h3>
-        <p>Почти любой. Исключение — информационные сайты, которые состоят только из картинок без текста, или сайты без уникального контента. Если есть текст — есть что оптимизировать.</p>
+        <h3>Как вы отслеживаете результаты?</h3>
+        <p>Ежемесячный отчёт с метриками: сколько раз тебя цитировали в ChatGPT/Perplexity, индексация в Яндекс ИИ, трафик из AI-источников. Все данные в открытом доступе.</p>
       </div>
       <div class="faq-item">
-        <h3>Какая цена на услуги?</h3>
-        <p>Аудит AEO+SEO — от 5000 ₽. Оптимизация — от 15000 ₽. Полный пакет (аудит + исправление + контент) — от 50000 ₽. Пишите в Telegram для индивидуального предложения.</p>
+        <h3>Помогаешь ли ты e-commerce или только SaaS?</h3>
+        <p>Лучше всего работает для SaaS, стартапов, инфобизнеса, личных брендов. E-commerce возможно, но менее эффективно (люди ищут товары в Google, не в ChatGPT).</p>
+      </div>
+      <div class="faq-item">
+        <h3>Какой сейчас статус рынка AEO в России?</h3>
+        <p>Рынок совсем молодой (1–2 года). Конкуренции почти нет. Если начнёшь сейчас — займёшь позицию первопроходца в своей нише.</p>
       </div>
     </div>
   </section>
 
+  <!-- CTA -->
+  <div class="cta-block">
+    <h2>Готов попасть в ответы AI?</h2>
+    <p>Напиши мне в Telegram. Расскажу про твой сайт, сделаю quick-аудит, дам конкретный план.</p>
+    <a class="btn-tg" href="https://t.me/prohar2f" target="_blank">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.88 14.08l-2.95-.924c-.64-.203-.654-.64.136-.953l11.57-4.461c.537-.194 1.006.131.927.506z"/></svg>
+      Написать Александру в Telegram
+    </a>
+  </div>
+
 </div>
 
-<!-- Schema.org разметка для услуг -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org/",
-  "@type": "Organization",
-  "name": "Александр Прохоров — AEO Оптимизация",
-  "url": "https://aiprohar.ru/",
-  "image": "https://aiprohar.ru/assets/logo.png",
-  "description": "AEO + SEO аудит и оптимизация сайтов для ChatGPT, Perplexity и Яндекс ИИ",
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "contactType": "Customer Support",
-    "url": "https://t.me/prohar2f"
-  },
-  "sameAs": ["https://t.me/prohar2f"],
-  "service": [
-    {
-      "@type": "Service",
-      "name": "AEO + SEO Аудит",
-      "description": "Полный анализ сайта на готовность к эпохе ИИ-поиска. Проверяем 11 критериев: скорость, SEO-теги, структуру контента, видимость в AI-поисковиках.",
-      "provider": {
-        "@type": "Organization",
-        "name": "Александр Прохоров"
-      },
-      "areaServed": "RU",
-      "priceRange": "5000–15000"
-    },
-    {
-      "@type": "Service",
-      "name": "AEO Оптимизация",
-      "description": "Улучшение архитектуры сайта, добавление Schema.org разметки, оптимизация для видимости в ChatGPT, Perplexity и Яндекс ИИ.",
-      "provider": {
-        "@type": "Organization",
-        "name": "Александр Прохоров"
-      },
-      "areaServed": "RU",
-      "priceRange": "15000–100000"
-    },
-    {
-      "@type": "Service",
-      "name": "Полная оптимизация сайта",
-      "description": "Комплексное решение: аудит + исправление + контент + мониторинг для лидерства в AI-поиске.",
-      "provider": {
-        "@type": "Organization",
-        "name": "Александр Прохоров"
-      },
-      "areaServed": "RU",
-      "priceRange": "50000+"
-    }
-  ]
-}
-</script>
-
+<!-- Scripts -->
 <script>
-// ── Замени на свой URL Railway после деплоя ──
 const API = 'https://audit-bot-production-b21c.up.railway.app';
-
 const STEPS = [
-  { step: 'Загружаю страницу...', sub: 'Ищу заголовки, SEO-теги, формы, CTA-кнопки', pct: 8, dur: 7000 },
-  { step: 'Проверяю скорость (PageSpeed)...', sub: 'Google анализирует мобильную версию — до 40 сек', pct: 30, dur: 35000 },
-  { step: 'Проверяю SSL-сертификат...', sub: 'Проверяю безопасность соединения', pct: 75, dur: 3000 },
-  { step: 'ИИ анализирует контент...', sub: 'Claude читает страницу и формирует оценки', pct: 90, dur: 20000 },
+  { step: 'Загружаю страницу...', sub: 'Ищу заголовки, SEO-теги, структуру контента', pct: 8, dur: 7000 },
+  { step: 'Проверяю скорость (PageSpeed)...', sub: 'Google анализирует мобильную версию', pct: 30, dur: 35000 },
+  { step: 'Проверяю SSL и безопасность...', sub: 'Проверяю сертификат и защиту', pct: 75, dur: 3000 },
+  { step: 'AI анализирует видимость...', sub: 'Claude читает и оценивает для ChatGPT/Perplexity', pct: 90, dur: 20000 },
 ];
 
 let stepTimer = null;
@@ -821,7 +884,6 @@ function renderResults(d) {
   const top3 = new Set(d.top3_priority || []);
   const express = d.express_summary || '';
 
-  // priority names
   const prioNames = (d.scores || [])
     .filter(s => top3.has(s.id))
     .map(s => s.name);
@@ -851,45 +913,32 @@ function renderResults(d) {
     const isAeo = s.id === 11;
     const isPrio = top3.has(s.id);
     const pct = s.score * 10;
-    const cardClass = ['criterion-card', isAeo ? 'is-aeo' : '', isPrio ? 'is-priority' : ''].filter(Boolean).join(' ');
 
     html += `
-      <div class="${cardClass}">
+      <div class="criterion-card ${isAeo ? 'is-aeo' : ''}">
         <div class="card-top">
           <div class="card-name">
             ${s.name}
-            ${isAeo ? '<span class="aeo-badge">NEW</span>' : ''}
+            ${isAeo ? '<span class="aeo-badge">AEO</span>' : ''}
           </div>
           <div class="card-score" style="color:${c}">${s.score}<span>/10</span></div>
         </div>
-        <div class="score-bar-wrap">
-          <div class="score-bar" style="width:${pct}%;background:${c}"></div>
+        <div style="background:#1e3a5f;border-radius:100px;height:3px;margin-bottom:12px;overflow:hidden">
+          <div style="height:100%;background:${c};width:${pct}%"></div>
         </div>
-        ${s.problem ? `<div class="card-problem">${s.problem}</div>` : ''}
-        ${s.score < 8 ? `<a class="card-fix-btn" href="https://t.me/prohar2f" target="_blank">Получить план исправления →</a>` : ''}
+        ${s.problem ? `<div style="font-size:13px;color:#cbd5e1;margin-bottom:10px;line-height:1.5">${s.problem}</div>` : ''}
+        ${s.score < 8 ? `<a class="card-fix-btn" href="https://t.me/prohar2f" target="_blank" style="display:inline-block;margin-top:6px;font-size:13px;font-weight:600;color:#a78bfa;text-decoration:none;border:1px solid rgba(167,139,250,.35);border-radius:8px;padding:5px 12px;transition:background .15s">Обсудить в Telegram →</a>` : ''}
       </div>
     `;
   });
 
   html += `</div>`;
 
-  html += `
-    <div class="cta-block">
-      <h2>Хотите исправить найденные проблемы?</h2>
-      <p>Александр — веб-разработчик, 3 года опыта, 20+ сайтов для малого бизнеса.<br>Помогу довести ваш сайт до оценки A.</p>
-      <a class="btn-tg" href="https://t.me/prohar2f" target="_blank">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.88 14.08l-2.95-.924c-.64-.203-.654-.64.136-.953l11.57-4.461c.537-.194 1.006.131.927.506z"/></svg>
-        Написать Александру
-      </a>
-    </div>
-  `;
-
   const el = document.getElementById('results');
   el.innerHTML = html;
   el.style.display = 'block';
   el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
-
 
 document.getElementById('urlInput').addEventListener('keydown', e => {
   if (e.key === 'Enter') startAudit();
@@ -898,5 +947,54 @@ document.getElementById('urlInput').addEventListener('keydown', e => {
 <canvas id="smokeCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;mix-blend-mode:screen"></canvas>
 <script src="/assets/fluid.js"></script>
 <script src="/assets/site.js"></script>
+
+<!-- Schema.org разметка для Person (эксперт) + услуги -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Person",
+  "name": "Александр Прохоров",
+  "url": "https://aiprohar.ru/",
+  "image": "https://aiprohar.ru/assets/logo.png",
+  "description": "AEO консультант для стартапов и SaaS. Специализация: видимость в ChatGPT, Perplexity и Яндекс ИИ.",
+  "jobTitle": "AEO Specialist / Web Developer",
+  "email": "contact@aiprohar.ru",
+  "telephone": "+7-921-XXXXXXX",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "Customer Service",
+    "url": "https://t.me/prohar2f"
+  },
+  "knowsAbout": ["AEO", "SEO", "AI-поиск", "ChatGPT", "Perplexity", "Schema.org", "Entity Optimization", "Structured Data", "Web Development"],
+  "expertise": [
+    "Answer Engine Optimization (AEO)",
+    "AI-driven content optimization",
+    "Entity SEO",
+    "ChatGPT & Perplexity visibility",
+    "Web development & API integration"
+  ],
+  "sameAs": ["https://t.me/prohar2f"],
+  "offersService": [
+    {
+      "@type": "Service",
+      "name": "AEO Аудит",
+      "description": "Полный анализ сайта на видимость в ChatGPT, Perplexity и Яндекс ИИ",
+      "priceRange": "5000-15000"
+    },
+    {
+      "@type": "Service",
+      "name": "AEO Оптимизация (месячная)",
+      "description": "Системная оптимизация под AI-поиск: контент, entity optimization, external signals",
+      "priceRange": "50000-150000"
+    },
+    {
+      "@type": "Service",
+      "name": "Полный пакет (3 месяца)",
+      "description": "Аудит + оптимизация + мониторинг + методология",
+      "priceRange": "150000-300000"
+    }
+  ]
+}
+</script>
 </body>
 </html>
