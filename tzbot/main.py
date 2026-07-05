@@ -1169,14 +1169,37 @@ async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> N
 
 async def post_init(app: Application) -> None:
     db_init()
+
+    logger.info("🔄 Очищаю webhook состояние...")
+    try:
+        # Убедиться что нет webhook'а
+        await app.bot.delete_webhook(drop_pending_updates=True)
+        logger.info("✅ Webhook удалён, pending updates очищены")
+    except Exception as e:
+        logger.warning(f"⚠️  Ошибка при удалении webhook: {e}")
+
+    # Подождать чтобы Telegram обработал удаление
+    await asyncio.sleep(2)
+
+    # Попытаться получить обновления чтобы очистить очередь
+    try:
+        logger.info("🔄 Очищаю очередь обновлений...")
+        updates = await app.bot.get_updates(timeout=1, read_timeout=2)
+        if updates:
+            logger.info(f"✅ Очищено {len(updates)} pending обновлений")
+    except Exception as e:
+        logger.warning(f"⚠️  Ошибка при очистке очереди: {e}")
+
+    await asyncio.sleep(1)
     await app.bot.set_my_commands([
         BotCommand("start",  "Начать сбор ТЗ"),
         BotCommand("finish", "Завершить интервью и получить ТЗ"),
         BotCommand("reset",  "Начать заново"),
     ])
+    logger.info("✅ Bot ready!")
 
 
-def main() -> None:
+async def main_async() -> None:
     app = Application.builder().token(TELEGRAM_TOKEN).post_init(post_init).build()
 
     app.add_handler(CommandHandler("start",  start))
@@ -1209,20 +1232,40 @@ def main() -> None:
     signal.signal(signal.SIGTERM, stop_signal_handler)
     signal.signal(signal.SIGINT, stop_signal_handler)
 
-    try:
-        app.run_polling(
-            allowed_updates=Update.ALL_TYPES,
-            drop_pending_updates=True,
-            timeout=10,
-            read_timeout=10,
-            connect_timeout=10,
-            write_timeout=10,
-        )
-    except KeyboardInterrupt:
-        logger.info("⏹️  Bot stopped by user")
-    except Exception as e:
-        logger.error(f"Fatal error: {e}", exc_info=True)
-        raise
+    retry_count = 0
+    max_retries = 5
+
+    while retry_count < max_retries:
+        try:
+            logger.info(f"🚀 Запуск polling (попытка {retry_count + 1}/{max_retries})...")
+            app.run_polling(
+                allowed_updates=Update.ALL_TYPES,
+                drop_pending_updates=False,
+                timeout=15,
+                read_timeout=15,
+                connect_timeout=15,
+                write_timeout=15,
+            )
+            break  # Успешный запуск
+        except Conflict as e:
+            retry_count += 1
+            wait_time = 10 * (2 ** (retry_count - 1))  # Exponential backoff: 10s, 20s, 40s...
+            logger.warning(f"⚠️  Conflict: {e}")
+            logger.info(f"⏳ Ожидание {wait_time}с перед повтором (попытка {retry_count}/{max_retries})...")
+            await asyncio.sleep(wait_time)
+            if retry_count >= max_retries:
+                logger.error("❌ Не удалось запустить бота после нескольких попыток")
+                raise
+        except KeyboardInterrupt:
+            logger.info("⏹️  Bot stopped by user")
+            break
+        except Exception as e:
+            logger.error(f"Fatal error: {e}", exc_info=True)
+            raise
+
+
+def main() -> None:
+    asyncio.run(main_async())
 
 
 if __name__ == "__main__":
