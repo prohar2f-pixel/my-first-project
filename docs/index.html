@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Флагман: +125k₽/месяц через AI-видимость</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Trebuchet MS', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #F8F9FA;
+            color: #1A1A1A;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Georgia', serif;
+        }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(135deg, #5B2C6F 0%, #7B3F99 100%);
+            color: white;
+            padding: 100px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: rgba(212, 165, 116, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(30px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-number {
+            font-size: 5em;
+            font-weight: 900;
+            letter-spacing: -2px;
+            color: #D4A574;
+            margin-bottom: 20px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .hero h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.3em;
+            opacity: 0.95;
+            margin-bottom: 40px;
+        }
+
+        .cta-button {
+            background: #D4A574;
+            color: #1A1A1A;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .cta-button:hover {
+            background: #E8C8A0;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(212, 165, 116, 0.3);
+        }
+
+        /* SECTIONS */
+        .section {
+            max-width: 1000px;
+            margin: 80px auto;
+            padding: 0 40px;
+        }
+
+        .section-title {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: #5B2C6F;
+            margin-bottom: 50px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #D4A574 0%, #2ECF71 100%);
+            border-radius: 2px;
+        }
+
+        /* PROBLEM SECTION */
+        .problem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .problem-card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .problem-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .problem-card.warning {
+            border-top: 3px solid #FF6B6B;
+            background: linear-gradient(135deg, #FFF5F5 0%, #FFE8E8 100%);
+        }
+
+        .problem-card h3 {
+            color: #5B2C6F;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .problem-card p {
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .big-number {
+            font-size: 2.5em;
+            font-weight: 900;
+            color: #FF6B6B;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+        }
+
+        /* SOLUTION SECTION */
+        .solution-box {
+            background: linear-gradient(135deg, #F8F9FA 0%, white 100%);
+            border-top: 3px solid #D4A574;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+        }
+
+        .solution-box h3 {
+            color: #5B2C6F;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .solution-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .solution-box li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            color: #555;
+        }
+
+        .solution-box li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #2ECF71;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+
+        /* ROI SECTION */
+        .roi-container {
+            background: linear-gradient(135deg, #5B2C6F 0%, #7B3F99 100%);
+            color: white;
+            padding: 80px 40px;
+            border-radius: 16px;
+            margin: 60px 0;
+        }
+
+        .roi-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .roi-card {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .roi-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .roi-number {
+            font-size: 3.5em;
+            font-weight: 900;
+            color: #D4A574;
+            margin-bottom: 15px;
+            font-family: 'Courier New', monospace;
+            counter-increment: counter-value;
+        }
+
+        .roi-label {
+            font-size: 1em;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .roi-formula {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.2em;
+            font-family: 'Courier New', monospace;
+            line-height: 2;
+        }
+
+        /* TIMELINE */
+        .timeline {
+            position: relative;
+            padding: 40px 0;
+        }
+
+        .timeline-item {
+            margin-bottom: 40px;
+            padding-left: 60px;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 5px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #5B2C6F 0%, #7B3F99 100%);
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 0 0 3px #5B2C6F;
+        }
+
+        .timeline-item::after {
+            content: "";
+            position: absolute;
+            left: 19px;
+            top: 40px;
+            width: 2px;
+            height: calc(100% + 20px);
+            background: linear-gradient(180deg, #5B2C6F 0%, #D4A574 100%);
+        }
+
+        .timeline-item:last-child::after {
+            display: none;
+        }
+
+        .timeline-item h4 {
+            color: #5B2C6F;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .timeline-item p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .timeline-item ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .timeline-item li {
+            padding: 8px 0;
+            color: #666;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .timeline-item li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #D4A574;
+            font-weight: bold;
+        }
+
+        /* COMPARISON */
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 60px 0;
+        }
+
+        .comparison-block {
+            padding: 40px;
+            border-radius: 12px;
+            background: white;
+        }
+
+        .comparison-block.before {
+            border-top: 3px solid #FF6B6B;
+            background: linear-gradient(135deg, #FFF5F5 0%, #FFE8E8 100%);
+        }
+
+        .comparison-block.after {
+            border-top: 3px solid #2ECF71;
+            background: linear-gradient(135deg, #F0FFF4 0%, #E0FFE8 100%);
+        }
+
+        .comparison-block h4 {
+            font-size: 1.3em;
+            margin-bottom: 25px;
+            color: #1A1A1A;
+        }
+
+        .comparison-block ul {
+            list-style: none;
+        }
+
+        .comparison-block li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            color: #555;
+        }
+
+        .comparison-block.before li::before {
+            content: "✗";
+            position: absolute;
+            left: 0;
+            color: #FF6B6B;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+
+        .comparison-block.after li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #2ECF71;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+
+        /* NEXT STEPS */
+        .next-steps {
+            background: white;
+            border: 3px solid #D4A574;
+            padding: 50px 40px;
+            border-radius: 12px;
+            margin: 60px 0;
+        }
+
+        .next-steps h3 {
+            color: #5B2C6F;
+            font-size: 1.5em;
+            margin-bottom: 30px;
+        }
+
+        .step {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 25px;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, #5B2C6F 0%, #7B3F99 100%);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            color: #1A1A1A;
+            margin-bottom: 8px;
+        }
+
+        .step-content p {
+            color: #666;
+        }
+
+        /* FOOTER CTA */
+        .footer-cta {
+            text-align: center;
+            padding: 80px 40px;
+            background: linear-gradient(135deg, #5B2C6F 0%, #7B3F99 100%);
+            color: white;
+        }
+
+        .footer-cta h2 {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+        }
+
+        .footer-cta p {
+            font-size: 1.2em;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero-number {
+                font-size: 3em;
+            }
+
+            .hero h1 {
+                font-size: 1.8em;
+            }
+
+            .problem-grid,
+            .roi-grid,
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 0 20px;
+            }
+
+            .section-title {
+                font-size: 1.8em;
+            }
+        }
+
+        /* ANIMATION */
+        @keyframes countUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: countUp 0.6s ease-out forwards;
+        }
+
+        /* SCROLL REVEAL */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- HERO -->
+    <div class="hero">
+        <div class="hero-content">
+            <div class="hero-number">+125k₽</div>
+            <h1>Дополнительный доход в месяц</h1>
+            <p>За счёт видимости в ChatGPT, Perplexity и Яндекс ИИ</p>
+            <button class="cta-button" onclick="document.querySelector('.next-steps').scrollIntoView();">Узнать как →</button>
+        </div>
+    </div>
+
+    <!-- ПРОБЛЕМА -->
+    <div class="section reveal">
+        <h2 class="section-title">В чём проблема прямо сейчас</h2>
+
+        <div class="problem-grid">
+            <div class="problem-card warning">
+                <h3>❌ Люди ищут в AI</h3>
+                <p>Когда клиент гуглит "где взять аренду оборудования для свадьбы в Сочи", он спрашивает это и в ChatGPT.</p>
+            </div>
+
+            <div class="problem-card warning">
+                <h3>❌ Флагман не упоминается</h3>
+                <p>ChatGPT выдаёт конкурентов, гайды других сайтов, Яндекс Карты. Но не вас.</p>
+            </div>
+        </div>
+
+        <div style="background: #FFF5F5; padding: 40px; border-radius: 12px; text-align: center; margin-top: 40px;">
+            <div class="big-number">15-20 лидов/месяц</div>
+            <p style="font-size: 1.1em; color: #666;"><strong>теряется в AI-поиске</strong></p>
+            <p style="color: #999; margin-top: 10px;">Это 120-160k₽ упущенной выручки каждый месяц</p>
+        </div>
+    </div>
+
+    <!-- РЕШЕНИЕ -->
+    <div class="section reveal">
+        <h2 class="section-title">Как мы это исправим</h2>
+
+        <div class="solution-box">
+            <h3>📝 Добавим 3 гайда + 2 кейса на ваш сайт</h3>
+            <ul>
+                <li><strong>Гайд #1:</strong> "Как выбрать оборудование для свадьбы" — когда люди спрашивают это в ChatGPT, он пришлёт на вас</li>
+                <li><strong>Гайд #2:</strong> "Как организовать корпоратив за 2 недели" — практический чек-лист</li>
+                <li><strong>Гайд #3:</strong> "Оборудование для конференции: что критично" — для B2B запросов</li>
+                <li><strong>Кейс #1:</strong> "Свадьба 200 человек: что сделали" — результат</li>
+                <li><strong>Кейс #2:</strong> "Корпоратив 500 человек: как сэкономили 30%" — социальное доказательство</li>
+            </ul>
+        </div>
+
+        <div class="solution-box">
+            <h3>⚙️ Оптимизируем сайт под AI</h3>
+            <ul>
+                <li>Добавим Schema.org разметку (чтобы машины поняли вашу информацию)</li>
+                <li>Переделаем FAQ в структурированный формат</li>
+                <li>Свяжем всё между собой внутренними ссылками</li>
+            </ul>
+        </div>
+
+        <div class="solution-box">
+            <h3>📢 Запустим промоцию</h3>
+            <ul>
+                <li>Поделимся статьями в Telegram, Instagram, VK</li>
+                <li>Еженедельно будем тестировать: "упоминает ли ChatGPT Флагман?"</li>
+                <li>Отслеживать: откуда приходят клиенты</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ROI -->
+    <div class="section reveal">
+        <h2 class="section-title">Математика прибыли</h2>
+
+        <div class="roi-container">
+            <div class="roi-grid">
+                <div class="roi-card">
+                    <div class="roi-number">125k₽</div>
+                    <div class="roi-label">доход в месяц</div>
+                </div>
+                <div class="roi-card">
+                    <div class="roi-number">30k₽</div>
+                    <div class="roi-label">инвестиция</div>
+                </div>
+                <div class="roi-card">
+                    <div class="roi-number">316%</div>
+                    <div class="roi-label">ROI за месяц</div>
+                </div>
+            </div>
+
+            <div class="roi-formula">
+                <strong>Как это считается:</strong><br>
+                12.5 новых лидов × 10,000₽ = <span style="color: #2ECF71;">125,000₽ дополнительно</span><br>
+                Инвестиция: <span style="color: #D4A574;">30,000₽</span> (один раз)<br>
+                <strong>Окупится за неделю работы</strong>
+            </div>
+        </div>
+
+        <div class="comparison">
+            <div class="comparison-block before">
+                <h4>❌ Сейчас (потеря)</h4>
+                <ul>
+                    <li>ChatGPT вас не упоминает</li>
+                    <li>Теряется 15-20 лидов/месяц</li>
+                    <li>Упущенный доход: 160k₽</li>
+                    <li>Конкуренты забирают ваших клиентов</li>
+                </ul>
+            </div>
+
+            <div class="comparison-block after">
+                <h4>✅ Через 4-6 недель</h4>
+                <ul>
+                    <li>ChatGPT рекомендует вас в 40% ответов</li>
+                    <li>Добавляется 10-15 лидов/месяц</li>
+                    <li>Дополнительный доход: 125k₽</li>
+                    <li>Вы впереди конкурентов</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ПЛАН -->
+    <div class="section reveal">
+        <h2 class="section-title">План на 4-6 недель</h2>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <h4>Неделя 1: Подготовка</h4>
+                <ul>
+                    <li>Составляем план 3 гайдов</li>
+                    <li>Собираем фото из архива</li>
+                    <li>Пишем первый гайд</li>
+                </ul>
+            </div>
+
+            <div class="timeline-item">
+                <h4>Неделя 2: Контент</h4>
+                <ul>
+                    <li>Пишем гайды #2 и #3</li>
+                    <li>Пишем 2 кейса с фото</li>
+                    <li>Собираем всё на сайте</li>
+                </ul>
+            </div>
+
+            <div class="timeline-item">
+                <h4>Неделя 3: Технология</h4>
+                <ul>
+                    <li>Добавляем Schema.org разметку</li>
+                    <li>Обновляем FAQ</li>
+                    <li>Делаем первый тест в ChatGPT</li>
+                </ul>
+            </div>
+
+            <div class="timeline-item">
+                <h4>Неделя 4-6: Результаты</h4>
+                <ul>
+                    <li>Еженедельные тесты ChatGPT</li>
+                    <li>Отслеживаем первых клиентов из AI</li>
+                    <li>Документируем результаты</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEXT STEPS -->
+    <div class="section reveal">
+        <div class="next-steps">
+            <h3>🎯 Ваши шаги</h3>
+
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>Согласитесь с планом</h4>
+                    <p>Посмотрите на числа выше. Выглядит реалистично? Хотите попробовать?</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>Созвонимся на 30 минут</h4>
+                    <p>Обсудим: какие типичные вопросы клиентов, есть ли фото для кейсов, кто будет помогать писать</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>Подпишем договор</h4>
+                    <p><strong>35k₽/месяц × 2-3 месяца = 70-105k₽</strong><br>Гарантия: если нет +10 лидов из AI за 6 недель — возвращаем 50% платежа</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h4>Начнём работу</h4>
+                    <p>Неделю за неделей. К неделе 4 уже будут первые результаты</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER CTA -->
+    <div class="footer-cta">
+        <h2>Готовы получить +125k₽ в месяц?</h2>
+        <p>Давайте сделаем это вместе</p>
+        <a href="https://t.me/alex_prohar" class="cta-button" style="background: #D4A574; color: #1A1A1A;">Написать в Telegram →</a>
+        <p style="margin-top: 30px; opacity: 0.8; font-size: 0.95em;">Вопросы? +7 (978) 233-63-82</p>
+    </div>
+
+    <script>
+        // Scroll reveal animation
+        const reveals = document.querySelectorAll('.reveal');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1,
+        });
+
+        reveals.forEach((reveal) => {
+            observer.observe(reveal);
+        });
+
+        // Smooth scroll for buttons
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
