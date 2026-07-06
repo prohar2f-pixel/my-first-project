@@ -1,11 +1,8 @@
 User-agent: *
 Allow: /
 
-# AI search crawlers — explicitly allowed
+# AI-боты (ChatGPT, Perplexity, Claude) — разрешаем индексацию
 User-agent: GPTBot
-Allow: /
-
-User-agent: ChatGPT-User
 Allow: /
 
 User-agent: PerplexityBot
@@ -14,13 +11,4 @@ Allow: /
 User-agent: ClaudeBot
 Allow: /
 
-User-agent: anthropic-ai
-Allow: /
-
-User-agent: YouBot
-Allow: /
-
-User-agent: Applebot-Extended
-Allow: /
-
-Sitemap: https://prohar2f-pixel.github.io/my-first-project/sitemap.xml
+Sitemap: https://aiprohar.ru/sitemap.xml
