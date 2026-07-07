@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Флагман: Премиум оптимизация сайта</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Trebuchet MS', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #F8F9FA;
+            color: #1A1A1A;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Georgia', serif;
+        }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(135deg, #5B2C6F 0%, #7B3F99 100%);
+            color: white;
+            padding: 100px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: rgba(212, 165, 116, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(30px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-number {
+            font-size: 5em;
+            font-weight: 900;
+            letter-spacing: -2px;
+            color: #D4A574;
+            margin-bottom: 20px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .hero h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.3em;
+            opacity: 0.95;
+            margin-bottom: 40px;
+        }
+
+        .cta-button {
+            background: #D4A574;
+            color: #1A1A1A;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .cta-button:hover {
+            background: #E8C8A0;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(212, 165, 116, 0.3);
+        }
+
+        /* SECTIONS */
+        .section {
+            max-width: 1000px;
+            margin: 80px auto;
+            padding: 0 40px;
+        }
+
+        .section-title {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: #5B2C6F;
+            margin-bottom: 50px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #D4A574 0%, #2ECF71 100%);
+            border-radius: 2px;
+        }
+
+        /* PROBLEM SECTION */
+        .problem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .problem-card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border-top: 3px solid #FF6B6B;
+            background: linear-gradient(135deg, #FFF5F5 0%, #FFE8E8 100%);
+        }
+
+        .problem-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .problem-card h3 {
+            color: #5B2C6F;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        .problem-card p {
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .big-number {
+            font-size: 2.5em;
+            font-weight: 900;
+            color: #FF6B6B;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+        }
+
+        /* SOLUTION SECTION */
+        .solution-box {
+            background: linear-gradient(135deg, #F8F9FA 0%, white 100%);
+            border-top: 3px solid #D4A574;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+        }
+
+        .solution-box h3 {
+            color: #5B2C6F;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .solution-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .solution-box li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            color: #555;
+        }
+
+        .solution-box li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #2ECF71;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+
+        /* PRICE SECTION */
+        .price-container {
+            background: linear-gradient(135deg, #5B2C6F 0%, #7B3F99 100%);
+            color: white;
+            padding: 80px 40px;
+            border-radius: 16px;
+            margin: 60px 0;
+            text-align: center;
+        }
+
+        .price-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .price-card {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .price-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .price-number {
+            font-size: 3.5em;
+            font-weight: 900;
+            color: #D4A574;
+            margin-bottom: 15px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .price-label {
+            font-size: 1em;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        /* TIMELINE */
+        .timeline {
+            position: relative;
+            padding: 40px 0;
+        }
+
+        .timeline-item {
+            margin-bottom: 40px;
+            padding-left: 60px;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 5px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #5B2C6F 0%, #7B3F99 100%);
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 0 0 3px #5B2C6F;
+        }
+
+        .timeline-item::after {
+            content: "";
+            position: absolute;
+            left: 19px;
+            top: 40px;
+            width: 2px;
+            height: calc(100% + 20px);
+            background: linear-gradient(180deg, #5B2C6F 0%, #D4A574 100%);
+        }
+
+        .timeline-item:last-child::after {
+            display: none;
+        }
+
+        .timeline-item h4 {
+            color: #5B2C6F;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .timeline-item p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .timeline-item ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .timeline-item li {
+            padding: 8px 0;
+            color: #666;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .timeline-item li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #D4A574;
+            font-weight: bold;
+        }
+
+        /* COMPARISON */
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 60px 0;
+        }
+
+        .comparison-block {
+            padding: 40px;
+            border-radius: 12px;
+            background: white;
+        }
+
+        .comparison-block.before {
+            border-top: 3px solid #FF6B6B;
+            background: linear-gradient(135deg, #FFF5F5 0%, #FFE8E8 100%);
+        }
+
+        .comparison-block.after {
+            border-top: 3px solid #2ECF71;
+            background: linear-gradient(135deg, #F0FFF4 0%, #E0FFE8 100%);
+        }
+
+        .comparison-block h4 {
+            font-size: 1.3em;
+            margin-bottom: 25px;
+            color: #1A1A1A;
+        }
+
+        .comparison-block ul {
+            list-style: none;
+        }
+
+        .comparison-block li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            color: #555;
+        }
+
+        .comparison-block.before li::before {
+            content: "✗";
+            position: absolute;
+            left: 0;
+            color: #FF6B6B;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+
+        .comparison-block.after li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #2ECF71;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+
+        /* NEXT STEPS */
+        .next-steps {
+            background: white;
+            border: 3px solid #D4A574;
+            padding: 50px 40px;
+            border-radius: 12px;
+            margin: 60px 0;
+        }
+
+        .next-steps h3 {
+            color: #5B2C6F;
+            font-size: 1.5em;
+            margin-bottom: 30px;
+        }
+
+        .step {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 25px;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, #5B2C6F 0%, #7B3F99 100%);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            color: #1A1A1A;
+            margin-bottom: 8px;
+        }
+
+        .step-content p {
+            color: #666;
+        }
+
+        /* FOOTER CTA */
+        .footer-cta {
+            text-align: center;
+            padding: 80px 40px;
+            background: linear-gradient(135deg, #5B2C6F 0%, #7B3F99 100%);
+            color: white;
+        }
+
+        .footer-cta h2 {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+        }
+
+        .footer-cta p {
+            font-size: 1.2em;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero-number {
+                font-size: 3em;
+            }
+
+            .hero h1 {
+                font-size: 1.8em;
+            }
+
+            .problem-grid,
+            .price-grid,
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 0 20px;
+            }
+
+            .section-title {
+                font-size: 1.8em;
+            }
+        }
+
+        /* SCROLL REVEAL */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- HERO -->
+    <div class="hero">
+        <div class="hero-content">
+            <div class="hero-number">9 500₽</div>
+            <h1>Модернизация сайта за 5-6 дней</h1>
+            <p>Скорость + формы + аналитика = идеальный сайт</p>
+            <button class="cta-button" onclick="document.querySelector('.next-steps').scrollIntoView();">Узнать как →</button>
+        </div>
+    </div>
+
+    <!-- ПРОБЛЕМА -->
+    <div class="section reveal">
+        <h2 class="section-title">Текущие проблемы сайта</h2>
+
+        <div class="problem-grid">
+            <div class="problem-card">
+                <h3>⚡ Сайт медленный</h3>
+                <p>79 неоптимизированных изображений замедляют загрузку. Клиент уходит если сайт грузится больше 3 секунд.</p>
+            </div>
+
+            <div class="problem-card">
+                <h3>📋 Формы не работают</h3>
+                <p>Заявки могут вообще не доходить до вас. Клиенты кликают "отправить" и... ничего не происходит.</p>
+            </div>
+        </div>
+
+        <div style="background: #FFF5F5; padding: 40px; border-radius: 12px; text-align: center; margin-top: 40px;">
+            <div class="big-number">60-70%</div>
+            <p style="font-size: 1.1em; color: #666;"><strong>потери клиентов из-за проблем с сайтом</strong></p>
+            <p style="color: #999; margin-top: 10px;">Медлительность, неработающие формы, непонятная навигация</p>
+        </div>
+    </div>
+
+    <!-- РЕШЕНИЕ -->
+    <div class="section reveal">
+        <h2 class="section-title">Что мы сделаем</h2>
+
+        <div class="solution-box">
+            <h3>🚀 7 блоков оптимизации</h3>
+            <ul>
+                <li><strong>Оптимизация изображений</strong> — все 79 фото сжимаем, переводим в WebP. Сайт загружается в 3 раза быстрее</li>
+                <li><strong>Проверка и исправление форм</strong> — гарантируем что каждая заявка доходит на вашу почту</li>
+                <li><strong>Улучшение навигации</strong> — посетитель поймет что это за сайт за первые 3 секунды</li>
+                <li><strong>Google Analytics 4</strong> — видите откуда приходят клиенты в реальном времени</li>
+                <li><strong>Яндекс.Метрика</strong> — видите как клиенты взаимодействуют с сайтом (тепловая карта, записи сессий)</li>
+                <li><strong>UptimeRobot мониторинг</strong> — если сайт упадет, узнаете за 5 минут</li>
+                <li><strong>Консультация</strong> — встреча с разбором данных и рекомендациями</li>
+            </ul>
+        </div>
+
+        <div class="solution-box">
+            <h3>✨ Результат</h3>
+            <ul>
+                <li>Сайт работает в 3 раза быстрее</li>
+                <li>100% гарантия что заявки доходят</li>
+                <li>Вы видите всё что происходит на сайте</li>
+                <li>Страховка от downtime</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ЦЕНА -->
+    <div class="section reveal">
+        <h2 class="section-title">Стоимость и сроки</h2>
+
+        <div class="price-container">
+            <div class="price-grid">
+                <div class="price-card">
+                    <div class="price-number">9.5k₽</div>
+                    <div class="price-label">стоимость</div>
+                </div>
+                <div class="price-card">
+                    <div class="price-number">5-6</div>
+                    <div class="price-label">дней работы</div>
+                </div>
+                <div class="price-card">
+                    <div class="price-number">7</div>
+                    <div class="price-label">блоков работ</div>
+                </div>
+            </div>
+
+            <p style="font-size: 1.1em; opacity: 0.9;">
+                <strong>Если спешите:</strong> +1 500₽ → доставка за 4-5 дней вместо 5-6<br>
+                <strong>Итого с ускорением: 11 000₽</strong>
+            </p>
+        </div>
+
+        <div class="comparison">
+            <div class="comparison-block before">
+                <h4>❌ Сейчас</h4>
+                <ul>
+                    <li>Сайт загружается медленно</li>
+                    <li>Заявки могут не доходить</li>
+                    <li>Нет данных по клиентам</li>
+                    <li>Нет страховки от сбоев</li>
+                </ul>
+            </div>
+
+            <div class="comparison-block after">
+                <h4>✅ После 5-6 дней</h4>
+                <ul>
+                    <li>Сайт загружается за 1-2 сек</li>
+                    <li>100% доставка заявок</li>
+                    <li>Полная аналитика по клиентам</li>
+                    <li>Мониторинг 24/7</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ПЛАН -->
+    <div class="section reveal">
+        <h2 class="section-title">График работы</h2>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <h4>День 1-2: Оптимизация</h4>
+                <ul>
+                    <li>Сжимаем все изображения в WebP</li>
+                    <li>Добавляем lazy loading</li>
+                </ul>
+            </div>
+
+            <div class="timeline-item">
+                <h4>День 3: Формы и навигация</h4>
+                <ul>
+                    <li>Проверяем каждую форму</li>
+                    <li>Улучшаем CTA кнопки</li>
+                    <li>Переделываем навигацию</li>
+                </ul>
+            </div>
+
+            <div class="timeline-item">
+                <h4>День 4: Аналитика</h4>
+                <ul>
+                    <li>Устанавливаем Google Analytics 4</li>
+                    <li>Подключаем Яндекс.Метрику</li>
+                    <li>Настраиваем UptimeRobot</li>
+                </ul>
+            </div>
+
+            <div class="timeline-item">
+                <h4>День 5-6: Тестирование</h4>
+                <ul>
+                    <li>Проверяем всё на мобильном</li>
+                    <li>Консультируемся с вами</li>
+                    <li>Отправляем полный отчет</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEXT STEPS -->
+    <div class="section reveal">
+        <div class="next-steps">
+            <h3>🎯 Ваши шаги</h3>
+
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>Согласитесь с условиями</h4>
+                    <p>9 500₽, 5-6 дней, 7 блоков работ. Выглядит хорошо?</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>Дайте доступ к сайту</h4>
+                    <p>FTP или CMS админ-панель. Нужно для оптимизации и настройки</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>Подпишем договор</h4>
+                    <p>Простой доп.соглашение. Можно как часть основного пакета Флагман</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h4>Начнём работу</h4>
+                    <p>Старт на следующий день. День за днём. Через 5-6 дней готово</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER CTA -->
+    <div class="footer-cta">
+        <h2>Готовы сделать сайт идеальным?</h2>
+        <p>9 500₽ за всё. За 5-6 дней. Никаких скрытых платежей</p>
+        <a href="mailto:qejociluyuz76@gmail.com?subject=Флагман:%20Премиум%20пакет%20оптимизации" class="cta-button">Обсудить детали →</a>
+        <p style="margin-top: 30px; opacity: 0.8; font-size: 0.95em;">Вопросы? Напишите в Telegram</p>
+    </div>
+
+    <script>
+        // Scroll reveal animation
+        const reveals = document.querySelectorAll('.reveal');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1,
+        });
+
+        reveals.forEach((reveal) => {
+            observer.observe(reveal);
+        });
+    </script>
+</body>
+</html>
