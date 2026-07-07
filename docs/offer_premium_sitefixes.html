@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Премиум пакет: Оптимизация сайта Флагман</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Trebuchet MS', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+            border-bottom: 3px solid #764ba2;
+        }
+
+        .header h1 {
+            font-family: 'Georgia', serif;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            font-weight: normal;
+            letter-spacing: 1px;
+        }
+
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.95;
+            margin-bottom: 10px;
+        }
+
+        .header .date {
+            font-size: 0.95em;
+            opacity: 0.8;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            font-family: 'Georgia', serif;
+            font-size: 1.8em;
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            font-weight: normal;
+        }
+
+        .section h3 {
+            font-family: 'Georgia', serif;
+            font-size: 1.3em;
+            color: #764ba2;
+            margin: 20px 0 15px 0;
+            font-weight: normal;
+        }
+
+        .highlight-box {
+            background: #f8f9ff;
+            border-top: 3px solid #667eea;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 6px;
+        }
+
+        .highlight-box.success {
+            background: #f0fdf4;
+            border-top-color: #22c55e;
+        }
+
+        .highlight-box.warning {
+            background: #fffbeb;
+            border-top-color: #f59e0b;
+        }
+
+        .price-main {
+            font-size: 2.5em;
+            color: #667eea;
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .benefits {
+            list-style: none;
+            margin: 15px 0;
+        }
+
+        .benefits li {
+            padding: 12px 0 12px 30px;
+            position: relative;
+            font-size: 1.05em;
+        }
+
+        .benefits li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #22c55e;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+
+        .blocks-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 600px) {
+            .blocks-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .block-item {
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 8px;
+            border-top: 3px solid #667eea;
+        }
+
+        .block-item h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .block-item .hours {
+            color: #764ba2;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .block-item p {
+            font-size: 0.95em;
+            color: #666;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #f8f9ff;
+        }
+
+        table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        table td {
+            padding: 15px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        table tr:hover {
+            background: #f0f1ff;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline-item {
+            padding-left: 50px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .timeline-item:before {
+            content: "";
+            position: absolute;
+            left: 12px;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            background: #667eea;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px #667eea;
+        }
+
+        .timeline-item:after {
+            content: "";
+            position: absolute;
+            left: 19px;
+            top: 25px;
+            width: 2px;
+            height: calc(100% + 15px);
+            background: #667eea;
+            opacity: 0.3;
+        }
+
+        .timeline-item:last-child:after {
+            display: none;
+        }
+
+        .timeline-item strong {
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        .comparison-table {
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        .comparison-table td {
+            padding: 12px;
+        }
+
+        .comparison-table td:first-child {
+            font-weight: 600;
+            color: #667eea;
+            width: 40%;
+        }
+
+        .comparison-table td:last-child {
+            text-align: right;
+            color: #764ba2;
+            font-weight: bold;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .cta-section h2 {
+            color: white;
+            border-bottom: 3px solid rgba(255,255,255,0.3);
+            font-family: 'Georgia', serif;
+            font-size: 2em;
+            font-weight: normal;
+        }
+
+        .cta-section .price-highlight {
+            font-size: 3em;
+            margin: 20px 0;
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 18px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-top: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .footer {
+            background: #f8f9ff;
+            padding: 30px 40px;
+            text-align: center;
+            font-size: 0.95em;
+            color: #666;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .footer strong {
+            color: #667eea;
+        }
+
+        .guarantee {
+            background: #f0fdf4;
+            border: 2px solid #22c55e;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .guarantee strong {
+            color: #16a34a;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>🚀 Премиум пакет</h1>
+            <p class="subtitle">Оптимизация и модернизация сайта</p>
+            <p class="date">Флагман — аренда оборудования для мероприятий в Сочи<br>Предложение от 7 июля 2026</p>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="content">
+            <!-- ПРОБЛЕМА -->
+            <div class="section">
+                <h2>📊 Текущее состояние сайта</h2>
+                <p>По результатам аудита выявлены критические проблемы, которые мешают привлекать клиентов:</p>
+
+                <div class="blocks-grid" style="margin-top: 20px;">
+                    <div class="block-item">
+                        <h4>⚡ Скорость</h4>
+                        <div class="hours">4/10</div>
+                        <p>79 неоптимизированных изображений замедляют загрузку в 3 раза</p>
+                    </div>
+                    <div class="block-item">
+                        <h4>📋 Формы</h4>
+                        <div class="hours">5/10</div>
+                        <p>Заявки могут вообще не доходить до вас</p>
+                    </div>
+                    <div class="block-item">
+                        <h4>🧭 Навигация</h4>
+                        <div class="hours">5/10</div>
+                        <p>Посетитель не понимает суть услуг за первые 3 секунды</p>
+                    </div>
+                    <div class="block-item">
+                        <h4>📈 Аналитика</h4>
+                        <div class="hours">1/10</div>
+                        <p>Нет данных откуда приходят клиенты и как они взаимодействуют</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- РЕШЕНИЕ -->
+            <div class="section">
+                <h2>✨ Что мы сделаем</h2>
+
+                <h3>7 блоков работ (6-8.5 часов)</h3>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <strong>1. Оптимизация изображений (2-3 часа)</strong>
+                        <p>Сжимаем все 79 фото через TinyPNG, конвертируем в WebP, добавляем lazy loading. Результат: вес с 5-10MB → 1-2MB, скорость +200%</p>
+                    </div>
+
+                    <div class="timeline-item">
+                        <strong>2. Проверка и исправление форм (1-2 часа)</strong>
+                        <p>Тестируем каждую форму, убеждаемся что заявки доходят на вашу почту. Улучшаем CTA кнопки ("Получить расчет", "Заказать", "Задать вопрос")</p>
+                    </div>
+
+                    <div class="timeline-item">
+                        <strong>3. Улучшение навигации и UX (1 час)</strong>
+                        <p>Переименовываем пункты меню, добавляем четкий подзаголовок в шапке. Посетитель за 3 секунды поймет что это</p>
+                    </div>
+
+                    <div class="timeline-item">
+                        <strong>4. Google Analytics 4 установка (0.5-1 час)</strong>
+                        <p>Подключаем GA4, настраиваем отслеживание событий. Вы будете видеть откуда приходят клиенты и сколько их в день</p>
+                    </div>
+
+                    <div class="timeline-item">
+                        <strong>5. Яндекс.Метрика + Heatmap (0.5-1 час)</strong>
+                        <p>Установка Метрики, настройка карты кликов и записей сессий. Видите как клиенты взаимодействуют с сайтом</p>
+                    </div>
+
+                    <div class="timeline-item">
+                        <strong>6. UptimeRobot мониторинг (0.5 часа)</strong>
+                        <p>24/7 мониторинг сайта. Если сайт упадет — узнаете за 5 минут через уведомление</p>
+                    </div>
+
+                    <div class="timeline-item">
+                        <strong>7. Консультация и отчет (1 час)</strong>
+                        <p>Встреча с вами для разбора данных из аналитики и рекомендаций по дальнейшей оптимизации</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ЧТО ПОЛУЧИТЕ -->
+            <div class="section">
+                <h2>📦 Что получит Флагман</h2>
+
+                <div class="highlight-box success">
+                    <h3>После выполнения (в конце 5-6 дней):</h3>
+                    <ul class="benefits">
+                        <li><strong>Скорость сайта +200%</strong> — все 79 фото оптимизированы и сжаты</li>
+                        <li><strong>Гарантия доставки заявок</strong> — все формы проверены и настроены</li>
+                        <li><strong>Улучшенная навигация</strong> — посетитель поймет сайт за 3 секунды</li>
+                        <li><strong>Google Analytics 4</strong> — видите откуда приходят клиенты</li>
+                        <li><strong>Яндекс.Метрика</strong> — видите как клиенты взаимодействуют с сайтом</li>
+                        <li><strong>Мониторинг 24/7</strong> — узнаете если сайт упадет</li>
+                        <li><strong>Консультация по оптимизации</strong> — рекомендации для дальнейшего роста</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ЦЕНА И СРОКИ -->
+            <div class="section">
+                <h2>💰 Стоимость и сроки</h2>
+
+                <div class="highlight-box">
+                    <h3 style="color: #667eea; margin-top: 0;">Премиум пакет</h3>
+                    <div class="price-main">9 500 ₽</div>
+                    <p style="font-size: 1.1em; color: #666; margin: 15px 0;">
+                        <strong>Сроки:</strong> 5-6 дней<br>
+                        <strong>Часов работы:</strong> 6-8.5 часов
+                    </p>
+
+                    <table style="margin-top: 20px;">
+                        <tr>
+                            <td><strong>Оптимизация изображений</strong></td>
+                            <td><strong>3 000 ₽</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Проверка и исправление форм</td>
+                            <td>2 000 ₽</td>
+                        </tr>
+                        <tr>
+                            <td>Улучшение навигации и UX</td>
+                            <td>1 000 ₽</td>
+                        </tr>
+                        <tr>
+                            <td>Google Analytics 4 установка</td>
+                            <td>1 000 ₽</td>
+                        </tr>
+                        <tr>
+                            <td>Яндекс.Метрика + Heatmap</td>
+                            <td>1 000 ₽</td>
+                        </tr>
+                        <tr>
+                            <td>UptimeRobot мониторинг</td>
+                            <td>500 ₽</td>
+                        </tr>
+                        <tr>
+                            <td>Консультация и отчет</td>
+                            <td>1 000 ₽</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="highlight-box warning">
+                    <h3>🚀 Если нужно быстрее:</h3>
+                    <p><strong>Ускорение +1 500 ₽</strong> → доставка за 4-5 дней вместо 5-6</p>
+                    <p style="margin-top: 10px; font-size: 1.2em;"><strong>Итого с ускорением: 11 000 ₽</strong></p>
+                </div>
+            </div>
+
+            <!-- ГАРАНТИИ -->
+            <div class="section">
+                <h2>🛡️ Гарантии</h2>
+
+                <div class="guarantee">
+                    <p><strong>Все работы выполняются на тестовой копии сайта</strong></p>
+                    <p style="margin-top: 10px;">После согласования — загружаем на боевой сервер</p>
+                </div>
+
+                <ul class="benefits">
+                    <li>Если что-то не сработает — переделаем бесплатно (30 дней)</li>
+                    <li>Первую неделю мониторим результаты и поддерживаем</li>
+                    <li>Честная консультация по дальнейшей оптимизации</li>
+                </ul>
+            </div>
+
+            <!-- РЕКОМЕНДАЦИЯ -->
+            <div class="section">
+                <h2>⭐ Почему выбрать этот пакет</h2>
+
+                <div class="highlight-box success">
+                    <p style="font-size: 1.1em; margin: 0;">
+                        <strong>✓ Сайт сразу начнет работать быстро и хорошо</strong><br>
+                        <strong>✓ Заявки точно будут доходить через формы</strong><br>
+                        <strong>✓ Вы сможете видеть откуда приходят лиды (GA4 + Метрика)</strong><br>
+                        <strong>✓ Страховка что сайт не упадет (UptimeRobot)</strong><br>
+                        <strong>✓ Честная консультация по дальнейшей работе</strong><br>
+                        <strong>✓ Реалистичные сроки: 5-6 дней</strong>
+                    </p>
+                </div>
+
+                <div class="highlight-box">
+                    <h3 style="margin-top: 0;">Как это дополняет основной AEO контракт:</h3>
+                    <ul class="benefits">
+                        <li><strong>AEO стратегия</strong> (основной контракт) → 3 гайда, 2 кейса, Schema.org, лиды из AI</li>
+                        <li><strong>Премиум пакет</strong> (этот) → скорость, формы, аналитика, мониторинг</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- СЛЕДУЮЩИЕ ШАГИ -->
+            <div class="section">
+                <h2>📋 Следующие шаги</h2>
+
+                <ol style="margin-left: 20px; font-size: 1.05em;">
+                    <li style="margin: 15px 0;"><strong>Согласовать цену</strong> (9 500 ₽ или с ускорением 11 000 ₽)</li>
+                    <li style="margin: 15px 0;"><strong>Получить доступ</strong> к админ-панели сайта (FTP или CMS)</li>
+                    <li style="margin: 15px 0;"><strong>Подписать доп.соглашение</strong> (если отдельно от AEO контракта)</li>
+                    <li style="margin: 15px 0;"><strong>Оплатить</strong> (можно как часть полного пакета Флагман)</li>
+                    <li style="margin: 15px 0;"><strong>Запустить работу</strong> (старт следующий день)</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- CTA SECTION -->
+        <div class="cta-section">
+            <h2>🎯 Готовы начать?</h2>
+            <div class="price-highlight">9 500 ₽</div>
+            <p style="font-size: 1.1em; margin: 20px 0;">5-6 дней работы = сайт работает идеально</p>
+            <a href="mailto:qejociluyuz76@gmail.com?subject=Флагман:%20Премиум%20пакет%20оптимизации" class="cta-button">Обсудить детали</a>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <p>Коммерческое предложение от <strong>Александр Журавлев</strong></p>
+            <p>aiprohar.ru | AEO & SEO Стратегия</p>
+            <p style="margin-top: 15px; opacity: 0.7;">Все работы выполняются с гарантией возврата 30 дней</p>
+        </div>
+    </div>
+</body>
+</html>
