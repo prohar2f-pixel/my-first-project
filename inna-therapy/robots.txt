@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api
+
+Sitemap: https://my-first-project-rouge-iota.vercel.app/sitemap.xml

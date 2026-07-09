@@ -3,8 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Инна — Комплексная телесная терапия</title>
+<title>Инна — комплексная телесная терапия в Москве</title>
+<meta name="description" content="Комплексная телесная терапия в Москве: снять боль и найти её причину. Массаж, нейросоматика, работа с телом и психикой. Запись на сеанс к специалисту Инне.">
+<meta name="keywords" content="телесная терапия, массаж живота, нейросоматика, психосоматика, снять боль, терапевт Москва, родовед">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#E879A0">
+<link rel="canonical" href="https://my-first-project-rouge-iota.vercel.app/">
+<link rel="icon" type="image/png" href="/images/logo.png">
+<link rel="apple-touch-icon" href="/images/logo.png">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:site_name" content="Инна — Комплексная телесная терапия">
+<meta property="og:title" content="Инна — комплексная телесная терапия в Москве">
+<meta property="og:description" content="Снять боль и найти её причину. Комплексная терапия тела и психики. Запись на сеанс.">
+<meta property="og:url" content="https://my-first-project-rouge-iota.vercel.app/">
+<meta property="og:image" content="https://my-first-project-rouge-iota.vercel.app/images/logo.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Инна — комплексная телесная терапия в Москве">
+<meta name="twitter:description" content="Снять боль и найти её причину. Комплексная терапия тела и психики.">
+<meta name="twitter:image" content="https://my-first-project-rouge-iota.vercel.app/images/logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -1037,9 +1056,10 @@ nav {
 .options-subtitle { text-align: center; font-size: 15px; color: #7A5555; margin: 0; line-height: 1.6; }
 .options-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 18px;
-    margin-bottom: 20px;
+    max-width: 720px;
+    margin: 0 auto 20px;
 }
 .option-card {
     background: #fff;
@@ -1204,6 +1224,24 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
     /* Общий overflow страницы */
     body { overflow-x: hidden; }
 }
+
+/* ── MATERIAL SYMBOLS (иконки) ── */
+.material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    direction: ltr;
+    color: #E879A0;
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+}
+.s-icon .material-symbols-outlined { font-size: 22px; }
+.step-icon .material-symbols-outlined { font-size: 44px; }
+.p-icon .material-symbols-outlined { font-size: 30px; }
 </style>
 </head>
 <body>
@@ -1280,27 +1318,27 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
             <span class="sec-label">Мои специальности</span>
             <ul class="specialties-list" id="specialties-list">
                 <li>
-                    <span class="s-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4" r="2"/><path d="M12 6v9"/><path d="M9 9h6"/><path d="M10 15l-2 5"/><path d="M14 15l2 5"/></svg></span>
+                    <span class="s-icon"><span class="material-symbols-outlined">spa</span></span>
                     Терапевт телесной практики
                 </li>
                 <li>
-                    <span class="s-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 007 4.5 2.5 2.5 0 004.5 7a2.5 2.5 0 000 5A2.5 2.5 0 007 14.5 2.5 2.5 0 009.5 17H12"/><path d="M14.5 2A2.5 2.5 0 0117 4.5 2.5 2.5 0 0119.5 7a2.5 2.5 0 010 5 2.5 2.5 0 01-2.5 2.5A2.5 2.5 0 0114.5 17H12"/></svg></span>
+                    <span class="s-icon"><span class="material-symbols-outlined">psychology</span></span>
                     Нейросоматолог
                 </li>
                 <li>
-                    <span class="s-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="9.5"/></svg></span>
+                    <span class="s-icon"><span class="material-symbols-outlined">favorite</span></span>
                     Психосоматолог
                 </li>
                 <li>
-                    <span class="s-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></span>
+                    <span class="s-icon"><span class="material-symbols-outlined">healing</span></span>
                     Работа с образом боли
                 </li>
                 <li>
-                    <span class="s-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 00-2-2 2 2 0 00-2 2"/><path d="M14 10V4a2 2 0 00-2-2 2 2 0 00-2 2v2"/><path d="M10 10.5V6a2 2 0 00-2-2 2 2 0 00-2 2v8"/><path d="M18 8a2 2 0 114 0v6a8 8 0 01-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 012.83-2.82L7 15"/></svg></span>
+                    <span class="s-icon"><span class="material-symbols-outlined">back_hand</span></span>
                     Массаж живота
                 </li>
                 <li>
-                    <span class="s-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-7"/><path d="M12 15l-3-3m3 3l3-3"/><path d="M9 12L6 7h12l-3 5"/><path d="M12 22l-3 .5"/><path d="M12 22l3 .5"/></svg></span>
+                    <span class="s-icon"><span class="material-symbols-outlined">diversity_1</span></span>
                     Родовед
                 </li>
             </ul>
@@ -1327,31 +1365,31 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
     </div>
     <div class="steps-grid" id="steps-grid">
         <div class="step-card">
-            <div class="step-icon"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></div>
+            <div class="step-icon"><span class="material-symbols-outlined">search</span></div>
             <div class="step-num-badge">1</div>
             <h3>Диагностика</h3>
             <p>Понимаем, откуда растут корни проблемы: физическая боль, эмоциональные блоки, родовые программы</p>
         </div>
         <div class="step-card">
-            <div class="step-icon"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 00-2-2 2 2 0 00-2 2"/><path d="M14 10V4a2 2 0 00-2-2 2 2 0 00-2 2v2"/><path d="M10 10.5V6a2 2 0 00-2-2 2 2 0 00-2 2v8"/><path d="M18 8a2 2 0 114 0v6a8 8 0 01-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 012.83-2.82L7 15"/></svg></div>
+            <div class="step-icon"><span class="material-symbols-outlined">spa</span></div>
             <div class="step-num-badge">2</div>
             <h3>Глубокий мягкий массаж</h3>
             <p>Убираем напряжение из всех тканей тела: мышцы, суставы, связки и фасции расслабляются</p>
         </div>
         <div class="step-card">
-            <div class="step-icon"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 017 4.5v0A2.5 2.5 0 014.5 7v0a2.5 2.5 0 000 5v0A2.5 2.5 0 017 14.5v0A2.5 2.5 0 009.5 17H12"/><path d="M14.5 2A2.5 2.5 0 0117 4.5v0A2.5 2.5 0 0119.5 7v0a2.5 2.5 0 010 5v0A2.5 2.5 0 0117 14.5v0A2.5 2.5 0 0114.5 17H12"/><path d="M12 17v4"/><path d="M9 21h6"/><path d="M12 12v-2"/><path d="M12 7v1"/></svg></div>
+            <div class="step-icon"><span class="material-symbols-outlined">psychology</span></div>
             <div class="step-num-badge">3</div>
             <h3>Работа с нейросоматикой</h3>
             <p>Меняем мышление, раскрываем внутренние блоки. Страхи и тревоги теряют власть</p>
         </div>
         <div class="step-card">
-            <div class="step-icon"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v10"/><path d="M6 8C4 9.5 3 11 3 13c0 3 2 5.5 5 5.5h1V10l-1-1C7.5 8.5 6.5 7.5 6 8z"/><path d="M18 8c2 1.5 3 3 3 5 0 3-2 5.5-5 5.5h-1V10l1-1c.5-.5 1.5-1.5 2-1z"/></svg></div>
+            <div class="step-icon"><span class="material-symbols-outlined">air</span></div>
             <div class="step-num-badge">4</div>
             <h3>Выравнивание диафрагмы</h3>
             <p>Восстанавливаем свободное дыхание, появляется лёгкость и ощущение пространства</p>
         </div>
         <div class="step-card">
-            <div class="step-icon"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><line x1="2" x2="22" y1="12" y2="12"/><line x1="12" x2="12" y1="2" y2="22"/><path d="m20 16-4-4 4-4"/><path d="m4 8 4 4-4 4"/><path d="m16 4-4 4-4-4"/><path d="m8 20 4-4 4 4"/></svg></div>
+            <div class="step-icon"><span class="material-symbols-outlined">self_improvement</span></div>
             <div class="step-num-badge">5</div>
             <h3>Устранение старых программ</h3>
             <p>Видим родовые программы, которые мешают достичь целей, и начинаем их менять</p>
@@ -1437,7 +1475,7 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
                 <div class="waveform" id="w3"></div>
                 <span class="audio-time">1:52</span>
             </div>
-            <a href="https://t.me/innaborisova_therapy" class="btn-tg" data-contact="telegram">
+            <a href="https://t.me/httpstmeinnayusmola433" class="btn-tg" data-contact="telegram">
                 <span class="btn-tg-left"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg>Больше отзывов в Telegram</span>
                 <span class="btn-tg-circle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
             </a>
@@ -1463,31 +1501,31 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
     </div>
     <div class="prices-grid" id="prices-grid">
         <div class="price-card">
-            <div class="p-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></div>
+            <div class="p-icon"><span class="material-symbols-outlined">search</span></div>
             <h3>Пробная диагностика</h3>
             <p class="p-desc">20 минут консультации и первичный разбор</p>
             <div class="p-amount">1 500 ₽</div>
         </div>
         <div class="price-card">
-            <div class="p-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 00-2-2 2 2 0 00-2 2"/><path d="M14 10V4a2 2 0 00-2-2 2 2 0 00-2 2v2"/><path d="M10 10.5V6a2 2 0 00-2-2 2 2 0 00-2 2v8"/><path d="M18 8a2 2 0 114 0v6a8 8 0 01-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 012.83-2.82L7 15"/></svg></div>
+            <div class="p-icon"><span class="material-symbols-outlined">spa</span></div>
             <h3>1 сеанс</h3>
             <p class="p-desc">Полный сеанс терапии</p>
             <div class="p-amount">4 000 ₽</div>
         </div>
         <div class="price-card">
-            <div class="p-icon"><svg width="36" height="40" viewBox="0 0 36 38" fill="#E879A0" xmlns="http://www.w3.org/2000/svg"><path d="M18 34C18 34 2 26 3 13C8 18 13 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 34 26 33 13C28 18 23 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 7 23 8 10C12 15 15 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 29 23 28 10C24 15 21 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 11 21 12 8C15 13 17 20 18 34Z" opacity="0.82"/><path d="M18 34C18 34 25 21 24 8C21 13 19 20 18 34Z" opacity="0.82"/><path d="M18 34C15.5 21 17 2 18 2C19 2 20.5 21 18 34Z"/><path d="M6 37Q18 34 30 37" stroke="#E879A0" stroke-width="1.2" fill="none" opacity="0.4" stroke-linecap="round"/></svg></div>
+            <div class="p-icon"><span class="material-symbols-outlined">local_florist</span></div>
             <h3>3 сеанса</h3>
             <p class="p-desc">3 полных сеанса + массаж живота</p>
             <div class="p-amount">12 000 ₽</div>
         </div>
         <div class="price-card">
-            <div class="p-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="3"/><path d="M6 21v-2a6 6 0 0112 0v2"/><path d="M19 7l1 1-1 1-1-1zM19 11l1 1-1 1-1-1zM5 7l1 1-1 1-1-1zM5 11l1 1-1 1-1-1z"/></svg></div>
+            <div class="p-icon"><span class="material-symbols-outlined">healing</span></div>
             <h3>4 сеанса</h3>
             <p class="p-desc">4 полных сеанса + массаж живота (для опущения органов или надрыва пупка)</p>
             <div class="p-amount">16 000 ₽</div>
         </div>
         <div class="price-card">
-            <div class="p-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg></div>
+            <div class="p-icon"><span class="material-symbols-outlined">self_improvement</span></div>
             <h3>5 сеансов</h3>
             <p class="p-desc">5 полных сеансов + мини-разбор матрицы судьбы</p>
             <div class="p-amount">20 000 ₽</div>
@@ -1651,16 +1689,16 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
             </div>
             <h3>1. Есть вопросы</h3>
             <p class="o-sub">Напишите мне в Telegram или MAX, отвечу в течение 24 часов и помогу разобраться</p>
-            <a href="https://t.me/innaborisova_therapy" class="opt-btn" data-contact="telegram">У МЕНЯ ЕСТЬ ВОПРОС</a>
+            <a href="https://t.me/httpstmeinnayusmola433" class="opt-btn" data-contact="telegram">У МЕНЯ ЕСТЬ ВОПРОС</a>
             <p class="o-contact-label">Свяжитесь удобным способом:</p>
             <div class="contact-links">
-                <a href="https://t.me/innaborisova_therapy" class="contact-link" data-contact="telegram">
+                <a href="https://t.me/httpstmeinnayusmola433" class="contact-link" data-contact="telegram">
                     <div class="contact-link-icon" style="background:#2AABEE;">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
                     </div>
                     <div>
                         <span class="contact-link-label">Telegram</span>
-                        <span class="contact-link-val">@innaborisova_therapy</span>
+                        <span class="contact-link-val">Написать в личку</span>
                     </div>
                 </a>
                 <a href="https://max.ru/join/i1C_POb-7DKMmllA3l9MRT-gtDn4qeQYvaYgkNUHDxM" class="contact-link" data-contact="max">
@@ -1674,37 +1712,14 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
                 </a>
             </div>
         </div>
-        <!-- Карточка 2: Хочу попробовать (выделенная) -->
-        <div class="option-card hl">
-            <div class="o-icon-circle">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
-                </svg>
-            </div>
-            <h3>2. Хочу попробовать</h3>
-            <div class="opt-lotus"><svg width="20" height="23" viewBox="0 0 36 38" fill="#E879A0" xmlns="http://www.w3.org/2000/svg"><path d="M18 34C18 34 2 26 3 13C8 18 13 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 34 26 33 13C28 18 23 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 7 23 8 10C12 15 15 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 29 23 28 10C24 15 21 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 11 21 12 8C15 13 17 20 18 34Z" opacity="0.82"/><path d="M18 34C18 34 25 21 24 8C21 13 19 20 18 34Z" opacity="0.82"/><path d="M18 34C15.5 21 17 2 18 2C19 2 20.5 21 18 34Z"/><path d="M6 37Q18 34 30 37" stroke="#E879A0" stroke-width="1.2" fill="none" opacity="0.4" stroke-linecap="round"/></svg></div>
-            <p class="o-sub">Забронируйте место и получите скидку на первый сеанс. Почувствуйте результат</p>
-            <a href="#" class="opt-btn" data-contact="prepay">ПРЕДОПЛАТА 1 000 ₽</a>
-            <p class="o-pay-label">Оплата предоплаты:</p>
-            <div class="pay-card">
-                <div class="pay-check">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                </div>
-                <div>
-                    <div class="pay-bank">Сбербанк</div>
-                    <div class="pay-num">2202 2036 4486 1260</div>
-                </div>
-            </div>
-            <p class="o-after">Предоплата возвращается, если вам не подойдёт после первой встречи</p>
-        </div>
-        <!-- Карточка 3: Готов к изменениям -->
+        <!-- Карточка 2: Готов к изменениям -->
         <div class="option-card">
             <div class="o-icon-circle">
                 <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/>
                 </svg>
             </div>
-            <h3>3. Готов к изменениям</h3>
+            <h3>2. Готов к изменениям</h3>
             <p class="o-sub">Выберите курс и оплатите сразу. Начните путь к новой жизни без боли и ограничений</p>
             <a href="#prices" class="opt-btn">ОПЛАТИТЬ ПОЛНЫЙ КУРС</a>
             <p class="o-pay-label">Оплата полного курса:</p>
@@ -1790,17 +1805,7 @@ fetch('content.json?v=' + Date.now())
     // Перерисовываем прайс
     const pricesGrid = document.getElementById('prices-grid');
     if (pricesGrid && data.prices) {
-      const priceIcons = [
-        '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="6"/><path d="M16 16l4 4"/><path d="M10 7v3M10 13v1M7 10h1M13 10h1"/></svg>',
-        '<svg width="28" height="28" viewBox="0 0 36 38" fill="#E879A0" xmlns="http://www.w3.org/2000/svg"><path d="M18 34C18 34 2 26 3 13C8 18 13 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 34 26 33 13C28 18 23 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 7 23 8 10C12 15 15 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 29 23 28 10C24 15 21 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 11 21 12 8C15 13 17 20 18 34Z" opacity="0.82"/><path d="M18 34C18 34 25 21 24 8C21 13 19 20 18 34Z" opacity="0.82"/><path d="M18 34C15.5 21 17 2 18 2C19 2 20.5 21 18 34Z"/></svg>',
-        '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.5" stroke-linecap="round"><path d="M12 20C12 20 5 16 5 9c2.5 1.5 5 4 7 11z"/><path d="M12 20C12 20 19 16 19 9c-2.5 1.5-5 4-7 11z"/><path d="M12 20C9.5 13 10 3 12 3c2 0 2.5 10 0 17z"/></svg>',
-        '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.5" stroke-linecap="round"><path d="M12 20C12 20 4 16 4 9c3 2 5 5 8 11z"/><path d="M12 20C12 20 20 16 20 9c-3 2-5 5-8 11z"/><path d="M12 20C9 12 9.5 2 12 2c2.5 0 3 10 0 18z"/><path d="M4 12Q12 9 20 12" stroke-width="1" opacity="0.5"/></svg>',
-        '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.5" stroke-linejoin="round"><path d="M12 2l2.5 7.5H22l-6.5 4.7 2.5 7.6L12 17l-6 4.8 2.5-7.6L2 9.5h7.5z"/></svg>',
-        '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.5" stroke-linecap="round"><ellipse cx="12" cy="12" rx="6" ry="4"/><path d="M4 15c1 3 4 5 8 5s7-2 8-5"/><path d="M4 15c-1-1-1-2 0-3"/><path d="M20 15c1-1 1-2 0-3"/></svg>',
-        '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="9" width="18" height="12" rx="1"/><path d="M3 9V7a1 1 0 011-1h16a1 1 0 011 1v2"/><line x1="12" y1="6" x2="12" y2="21"/><path d="M12 6c0 0-2-4-4-3s0 3 4 3"/><path d="M12 6c0 0 2-4 4-3s0 3-4 3"/></svg>',
-        '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="5" r="3"/><path d="M7 8c-3 2-4 5-4 7h18c0-2-1-5-4-7"/><line x1="12" y1="8" x2="12" y2="15"/><path d="M9 15v5M15 15v5"/></svg>',
-        '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.5" stroke-linecap="round"><path d="M12 3v8"/><ellipse cx="12" cy="15" rx="7" ry="4"/><path d="M7 17l-2 4M17 17l2 4"/></svg>'
-      ];
+      const priceIcons = ['search','spa','local_florist','healing','self_improvement','back_hand','card_giftcard','massage','sports_gymnastics'].map(n => '<span class="material-symbols-outlined">' + n + '</span>');
       const lotusIcon = priceIcons[1];
       pricesGrid.innerHTML = data.prices.map((p, i) => `
         <div class="price-card">
