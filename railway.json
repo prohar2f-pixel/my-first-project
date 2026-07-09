@@ -1,0 +1,13 @@
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "build": {
+    "builder": "heroku.buildpacks",
+    "buildpacks": [
+      "heroku/python"
+    ]
+  },
+  "deploy": {
+    "startCommand": "cd estimate-bot && python main.py",
+    "restartPolicyMaxRetries": 5
+  }
+}
