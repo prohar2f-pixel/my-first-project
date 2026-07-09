@@ -1,0 +1,21 @@
+{
+  "info": {
+    "id": "019f4874-7d37-79a2-aeae-1cab7614f9ff",
+    "cwd": "C:\\Users\\Udacha"
+  },
+  "session_summary": "--- # Техническое задание на разработку Telegram-бота **Дата: 03.07.2026** ##",
+  "created_at": "2026-07-09T19:57:01.626141Z",
+  "updated_at": "2026-07-09T21:28:04.802585800Z",
+  "num_messages": 169,
+  "num_chat_messages": 99,
+  "current_model_id": "grok-4.5",
+  "next_trace_turn": 5,
+  "chat_format_version": 1,
+  "request_id": "bb293425-8118-4722-b451-fafa9f6d6918",
+  "grok_home": "C:\\Users\\Udacha\\.grok",
+  "last_active_at": "2026-07-09T21:28:04.753788Z",
+  "generated_title": "--- # Техническое задание на разработку Telegram-бота **Дата: 03.07.2026** ##",
+  "agent_name": "grok-build-plan",
+  "sandbox_profile": "off",
+  "reasoning_effort": "high"
+}
