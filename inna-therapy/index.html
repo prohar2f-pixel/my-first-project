@@ -1190,7 +1190,9 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
     section:not(.hero) { height: auto; overflow: visible; }
     .nav-links { display: none; }
     .hero-inner { flex-direction: column; }
-    .hero-img { max-width: 100%; }
+    .nav-inner .btn { display: none; }
+    .hero-img { flex: none; width: 100%; max-width: 100%; aspect-ratio: 3 / 2; }
+    .hero-img img { object-position: center; -webkit-mask-image: none; mask-image: none; }
     .about-grid { grid-template-columns: 1fr; }
     .steps-grid { grid-template-columns: 1fr 1fr; }
     .reviews-inner { grid-template-columns: 1fr; }
