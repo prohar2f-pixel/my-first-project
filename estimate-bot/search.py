@@ -64,6 +64,8 @@ async def _serper_search(query: str) -> str:
 
 async def _llm_extract_price(name: str, unit: str | None, search_text: str) -> dict:
     """Extract price from Serper snippets using LLM."""
+    import json
+
     prompt = f"""From the search results below, find the price for: {name}{' ' + unit if unit else ''}
 
 Search results:
@@ -101,17 +103,22 @@ Return ONLY JSON, no markdown."""
             data = response.json()
             content = data["choices"][0]["message"]["content"]
 
-            import json
-            price_data = json.loads(content)
+            try:
+                price_data = json.loads(content)
+                if not isinstance(price_data, dict):
+                    raise ValueError("Response is not a dict")
 
-            # Normalize prices to Decimal
-            return {
-                "price_typical": to_decimal(price_data.get("price_typical")),
-                "price_min": to_decimal(price_data.get("price_min")),
-                "price_max": to_decimal(price_data.get("price_max")),
-                "confidence": price_data.get("confidence", "none"),
-                "source": price_data.get("source"),
-            }
+                return {
+                    "price_typical": to_decimal(price_data.get("price_typical")),
+                    "price_min": to_decimal(price_data.get("price_min")),
+                    "price_max": to_decimal(price_data.get("price_max")),
+                    "confidence": price_data.get("confidence", "none"),
+                    "source": price_data.get("source"),
+                }
+            except (json.JSONDecodeError, ValueError) as parse_err:
+                logger.warning(f"Failed to parse price JSON: {parse_err}")
+                return {"price_typical": None, "price_min": None, "price_max": None, "confidence": "none", "source": None}
+
         except Exception as e:
             logger.error(f"LLM price extraction failed: {e}")
             return {"price_typical": None, "price_min": None, "price_max": None, "confidence": "none", "source": None}

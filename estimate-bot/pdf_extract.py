@@ -66,7 +66,7 @@ async def _llm_extract_positions(text: str) -> list[dict]:
     }
 
     payload = {
-        "model": "openai/gpt-4-turbo",  # Use smaller model for speed
+        "model": "openai/gpt-4-turbo",
         "messages": [
             {"role": "system", "content": EXTRACT_SYSTEM_PROMPT},
             {"role": "user", "content": f"Extract positions:\n\n{text}"},
@@ -80,8 +80,17 @@ async def _llm_extract_positions(text: str) -> list[dict]:
             response.raise_for_status()
             data = response.json()
             content = data["choices"][0]["message"]["content"]
-            positions = json.loads(content)
-            return positions
+
+            # Try to extract JSON from response
+            try:
+                positions = json.loads(content)
+                if isinstance(positions, list):
+                    return positions
+            except json.JSONDecodeError:
+                logger.warning(f"Invalid JSON from LLM: {content[:100]}")
+                return []
+
+            return []
         except Exception as e:
             logger.error(f"LLM extraction failed: {e}")
             return []

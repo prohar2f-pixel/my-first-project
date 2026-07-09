@@ -48,13 +48,20 @@ def export_to_excel(estimate: EstimateResult, region: str) -> str:
         ws.cell(row=row, column=2).value = "Материал" if line.type == "material" else "Работа"
         ws.cell(row=row, column=3).value = line.name
         ws.cell(row=row, column=4).value = line.unit
+        # Convert Decimal to float for Excel (only for display)
         ws.cell(row=row, column=5).value = float(line.qty) if line.qty else None
         ws.cell(row=row, column=6).value = float(line.unit_price) if line.unit_price else None
         ws.cell(row=row, column=7).value = float(line.line_sum) if line.line_sum else None
 
-        # Range column
-        if line.sum_min and line.sum_max:
-            ws.cell(row=row, column=8).value = f"{float(line.sum_min):.2f} - {float(line.sum_max):.2f}"
+        # Range column: min – max
+        if line.sum_min is not None and line.sum_max is not None:
+            min_val = float(line.sum_min)
+            max_val = float(line.sum_max)
+            ws.cell(row=row, column=8).value = f"{min_val:.2f} – {max_val:.2f}"
+        elif line.sum_min is not None:
+            ws.cell(row=row, column=8).value = f"от {float(line.sum_min):.2f}"
+        elif line.sum_max is not None:
+            ws.cell(row=row, column=8).value = f"до {float(line.sum_max):.2f}"
         else:
             ws.cell(row=row, column=8).value = None
 
@@ -77,9 +84,15 @@ def export_to_excel(estimate: EstimateResult, region: str) -> str:
     ws.cell(row=summary_row + 2, column=2).font = Font(bold=True, size=12)
     ws.cell(row=summary_row + 2, column=2).fill = PatternFill(start_color="FFF2CC", end_color="FFF2CC", fill_type="solid")
 
+    if estimate.grand_total_min != estimate.grand_total or estimate.grand_total_max != estimate.grand_total:
+        min_val = float(estimate.grand_total_min)
+        max_val = float(estimate.grand_total_max)
+        ws.cell(row=summary_row + 3, column=1).value = f"Диапазон: {min_val:.2f} – {max_val:.2f}"
+
+    verify_msg_row = summary_row + 4
     if estimate.verified:
-        ws.cell(row=summary_row + 3, column=1).value = "✓ Расчёт перепроверен калькулятором"
-        ws.cell(row=summary_row + 3, column=1).font = Font(italic=True, color="008000")
+        ws.cell(row=verify_msg_row, column=1).value = "✓ Расчёт перепроверен калькулятором"
+        ws.cell(row=verify_msg_row, column=1).font = Font(italic=True, color="008000")
 
     # Column widths
     ws.column_dimensions["A"].width = 4
