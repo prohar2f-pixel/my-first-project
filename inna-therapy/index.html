@@ -1056,10 +1056,9 @@ nav {
 .options-subtitle { text-align: center; font-size: 15px; color: #7A5555; margin: 0; line-height: 1.6; }
 .options-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 18px;
-    max-width: 720px;
-    margin: 0 auto 20px;
+    margin-bottom: 20px;
 }
 .option-card {
     background: #fff;
@@ -1712,14 +1711,37 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
                 </a>
             </div>
         </div>
-        <!-- Карточка 2: Готов к изменениям -->
+        <!-- Карточка 2: Хочу попробовать (выделенная) -->
+        <div class="option-card hl">
+            <div class="o-icon-circle">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+            </div>
+            <h3>2. Хочу попробовать</h3>
+            <div class="opt-lotus"><svg width="20" height="23" viewBox="0 0 36 38" fill="#E879A0" xmlns="http://www.w3.org/2000/svg"><path d="M18 34C18 34 2 26 3 13C8 18 13 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 34 26 33 13C28 18 23 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 7 23 8 10C12 15 15 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 29 23 28 10C24 15 21 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 11 21 12 8C15 13 17 20 18 34Z" opacity="0.82"/><path d="M18 34C18 34 25 21 24 8C21 13 19 20 18 34Z" opacity="0.82"/><path d="M18 34C15.5 21 17 2 18 2C19 2 20.5 21 18 34Z"/><path d="M6 37Q18 34 30 37" stroke="#E879A0" stroke-width="1.2" fill="none" opacity="0.4" stroke-linecap="round"/></svg></div>
+            <p class="o-sub">Забронируйте место и получите скидку на первый сеанс. Почувствуйте результат</p>
+            <a href="#" class="opt-btn" data-contact="prepay">ПРЕДОПЛАТА 1 000 ₽</a>
+            <p class="o-pay-label">Оплата предоплаты:</p>
+            <div class="pay-card">
+                <div class="pay-check">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div>
+                    <div class="pay-bank">Сбербанк</div>
+                    <div class="pay-num">2202 2036 4486 1260</div>
+                </div>
+            </div>
+            <p class="o-after">Предоплата возвращается, если вам не подойдёт после первой встречи</p>
+        </div>
+        <!-- Карточка 3: Готов к изменениям -->
         <div class="option-card">
             <div class="o-icon-circle">
                 <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/>
                 </svg>
             </div>
-            <h3>2. Готов к изменениям</h3>
+            <h3>3. Готов к изменениям</h3>
             <p class="o-sub">Выберите курс и оплатите сразу. Начните путь к новой жизни без боли и ограничений</p>
             <a href="#prices" class="opt-btn">ОПЛАТИТЬ ПОЛНЫЙ КУРС</a>
             <p class="o-pay-label">Оплата полного курса:</p>
