@@ -1,1 +1,1 @@
-worker: cd estimate-bot && python main.py
+web: python estimate-bot/main.py
