@@ -22,6 +22,8 @@ from search import search_price
 from excel_report import export_to_excel
 
 logging.basicConfig(level=LOG_LEVEL)
+# httpx logs full request URLs including the bot token — keep it quiet
+logging.getLogger("httpx").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
