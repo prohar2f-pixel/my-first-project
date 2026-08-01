@@ -40,7 +40,9 @@ async def generate_response(job_title: str, job_description: str, source: str) -
     message = await client.chat.completions.create(
         model="anthropic/claude-haiku-4-5",
         max_tokens=500,
-        system=profile,
-        messages=[{"role": "user", "content": prompt}],
+        messages=[
+            {"role": "system", "content": profile},
+            {"role": "user", "content": prompt},
+        ],
     )
     return message.choices[0].message.content
