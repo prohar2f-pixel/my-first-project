@@ -17,6 +17,10 @@ test('shows the approved plain-language positioning and result', () => {
     content.texts.steps_result,
     'ясность, лёгкость, свобода движений, устранение боли и возможность достичь желаемого',
   );
+  assert.equal(
+    content.texts.approach_p2,
+    'Лечебный массаж и работа с мышлением неразделимы: тело хранит все переживания, а психика влияет на здоровье. Работая с причиной боли, вы меняете жизнь на всех уровнях.',
+  );
 });
 
 test('uses the approved specialty names', () => {
