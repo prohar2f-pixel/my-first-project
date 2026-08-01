@@ -36,8 +36,13 @@ test('removes the four-session tariff from data and fallback markup', () => {
 test('shows a compact referral offer without the old steps', () => {
   assert.equal(
     content.texts.offer2_title,
-    'Приведите подругу —<br>получите приятный бонус!',
+    'Акция<br>«Приведи подругу»',
   );
+  assert.equal(
+    content.texts.offer2_text,
+    'Рекомендуйте меня своим подругам. Когда они придут по вашей рекомендации, вы получите бонус: скидку 10% на следующую сессию или бесплатный мини-разбор матрицы судьбы.',
+  );
+  assert.match(html, /class="referral-text" data-key="offer2_text"/);
   assert.doesNotMatch(html, /class="offer-steps"/);
   assert.doesNotMatch(html, /class="offer-thankyou"/);
 });
