@@ -1,5 +1,6 @@
 import re
 import logging
+from html import unescape
 import httpx
 from parsers import Order
 
@@ -8,6 +9,30 @@ log = logging.getLogger(__name__)
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
 }
+
+
+def parse_channel_html(page_html: str) -> list[tuple[str, str]]:
+    """Return text posts paired with the id from their own message block."""
+    posts = []
+    starts = list(re.finditer(
+        r'<div class="tgme_widget_message\b[^>]*data-post="[^/]+/(\d+)"[^>]*>',
+        page_html,
+    ))
+    for index, start in enumerate(starts):
+        end = starts[index + 1].start() if index + 1 < len(starts) else len(page_html)
+        block = page_html[start.start():end]
+        match = re.search(
+            r'<div class="tgme_widget_message_text[^"]*"[^>]*>(.*?)</div>',
+            block,
+            re.DOTALL,
+        )
+        if not match:
+            continue
+        text = re.sub(r"<[^>]+>", "", match.group(1))
+        text = re.sub(r"\s+", " ", unescape(text)).strip()
+        if text:
+            posts.append((start.group(1), text))
+    return posts
 
 
 async def fetch(channels: list[str]) -> list[Order]:
@@ -24,20 +49,7 @@ async def fetch(channels: list[str]) -> list[Order]:
                     log.warning(f"[TG] {channel_name}: статус {resp.status_code}")
                     continue
 
-                messages = re.findall(
-                    r'<div class="tgme_widget_message_text[^"]*"[^>]*>(.*?)</div>',
-                    resp.text, re.DOTALL
-                )
-                ids = re.findall(
-                    r'data-post="[^/]+/(\d+)"',
-                    resp.text
-                )
-
-                for i, (msg_html, msg_id) in enumerate(zip(messages, ids)):
-                    text = re.sub(r"<[^>]+>", "", msg_html).strip()
-                    text = re.sub(r"\s+", " ", text)
-                    if not text:
-                        continue
+                for msg_id, text in parse_channel_html(resp.text):
                     url = f"https://t.me/{channel_name}/{msg_id}"
                     orders.append(Order(
                         id=f"tg_{channel_name}_{msg_id}",

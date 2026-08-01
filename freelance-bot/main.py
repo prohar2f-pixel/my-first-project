@@ -21,6 +21,7 @@ MIN_TEXT_LEN  = 100
 from filters import matches
 from notifier import send_order
 from responder import generate_response
+from selection import round_robin
 import parsers.flru as flru
 import parsers.kwork as kwork
 import parsers.tg_channels as tg
@@ -476,6 +477,11 @@ async def check_all() -> int:
         freelancehunt.fetch(),
         return_exceptions=True,
     )
+
+    # Keep the global notification cap, but give every source a fair turn.
+    errors = [result for result in results if isinstance(result, Exception)]
+    sources = [result for result in results if not isinstance(result, Exception)]
+    results = [*errors, round_robin(sources)]
 
     total_new = 0
     for orders in results:
