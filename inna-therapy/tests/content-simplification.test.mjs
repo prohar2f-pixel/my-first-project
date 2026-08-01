@@ -41,3 +41,8 @@ test('shows a compact referral offer without the old steps', () => {
   assert.doesNotMatch(html, /class="offer-steps"/);
   assert.doesNotMatch(html, /class="offer-thankyou"/);
 });
+
+test('lays out four service cards per row on desktop', () => {
+  const pricesGridRule = html.match(/\.prices-grid\s*\{([^}]*)\}/)?.[1] ?? '';
+  assert.match(pricesGridRule, /grid-template-columns:\s*repeat\(4,\s*1fr\)/);
+});
