@@ -810,6 +810,17 @@ nav {
     margin-bottom: 16px;
 }
 .offer-card { border-radius: 24px; overflow: hidden; background: #FFF0F6; }
+.referral-offer {
+    align-self: start;
+    background: linear-gradient(135deg, #FFF0F6 0%, #FFE1EC 100%);
+    border: 1px solid #FFD6E7;
+    box-shadow: 0 12px 30px rgba(232,121,160,0.12);
+}
+.referral-offer .offer-head { padding: 34px 28px; }
+.referral-offer .offer-head h3 {
+    font-size: clamp(22px, 2.4vw, 30px);
+    color: #7A3F55;
+}
 .offer-head {
     display: flex;
     align-items: center;
@@ -1309,7 +1320,7 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
             <h2 class="about-h2" data-key="about_h2">Кто я и чем могу помочь</h2>
             <div class="about-lotus"><svg width="26" height="30" viewBox="0 0 36 38" fill="#E879A0" xmlns="http://www.w3.org/2000/svg"><path d="M18 34C18 34 2 26 3 13C8 18 13 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 34 26 33 13C28 18 23 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 7 23 8 10C12 15 15 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 29 23 28 10C24 15 21 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 11 21 12 8C15 13 17 20 18 34Z" opacity="0.82"/><path d="M18 34C18 34 25 21 24 8C21 13 19 20 18 34Z" opacity="0.82"/><path d="M18 34C15.5 21 17 2 18 2C19 2 20.5 21 18 34Z"/><path d="M6 37Q18 34 30 37" stroke="#E879A0" stroke-width="1.2" fill="none" opacity="0.4" stroke-linecap="round"/></svg></div>
             <p data-key="about_p1">Я — дипломированный специалист по комплексной телесной терапии. Более 5 лет помогаю людям избавиться от боли, стресса, тревоги и найти глубинные причины их проблем.</p>
-            <p data-key="about_p2">Мой подход объединяет работу с телом, психикой и родовыми программами, чтобы вернуть вам лёгкость, здоровье и радость жизни.</p>
+            <p data-key="about_p2">Мой подход объединяет работу с телом, мышлением и родовыми программами, чтобы вернуть вам лёгкость, радость и жизнь без боли.</p>
             <div class="about-quote-card">
                 <div class="quote-circle">❝</div>
                 <p class="quote-text" data-key="about_quote">Я не лечу боль —<br>я устраняю её причины</p>
@@ -1321,7 +1332,7 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
             <ul class="specialties-list" id="specialties-list">
                 <li>
                     <span class="s-icon"><span class="material-symbols-outlined">spa</span></span>
-                    Терапевт телесной практики
+                    Терапевт телесной практики (лечебный массаж)
                 </li>
                 <li>
                     <span class="s-icon"><span class="material-symbols-outlined">psychology</span></span>
@@ -1329,11 +1340,11 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
                 </li>
                 <li>
                     <span class="s-icon"><span class="material-symbols-outlined">favorite</span></span>
-                    Психосоматолог
+                    Психолог
                 </li>
                 <li>
                     <span class="s-icon"><span class="material-symbols-outlined">healing</span></span>
-                    Работа с образом боли
+                    Работа с образом боли (устраняю боль)
                 </li>
                 <li>
                     <span class="s-icon"><span class="material-symbols-outlined">back_hand</span></span>
@@ -1399,7 +1410,7 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
     </div>
     <div class="steps-result-row">
         <svg width="28" height="32" viewBox="0 0 36 38" fill="#E879A0" xmlns="http://www.w3.org/2000/svg"><path d="M18 34C18 34 2 26 3 13C8 18 13 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 34 26 33 13C28 18 23 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 7 23 8 10C12 15 15 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 29 23 28 10C24 15 21 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 11 21 12 8C15 13 17 20 18 34Z" opacity="0.82"/><path d="M18 34C18 34 25 21 24 8C21 13 19 20 18 34Z" opacity="0.82"/><path d="M18 34C15.5 21 17 2 18 2C19 2 20.5 21 18 34Z"/><path d="M6 37Q18 34 30 37" stroke="#E879A0" stroke-width="1.2" fill="none" opacity="0.4" stroke-linecap="round"/></svg>
-        <p class="steps-result"><strong>Результат:</strong> <em data-key="steps_result">ясность, лёгкость, свобода и возможность достичь желаемого</em></p>
+        <p class="steps-result"><strong>Результат:</strong> <em data-key="steps_result">ясность, лёгкость, свобода движений, устранение боли и возможность достичь желаемого</em></p>
     </div>
 </div>
 </section>
@@ -1521,12 +1532,6 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
             <div class="p-amount">12 000 ₽</div>
         </div>
         <div class="price-card">
-            <div class="p-icon"><span class="material-symbols-outlined">healing</span></div>
-            <h3>4 сеанса</h3>
-            <p class="p-desc">4 полных сеанса + массаж живота (для опущения органов или надрыва пупка)</p>
-            <div class="p-amount">16 000 ₽</div>
-        </div>
-        <div class="price-card">
             <div class="p-icon"><span class="material-symbols-outlined">self_improvement</span></div>
             <h3>5 сеансов</h3>
             <p class="p-desc">5 полных сеансов + мини-разбор матрицы судьбы</p>
@@ -1568,30 +1573,10 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
                 </div>
             </div>
         </div>
-        <div class="offer-card">
+        <div class="offer-card referral-offer">
             <div class="offer-head">
                 <div class="offer-icon-circle"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
-                <h3 data-key="offer2_title">Акция<br>«Приведи подругу»</h3>
-            </div>
-            <div class="offer-body">
-                <div class="offer-steps">
-                    <div class="offer-step">
-                        <div class="offer-step-num">1</div>
-                        <p>Подруга приходит к вам на любой сеанс</p>
-                    </div>
-                    <div class="offer-step">
-                        <div class="offer-step-num">2</div>
-                        <p>Вы получаете</p>
-                    </div>
-                    <div class="offer-step">
-                        <div class="offer-step-num">3</div>
-                        <p>Мини-разбор матрицы судьбы <strong>БЕСПЛАТНО</strong></p>
-                    </div>
-                </div>
-                <div class="offer-thankyou">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#E879A0" stroke="none"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-                    <p>Благодарность за вашу рекомендацию и доверие!</p>
-                </div>
+                <h3 data-key="offer2_title">Приведите подругу —<br>получите приятный бонус!</h3>
             </div>
         </div>
     </div>
@@ -1830,7 +1815,7 @@ fetch('content.json?v=' + Date.now())
     // Перерисовываем прайс
     const pricesGrid = document.getElementById('prices-grid');
     if (pricesGrid && data.prices) {
-      const priceIcons = ['search','spa','local_florist','healing','self_improvement','back_hand','card_giftcard','massage','sports_gymnastics'].map(n => '<span class="material-symbols-outlined">' + n + '</span>');
+      const priceIcons = ['search','spa','local_florist','self_improvement','back_hand','card_giftcard','massage','sports_gymnastics'].map(n => '<span class="material-symbols-outlined">' + n + '</span>');
       const lotusIcon = priceIcons[1];
       pricesGrid.innerHTML = data.prices.map((p, i) => `
         <div class="price-card">
