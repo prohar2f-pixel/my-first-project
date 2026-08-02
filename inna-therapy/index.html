@@ -510,131 +510,214 @@ nav {
 
 /* ── REVIEWS ── */
 .reviews-section { background: #FAF8F6; }
-.reviews-header { text-align: center; margin-bottom: 14px; }
+.reviews-header { text-align: center; margin-bottom: 34px; }
 .reviews-header .sec-label { display: block; margin-bottom: 10px; }
 .reviews-header-lotus { display: flex; justify-content: center; margin: 4px 0 8px; color: #E879A0; opacity: 0.65; }
 .reviews-h2 { font-size: clamp(28px, 3.5vw, 48px); margin: 0; }
-.reviews-inner {
-    display: grid;
-    grid-template-columns: 1fr 296px;
-    gap: 28px;
-    align-items: start;
-}
-.text-reviews {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-}
-.review-card:nth-child(n+4) { display: none; }
-.review-card {
-    background: #fff;
-    padding: 20px;
-    border-radius: 16px;
-    display: flex;
-    flex-direction: column;
-}
-.r-head {
+.reviews-stack { display: grid; gap: 44px; }
+.review-carousel-shell { position: relative; min-width: 0; }
+.review-carousel-heading {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 10px;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 4px;
 }
-.r-photo {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: #FFD6E7;
-    flex-shrink: 0;
-    overflow: hidden;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-}
-.r-quote-icon {
+.review-carousel-heading h3 {
+    margin: 0;
     font-family: 'Cormorant Garamond', serif;
-    font-size: 52px;
-    line-height: 0.85;
-    color: #EDD5D0;
-    font-weight: 700;
-    margin-top: 4px;
-    user-select: none;
-}
-.r-text {
-    font-size: 12.5px;
-    line-height: 1.65;
-    color: #555555;
-    margin: 0 0 12px;
-    flex: 1;
-}
-.r-author {
-    font-size: 13px;
-    font-weight: 700;
+    font-size: clamp(23px, 2.5vw, 31px);
     color: #2D2D2D;
-    display: block;
 }
-.r-role {
-    font-size: 11.5px;
-    color: #9E7070;
-    display: block;
-    margin-top: 2px;
-}
-.voice-reviews {
-    background: #fff;
-    border-radius: 20px;
-    padding: 22px;
-}
-.voice-reviews h3 { font-size: 17px; font-weight: 700; margin-bottom: 16px; color: #2D2D2D; }
-.audio-item {
-    background: #FFFFFF;
-    border-radius: 12px;
-    padding: 10px 14px;
-    margin-bottom: 10px;
+.carousel-nav {
     display: flex;
     align-items: center;
     gap: 10px;
+    flex: 1;
+    justify-content: flex-end;
 }
-.play-btn {
-    width: 36px;
-    height: 36px;
-    background: #E879A0;
+.carousel-thread {
+    width: min(120px, 12vw);
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #E879A0);
+    opacity: 0.55;
+}
+.carousel-arrow {
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
+    border: 1px solid #FFD6E7;
+    background: rgba(255,255,255,0.82);
+    color: #B45D7B;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
 }
-.play-btn:hover { background: #B0706A; }
-.play-btn::after {
-    content: '';
-    width: 0;
-    height: 0;
-    border-top: 6px solid transparent;
-    border-bottom: 6px solid transparent;
-    border-left: 10px solid #fff;
-    margin-left: 2px;
+.carousel-arrow:hover { transform: translateY(-2px); background: #FFF0F6; border-color: #E879A0; }
+.carousel-arrow:focus-visible,
+.carousel-dots button:focus-visible,
+.reviews-carousel:focus-visible {
+    outline: 3px solid rgba(232,121,160,0.42);
+    outline-offset: 3px;
 }
-.waveform {
-    flex: 1;
+.reviews-carousel { min-width: 0; overflow: hidden; }
+.reviews-track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc((100% - 28px) / 3);
+    gap: 14px;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    padding: 42px 2px 12px;
+}
+.reviews-track::-webkit-scrollbar { display: none; }
+.review-slide { scroll-snap-align: start; min-width: 0; }
+.review-card,
+.audio-review-card {
+    background: rgba(255,255,255,0.94);
+    border: 1px solid rgba(255,214,231,0.82);
+    border-radius: 22px;
+    box-shadow: 0 14px 38px rgba(122,85,85,0.08);
+}
+.review-card {
+    padding: 0 22px 24px;
     display: flex;
-    align-items: center;
-    gap: 2px;
-    height: 26px;
+    flex-direction: column;
+    min-height: 248px;
+}
+.review-portrait-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-top: -38px;
+    margin-bottom: 14px;
+}
+.review-avatar {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    border: 5px solid #FAF8F6;
+    box-shadow: 0 8px 22px rgba(122,85,85,0.14);
+    background: linear-gradient(145deg, #FFD6E7, #F4B5CC);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
     overflow: hidden;
 }
-.waveform span {
-    display: block;
-    width: 3px;
-    background: #D4A09A;
-    border-radius: 2px;
-    flex-shrink: 0;
+.review-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.review-avatar-fallback {
+    color: #8D4962;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    font-size: 32px;
 }
-.audio-time {
-    font-size: 12px;
+.review-quote-mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 72px;
+    line-height: 0.8;
+    color: #F1CDD9;
+    user-select: none;
+    padding-top: 15px;
+}
+.review-card blockquote {
+    margin: 0 0 18px;
+    font-size: 13.5px;
+    line-height: 1.72;
+    color: #555555;
+    flex: 1;
+}
+.review-meta { display: grid; gap: 2px; }
+.review-meta strong,
+.audio-review-person strong { font-size: 13.5px; color: #2D2D2D; }
+.review-meta span,
+.audio-review-person span { font-size: 11.5px; color: #9E7070; }
+.audio-reviews-track { grid-auto-columns: calc((100% - 28px) / 3); }
+.audio-review-card {
+    padding: 20px;
+    display: grid;
+    gap: 18px;
+    min-height: 138px;
+}
+.audio-review-person {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+.audio-review-person .review-avatar {
+    width: 58px;
+    height: 58px;
+    border-width: 3px;
+    box-shadow: none;
+}
+.audio-review-person .review-avatar-fallback { font-size: 24px; }
+.audio-review-person > div { display: grid; gap: 2px; }
+.audio-review-player { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.review-audio { width: 100%; height: 40px; accent-color: #E879A0; }
+.audio-placeholder {
+    width: 100%;
+    min-height: 42px;
+    border: 1px dashed #E9B4C8;
+    border-radius: 14px;
+    background: #FFF7FA;
     color: #9E7070;
-    flex-shrink: 0;
-    font-variant-numeric: tabular-nums;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 12.5px;
+}
+.audio-placeholder span { color: #E879A0; font-size: 18px; }
+.audio-duration { color: #9E7070; font-size: 11px; white-space: nowrap; }
+.carousel-dots {
+    min-height: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+    margin-top: 6px;
+}
+.carousel-dots button {
+    width: 7px;
+    height: 7px;
+    border: 0;
+    border-radius: 50%;
+    background: #EBC4D2;
+    padding: 0;
+    cursor: pointer;
+    transition: width 0.2s ease, border-radius 0.2s ease, background 0.2s ease;
+}
+.carousel-dots button[aria-current="true"] {
+    width: 25px;
+    border-radius: 20px;
+    background: #E879A0;
+}
+.reviews-telegram {
+    display: flex;
+    justify-content: center;
+    margin-top: 2px;
+}
+.reviews-telegram .btn-tg { width: auto; min-width: 280px; }
+.reviews-quote-bar {
+    margin-top: 42px;
+    background: #FFF0F6;
+    border-radius: 24px;
+    padding: 30px 48px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+.reviews-quote-bar-lotus { flex-shrink: 0; color: #E879A0; opacity: 0.7; }
+.reviews-quote-text p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(18px, 2vw, 24px);
+    color: #2D2D2D;
+    margin: 0 0 4px;
+    font-weight: 600;
 }
 .btn-tg {
     display: flex;
@@ -665,28 +748,16 @@ nav {
     justify-content: center;
     flex-shrink: 0;
 }
-.reviews-quote-bar {
-    margin-top: 20px;
-    background: #FFF0F6;
-    border-radius: 24px;
-    padding: 30px 48px;
-    display: flex;
-    align-items: center;
-    gap: 28px;
-}
-.reviews-quote-bar-lotus { flex-shrink: 0; color: #E879A0; opacity: 0.7; }
-.reviews-quote-text p {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(18px, 2vw, 24px);
-    color: #2D2D2D;
-    margin: 0 0 4px;
-    font-weight: 600;
-}
 .reviews-quote-text em {
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
     font-size: clamp(16px, 1.8vw, 21px);
     color: #E879A0;
+}
+@media (prefers-reduced-motion: reduce) {
+    .reviews-track { scroll-behavior: auto; }
+    .carousel-arrow,
+    .carousel-dots button { transition: none; }
 }
 
 /* ── PRICES ── */
@@ -1215,9 +1286,8 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
     .hero-img img { object-position: center; -webkit-mask-image: none; mask-image: none; }
     .about-grid { grid-template-columns: 1fr; }
     .steps-grid { grid-template-columns: 1fr 1fr; }
-    .reviews-inner { grid-template-columns: 1fr; }
-    .text-reviews { grid-template-columns: 1fr; }
-    .review-card:nth-child(n+4) { display: flex; }
+    .reviews-track,
+    .audio-reviews-track { grid-auto-columns: calc((100% - 14px) / 2); }
     .prices-grid { grid-template-columns: repeat(3, 1fr); }
     .offers-inner { grid-template-columns: 1fr; }
     .location-grid { grid-template-columns: 1fr; }
@@ -1231,10 +1301,14 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
     .prices-grid { grid-template-columns: 1fr 1fr; }
     .offer-variants { grid-template-columns: 1fr; }
 
-    /* Аудио — не вылезает за экран */
-    .voice-reviews { padding: 16px; overflow: hidden; }
-    .audio-item { overflow: hidden; min-width: 0; }
-    .waveform { min-width: 0; }
+    .reviews-track,
+    .audio-reviews-track { grid-auto-columns: 100%; }
+    .review-carousel-heading { align-items: flex-end; }
+    .carousel-thread { display: none; }
+    .carousel-arrow { width: 38px; height: 38px; }
+    .review-card { min-height: 230px; }
+    .reviews-quote-bar { padding: 24px; gap: 18px; }
+    .reviews-quote-bar-lotus { display: none; }
 
     /* Градиентные плашки — в колонку */
     .prices-banner { grid-template-columns: 1fr; padding: 28px 24px; gap: 28px; }
@@ -1430,71 +1504,67 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
         <div class="reviews-header-lotus"><svg width="26" height="30" viewBox="0 0 36 38" fill="#E879A0" xmlns="http://www.w3.org/2000/svg"><path d="M18 34C18 34 2 26 3 13C8 18 13 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 34 26 33 13C28 18 23 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 7 23 8 10C12 15 15 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 29 23 28 10C24 15 21 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 11 21 12 8C15 13 17 20 18 34Z" opacity="0.82"/><path d="M18 34C18 34 25 21 24 8C21 13 19 20 18 34Z" opacity="0.82"/><path d="M18 34C15.5 21 17 2 18 2C19 2 20.5 21 18 34Z"/><path d="M6 37Q18 34 30 37" stroke="#E879A0" stroke-width="1.2" fill="none" opacity="0.4" stroke-linecap="round"/></svg></div>
         <h2 class="reviews-h2" data-key="reviews_h2">Что говорят мои клиенты</h2>
     </div>
-    <div class="reviews-inner">
-        <div class="text-reviews" id="text-reviews">
-            <div class="review-card">
-                <div class="r-head">
-                    <div class="r-photo"><svg width="48" height="48" viewBox="0 0 50 50" fill="none"><circle cx="25" cy="20" r="9" fill="#E879A0" opacity="0.45"/><path d="M8 50c0-9.4 7.6-17 17-17s17 7.6 17 17" fill="#E879A0" opacity="0.35"/></svg></div>
-                    <span class="r-quote-icon">"</span>
+    <div class="reviews-stack">
+        <div class="review-carousel-shell" data-review-carousel tabindex="0" aria-label="Текстовые отзывы клиенток">
+            <div class="review-carousel-heading">
+                <h3>Отзывы клиенток</h3>
+                <div class="carousel-nav">
+                    <span class="carousel-thread" aria-hidden="true"></span>
+                    <button class="carousel-arrow" type="button" data-carousel-prev aria-label="Предыдущий текстовый отзыв">←</button>
+                    <button class="carousel-arrow" type="button" data-carousel-next aria-label="Следующий текстовый отзыв">→</button>
                 </div>
-                <p class="r-text">Была постоянная боль в спине и шее, из-за этого не могла полноценно жить и работать. После 3 сеансов боль ушла на 80%, ушло напряжение и тревога. Я наконец почувствовала лёгкость!</p>
-                <strong class="r-author">Мария, 38 лет</strong>
-                <span class="r-role">Дизайнер</span>
             </div>
-            <div class="review-card">
-                <div class="r-head">
-                    <div class="r-photo"><svg width="48" height="48" viewBox="0 0 50 50" fill="none"><circle cx="25" cy="20" r="9" fill="#E879A0" opacity="0.45"/><path d="M8 50c0-9.4 7.6-17 17-17s17 7.6 17 17" fill="#E879A0" opacity="0.35"/></svg></div>
-                    <span class="r-quote-icon">"</span>
+            <div class="reviews-carousel">
+                <div class="reviews-track" id="text-reviews" data-carousel-track>
+                    <article class="review-card review-slide">
+                        <div class="review-portrait-row"><span class="review-avatar review-avatar-fallback">М</span><span class="review-quote-mark" aria-hidden="true">“</span></div>
+                        <blockquote>Была ужасная боль в спине и постоянные скандалы с мужем. После 3 сеансов боль ушла, и я поняла, откуда вообще всё взялось.</blockquote>
+                        <div class="review-meta"><strong>Мария, 38 лет</strong><span>Клиентка</span></div>
+                    </article>
+                    <article class="review-card review-slide">
+                        <div class="review-portrait-row"><span class="review-avatar review-avatar-fallback">Е</span><span class="review-quote-mark" aria-hidden="true">“</span></div>
+                        <blockquote>Мучила тревога и панические атаки. После терапии появились спокойствие и уверенность в себе.</blockquote>
+                        <div class="review-meta"><strong>Елена, 45 лет</strong><span>Клиентка</span></div>
+                    </article>
+                    <article class="review-card review-slide">
+                        <div class="review-portrait-row"><span class="review-avatar review-avatar-fallback">А</span><span class="review-quote-mark" aria-hidden="true">“</span></div>
+                        <blockquote>Благодаря работе с телом и родовыми программами всё наладилось. Спасибо за новую меня!</blockquote>
+                        <div class="review-meta"><strong>Анастасия, 32 года</strong><span>Клиентка</span></div>
+                    </article>
                 </div>
-                <p class="r-text">Долгое время были проблемы в отношениях с мужем, постоянные скандалы и обиды. Мы разобрались с причинами, я поняла себя и его. Сейчас у нас гармония и взаимопонимание.</p>
-                <strong class="r-author">Елена, 45 лет</strong>
-                <span class="r-role">Предприниматель</span>
             </div>
-            <div class="review-card">
-                <div class="r-head">
-                    <div class="r-photo"><svg width="48" height="48" viewBox="0 0 50 50" fill="none"><circle cx="25" cy="20" r="9" fill="#E879A0" opacity="0.45"/><path d="M8 50c0-9.4 7.6-17 17-17s17 7.6 17 17" fill="#E879A0" opacity="0.35"/></svg></div>
-                    <span class="r-quote-icon">"</span>
-                </div>
-                <p class="r-text">Были проблемы по женскому здоровью и чувство опустошения. После терапии вернулась энергия, наладилось самочувствие и уверенность в себе. Спасибо за бережный и глубокий подход!</p>
-                <strong class="r-author">Анастасия, 32 года</strong>
-                <span class="r-role">Маркетолог</span>
-            </div>
-            <div class="review-card">
-                <div class="r-head">
-                    <div class="r-photo"><svg width="48" height="48" viewBox="0 0 50 50" fill="none"><circle cx="25" cy="20" r="9" fill="#E879A0" opacity="0.45"/><path d="M8 50c0-9.4 7.6-17 17-17s17 7.6 17 17" fill="#E879A0" opacity="0.35"/></svg></div>
-                    <span class="r-quote-icon">"</span>
-                </div>
-                <p class="r-text">Обратилась с сильной тревогой и паническими атаками. После сеансов стало спокойно внутри, ушли страхи и зажимы в теле. Будто заново родилась!</p>
-                <strong class="r-author">Ирина, 41 год</strong>
-                <span class="r-role">Преподаватель</span>
-            </div>
-            <div class="review-card">
-                <div class="r-head">
-                    <div class="r-photo"><svg width="48" height="48" viewBox="0 0 50 50" fill="none"><circle cx="25" cy="20" r="9" fill="#E879A0" opacity="0.45"/><path d="M8 50c0-9.4 7.6-17 17-17s17 7.6 17 17" fill="#E879A0" opacity="0.35"/></svg></div>
-                    <span class="r-quote-icon">"</span>
-                </div>
-                <p class="r-text">У сына (13 лет) были проблемы с самооценкой и агрессией. После работы с вами он стал спокойнее, увереннее, улучшились отношения в семье. Огромное спасибо!</p>
-                <strong class="r-author">Ольга, 39 лет</strong>
-                <span class="r-role">Мама подростка</span>
-            </div>
+            <div class="carousel-dots" data-carousel-dots aria-label="Навигация по текстовым отзывам"></div>
         </div>
-        <div class="voice-reviews">
-            <h3>Голосовые отзывы</h3>
-            <div class="audio-item">
-                <div class="play-btn"></div>
-                <div class="waveform" id="w1"></div>
-                <span class="audio-time">1:34</span>
+
+        <div class="review-carousel-shell" data-review-carousel tabindex="0" aria-label="Аудиоотзывы клиенток">
+            <div class="review-carousel-heading">
+                <h3>Аудиоотзывы</h3>
+                <div class="carousel-nav">
+                    <span class="carousel-thread" aria-hidden="true"></span>
+                    <button class="carousel-arrow" type="button" data-carousel-prev aria-label="Предыдущий аудиоотзыв">←</button>
+                    <button class="carousel-arrow" type="button" data-carousel-next aria-label="Следующий аудиоотзыв">→</button>
+                </div>
             </div>
-            <div class="audio-item">
-                <div class="play-btn"></div>
-                <div class="waveform" id="w2"></div>
-                <span class="audio-time">2:08</span>
+            <div class="reviews-carousel">
+                <div class="reviews-track audio-reviews-track" id="audio-reviews" data-carousel-track>
+                    <article class="audio-review-card review-slide">
+                        <div class="audio-review-person"><span class="review-avatar review-avatar-fallback">А</span><div><strong>Аудиоотзыв № 1</strong><span>Материал готовится</span></div></div>
+                        <div class="audio-placeholder" role="status"><span aria-hidden="true">♪</span>Аудио скоро появится</div>
+                    </article>
+                    <article class="audio-review-card review-slide">
+                        <div class="audio-review-person"><span class="review-avatar review-avatar-fallback">А</span><div><strong>Аудиоотзыв № 2</strong><span>Материал готовится</span></div></div>
+                        <div class="audio-placeholder" role="status"><span aria-hidden="true">♪</span>Аудио скоро появится</div>
+                    </article>
+                    <article class="audio-review-card review-slide">
+                        <div class="audio-review-person"><span class="review-avatar review-avatar-fallback">А</span><div><strong>Аудиоотзыв № 3</strong><span>Материал готовится</span></div></div>
+                        <div class="audio-placeholder" role="status"><span aria-hidden="true">♪</span>Аудио скоро появится</div>
+                    </article>
+                </div>
             </div>
-            <div class="audio-item">
-                <div class="play-btn"></div>
-                <div class="waveform" id="w3"></div>
-                <span class="audio-time">1:52</span>
-            </div>
+            <div class="carousel-dots" data-carousel-dots aria-label="Навигация по аудиоотзывам"></div>
+        </div>
+
+        <div class="reviews-telegram">
             <a href="https://t.me/httpstmeinnayusmola433" class="btn-tg" data-contact="telegram">
                 <span class="btn-tg-left"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg>Больше отзывов в Telegram</span>
                 <span class="btn-tg-circle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
@@ -1788,19 +1858,8 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
 </div>
 </footer>
 
+<script src="reviews-carousel.js"></script>
 <script>
-// Генерация визуальной волны для аудиоплееров
-const waves = [[4,7,10,14,18,22,20,16,12,8,11,15,21,17,13,9,7,11,15,19,23,19,15,11,7,5,9,13,17,21,17,13,9,7,5,4,8,11,15,19,15,11,7,5,4],[8,5,9,13,17,22,20,16,12,8,5,9,14,20,18,14,10,7,11,16,24,22,18,14,10,7,5,9,13,18,22,18,14,10,7,5,8,12,16,20,24,20,16,12,8,5],[6,9,12,16,20,18,14,10,7,10,14,18,22,20,16,12,8,6,10,14,18,22,18,14,10,7,5,8,12,16,20,16,12,8,6,9,13,17,21,17,13,9,6,5,8]];
-['w1','w2','w3'].forEach((id, i) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    waves[i].forEach(h => {
-        const s = document.createElement('span');
-        s.style.height = h + 'px';
-        el.appendChild(s);
-    });
-});
-
 // Загрузка content.json и обновление динамических элементов
 // ?v=... — антикэш, чтобы всегда брать свежую версию после правок в админке
 fetch('content.json?v=' + Date.now())
@@ -1836,15 +1895,8 @@ fetch('content.json?v=' + Date.now())
         </div>`).join('');
     }
 
-    // Перерисовываем текстовые отзывы
-    const reviewsGrid = document.getElementById('text-reviews');
-    if (reviewsGrid && data.reviews) {
-      reviewsGrid.innerHTML = data.reviews.map(r => `
-        <div class="review-card">
-          <blockquote class="quote-block">${r.text}</blockquote>
-          <div class="review-author">${r.author}</div>
-        </div>`).join('');
-    }
+    // Перерисовываем независимые карусели текстовых и аудиоотзывов
+    window.ReviewsCarousel?.renderReviewCarousels(data);
 
     // Перерисовываем локации
     const locationGrid = document.getElementById('location-grid');
@@ -1900,7 +1952,10 @@ fetch('content.json?v=' + Date.now())
       });
     }
   })
-  .catch(() => {}); // fallback — статичные данные из HTML остаются
+  .catch(() => {
+    // Fallback-разметка остаётся рабочей даже без content.json
+    window.ReviewsCarousel?.renderReviewCarousels({});
+  });
 
 // Бургер-меню
 const burger = document.getElementById('burger');
