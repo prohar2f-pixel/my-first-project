@@ -38,22 +38,28 @@ test('keeps text and audio reviews in independent complete collections', () => {
   }
 });
 
-test('preserves the three approved review texts in full', () => {
+test('preserves the approved review texts in full', () => {
   const approvedReviews = [
     'Я была в таком расслабленном состоянии - просто слюни только подтирала от расслабления. Потому что и голова, и всё тело настолько расслабились. И такой светлый ум, и на душе так свободно, легко.',
     'Добрый вечер! Хотела написать отзыв. Мне прямо классно, я всё отпустила, улыбка идёт искренне. Мне так нравится, что у меня ушёл весь негатив! Спасибо вам большое, приду ещё и буду вас рекомендовать.',
     'Инна, здравствуйте! Была у вас на двух сессиях, на ваших телесных практиках. Мне очень понравилась ваша приятная энергия. Беседа с вами успокаивает, ушла тревога. Колени не болят уже пять дней, чувствую лёгкость при ходьбе. Ещё хочу прийти к вам на масляное выглаживание живота.',
+    'Дела хорошо! На работе стала спокойнее. Были моменты, в которых раньше я бы очень сильно вспылила, но сейчас появляется пауза и позиция наблюдателя. Как же это помогает: сразу всё встаёт на свои места. Маме сообщила. Конечно, она по-своему восприняла это в штыки, но я не поддалась на её поведение и в режиме наблюдателя спокойно всё перенесла. В теле ощущения супер, поездка была очень кстати. Подробно расскажу при встрече. Но самое главное: вчера, когда вернулась, пошла вечером в магазин и обула босоножки, которые до этого были мне сильно впритык. И почувствовала, что на левой ноге они стали свободными. Это было приятным удивлением, потому что даже после дороги и жары нога была в таком хорошем состоянии. В общем, изменения есть. И самое главное - мне их очень хочется!',
   ];
 
-  assert.equal(content.reviews.length, 5);
+  assert.equal(content.reviews.length, 6);
   assert.deepEqual(content.reviews.slice(2).map((review) => review.text), approvedReviews);
   for (const reviewText of approvedReviews) {
     assert.ok(html.includes(`<blockquote>${reviewText}</blockquote>`));
   }
   assert.doesNotMatch(content.reviews[2].text, /И я вообще забыла/);
+  assert.deepEqual(content.reviews.slice(2).map((review) => review.photo), [
+    '/images/reviews/client-6.webp',
+    '/images/reviews/client-7.webp',
+    '/images/reviews/client-8.webp',
+    '/images/reviews/client-9.webp',
+  ]);
   for (const review of content.reviews.slice(2)) {
     assert.equal(review.author, 'Клиентка');
-    assert.equal(review.photo, '');
   }
 });
 
@@ -122,7 +128,7 @@ test('renders text and audio collections into different tracks', () => {
 
 test('ships the supplied review photos and playable audio files', () => {
   const reviewsWithPhotos = content.reviews.filter(({ photo }) => photo);
-  assert.equal(reviewsWithPhotos.length, 2);
+  assert.equal(reviewsWithPhotos.length, 6);
   for (const review of reviewsWithPhotos) {
     assert.match(review.photo, /^\/images\/reviews\/client-\d+\.webp$/);
     assert.ok(readFileSync(join(projectDir, review.photo.slice(1))).length > 0);
