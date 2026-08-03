@@ -38,11 +38,19 @@ test('keeps text and audio reviews in independent complete collections', () => {
   }
 });
 
-test('includes the three newly supplied text reviews', () => {
+test('preserves the three approved review texts in full', () => {
+  const approvedReviews = [
+    'Я была в таком расслабленном состоянии - просто слюни только подтирала от расслабления. Потому что и голова, и всё тело настолько расслабились. И такой светлый ум, и на душе так свободно, легко.',
+    'Добрый вечер! Хотела написать отзыв. Мне прямо классно, я всё отпустила, улыбка идёт искренне. Мне так нравится, что у меня ушёл весь негатив! Спасибо вам большое, приду ещё и буду вас рекомендовать.',
+    'Инна, здравствуйте! Была у вас на двух сессиях, на ваших телесных практиках. Мне очень понравилась ваша приятная энергия. Беседа с вами успокаивает, ушла тревога. Колени не болят уже пять дней, чувствую лёгкость при ходьбе. Ещё хочу прийти к вам на масляное выглаживание живота.',
+  ];
+
   assert.equal(content.reviews.length, 5);
-  assert.match(content.reviews[2].text, /Ум стал светлым, а в душе - свободно и легко/);
-  assert.match(content.reviews[3].text, /ушёл весь негатив/);
-  assert.match(content.reviews[4].text, /Колени не болят уже пять дней/);
+  assert.deepEqual(content.reviews.slice(2).map((review) => review.text), approvedReviews);
+  for (const reviewText of approvedReviews) {
+    assert.ok(html.includes(`<blockquote>${reviewText}</blockquote>`));
+  }
+  assert.doesNotMatch(content.reviews[2].text, /И я вообще забыла/);
   for (const review of content.reviews.slice(2)) {
     assert.equal(review.author, 'Клиентка');
     assert.equal(review.photo, '');
