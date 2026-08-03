@@ -1,22 +1,19 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
+import vm from 'node:vm';
 
 const projectDir = join(dirname(fileURLToPath(import.meta.url)), '..');
 const html = readFileSync(join(projectDir, 'index.html'), 'utf8');
 const cmsConfig = readFileSync(join(projectDir, 'admin/config.yml'), 'utf8');
 const content = JSON.parse(readFileSync(join(projectDir, 'content.json'), 'utf8'));
-const require = createRequire(import.meta.url);
-
 function loadCarouselApi() {
-  try {
-    return require('../reviews-carousel.js');
-  } catch {
-    return null;
-  }
+  const source = readFileSync(join(projectDir, 'reviews-carousel.js'), 'utf8');
+  const context = { globalThis: {} };
+  vm.runInNewContext(source, context);
+  return context.globalThis.ReviewsCarousel;
 }
 
 test('keeps text and audio reviews in independent complete collections', () => {
@@ -91,6 +88,15 @@ test('renders real audio only when a file exists', () => {
   });
   assert.match(playable, /<audio[^>]+controls[^>]+preload="none"/);
   assert.match(playable, /src="\/audio\/elena-review\.mp3"/);
+});
+
+test('rejects executable review media URLs', () => {
+  const api = loadCarouselApi();
+  const card = api.renderAudioReviewCard({
+    author: 'Клиентка', role: '', photo: 'javascript:alert(1)',
+    audio: 'data:text/html,x', duration: '',
+  });
+  assert.doesNotMatch(card, /javascript:|data:text\/html|<audio|<img/);
 });
 
 test('moves carousel indexes without crossing collection boundaries', () => {

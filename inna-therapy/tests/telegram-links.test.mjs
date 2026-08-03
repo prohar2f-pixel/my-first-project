@@ -15,7 +15,7 @@ test('routes review visitors to the Telegram channel', () => {
     html,
     /href="https:\/\/t\.me\/ladanieInna" class="btn-tg" data-contact="telegram_channel"/,
   );
-  assert.match(html, /key === 'telegram_channel' && c\.telegram_channel/);
+  assert.match(html, /const rawUrl = key === 'prepay' \? c\.prepay_link : c\[key\]/);
 });
 
 test('routes questions and direct messages to Inna personal chat', () => {

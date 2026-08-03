@@ -1873,41 +1873,40 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
 </footer>
 
 <script src="reviews-carousel.js"></script>
-<script>
+<script type="module">
+import {
+  renderLocationCards,
+  renderPriceCards,
+  safeContactUrl,
+  sanitizeRichText,
+} from './content-renderer.js';
+
 // Загрузка content.json и обновление динамических элементов
 // ?v=... — антикэш, чтобы всегда брать свежую версию после правок в админке
 fetch('content.json?v=' + Date.now())
   .then(r => r.json())
   .then(data => {
-    const c = data.contacts;
+    const c = data.contacts || {};
 
     // Обновляем все ссылки по data-contact
     document.querySelectorAll('[data-contact]').forEach(el => {
       const key = el.getAttribute('data-contact');
-      if (key === 'telegram' && c.telegram) el.href = c.telegram;
-      if (key === 'telegram_channel' && c.telegram_channel) el.href = c.telegram_channel;
-      if (key === 'max' && c.max) el.href = c.max;
-      if (key === 'prepay' && c.prepay_link) el.href = c.prepay_link;
+      const rawUrl = key === 'prepay' ? c.prepay_link : c[key];
+      const url = safeContactUrl(rawUrl);
+      if (url) el.href = url;
     });
 
     // Обновляем телефонный номер
     document.querySelectorAll('[data-contact="phone"]').forEach(el => {
       if (c.phone_display) el.textContent = c.phone_display;
-      if (c.phone) el.href = 'tel:' + c.phone;
+      if (c.phone && /^\+?[0-9 ()-]{7,24}$/.test(c.phone)) el.href = 'tel:' + c.phone;
     });
 
     // Перерисовываем прайс
     const pricesGrid = document.getElementById('prices-grid');
     if (pricesGrid && data.prices) {
       const priceIcons = ['search','spa','local_florist','self_improvement','back_hand','card_giftcard','massage','sports_gymnastics'].map(n => '<span class="material-symbols-outlined">' + n + '</span>');
-      const lotusIcon = priceIcons[1];
-      pricesGrid.innerHTML = data.prices.map((p, i) => `
-        <div class="price-card">
-          <div class="p-icon">${priceIcons[i] || lotusIcon}</div>
-          <h3>${p.name}</h3>
-          <p class="p-desc">${p.desc}</p>
-          <div class="p-amount">${p.amount}</div>
-        </div>`).join('');
+      pricesGrid.innerHTML = renderPriceCards(data.prices, priceIcons);
     }
 
     // Перерисовываем независимые карусели текстовых и аудиоотзывов
@@ -1919,17 +1918,11 @@ fetch('content.json?v=' + Date.now())
       const homeIcon = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E879A0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>';
       const locLotus = '<svg width="18" height="21" viewBox="0 0 36 38" fill="#E879A0" xmlns="http://www.w3.org/2000/svg"><path d="M18 34C18 34 2 26 3 13C8 18 13 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 34 26 33 13C28 18 23 24 18 34Z" opacity="0.3"/><path d="M18 34C18 34 7 23 8 10C12 15 15 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 29 23 28 10C24 15 21 22 18 34Z" opacity="0.58"/><path d="M18 34C18 34 11 21 12 8C15 13 17 20 18 34Z" opacity="0.82"/><path d="M18 34C18 34 25 21 24 8C21 13 19 20 18 34Z" opacity="0.82"/><path d="M18 34C15.5 21 17 2 18 2C19 2 20.5 21 18 34Z"/><path d="M6 37Q18 34 30 37" stroke="#E879A0" stroke-width="1.2" fill="none" opacity="0.4" stroke-linecap="round"/></svg>';
       const pinIcon = '<svg width="16" height="16" viewBox="0 0 24 24" fill="#E879A0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3" fill="#fff"/></svg>';
-      locationGrid.innerHTML = data.locations.map(l => `
-        <div class="location-card">
-          <div class="loc-photo"><img src="${l.photo.replace(/^\//, '')}" alt="${l.name}"></div>
-          <div class="loc-content">
-            <div class="loc-icon-circle">${homeIcon}</div>
-            <span class="loc-label">${l.sub}</span>
-            <h3 class="loc-name">${l.name}</h3>
-            <div class="loc-lotus">${locLotus}</div>
-            <div class="loc-address">${pinIcon}<p>${l.address}</p></div>
-          </div>
-        </div>`).join('');
+      locationGrid.innerHTML = renderLocationCards(data.locations, {
+        home: homeIcon,
+        lotus: locLotus,
+        pin: pinIcon,
+      });
     }
 
     // Обновляем простые тексты по меткам data-key
@@ -1938,7 +1931,7 @@ fetch('content.json?v=' + Date.now())
         const val = data.texts[key];
         if (val == null) return;
         document.querySelectorAll('[data-key="' + key + '"]').forEach(el => {
-          el.innerHTML = val;
+          el.innerHTML = sanitizeRichText(val);
         });
       });
     }

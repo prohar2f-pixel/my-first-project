@@ -15,13 +15,18 @@
     return match ? match[0].toUpperCase() : '•';
   }
 
-  function normalizeMediaPath(path) {
-    return String(path ?? '').trim();
+  function normalizeMediaPath(path, kind) {
+    const raw = String(path ?? '').trim();
+    const roots = kind === 'audio' ? ['audio'] : ['images'];
+    const root = roots.join('|');
+    const valid = new RegExp(`^/(?:${root})/[A-Za-zА-Яа-яЁё0-9._%+() /-]+$`, 'u').test(raw);
+    const safeSegments = raw.split('/').every((segment, index) => index === 0 || (segment && segment !== '.' && segment !== '..'));
+    return valid && safeSegments ? raw : '';
   }
 
   function renderAvatar(review) {
     const author = escapeHtml(review.author || 'Клиентка');
-    const photo = normalizeMediaPath(review.photo);
+    const photo = normalizeMediaPath(review.photo, 'image');
     if (photo) {
       return `<span class="review-avatar"><img src="${escapeHtml(photo)}" alt="Фото: ${author}" loading="lazy"></span>`;
     }
@@ -37,7 +42,7 @@
   }
 
   function renderAudioReviewCard(review) {
-    const audio = normalizeMediaPath(review.audio);
+    const audio = normalizeMediaPath(review.audio, 'audio');
     const player = audio
       ? `<audio class="review-audio" controls preload="none" src="${escapeHtml(audio)}">Ваш браузер не поддерживает аудио.</audio>`
       : '<div class="audio-placeholder" role="status"><span aria-hidden="true">♪</span>Аудио скоро появится</div>';
@@ -139,6 +144,7 @@
     escapeHtml,
     getNextSlideIndex,
     initReviewCarousel,
+    normalizeMediaPath,
     renderAudioReviewCard,
     renderReviewCarousels,
     renderTextReviewCard,
