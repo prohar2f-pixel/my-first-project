@@ -11,6 +11,7 @@ export function sanitizeRichText(value) {
   return escapeHtml(value)
     .replace(/&lt;br\s*\/?&gt;/gi, '<br>')
     .replace(/&lt;span class=(?:&quot;|&#039;)accent(?:&quot;|&#039;)&gt;/gi, '<span class="accent">')
+    .replace(/&lt;span class=(?:&quot;|&#039;)nowrap(?:&quot;|&#039;)&gt;/gi, '<span class="nowrap">')
     .replace(/&lt;\/span&gt;/gi, '</span>');
 }
 

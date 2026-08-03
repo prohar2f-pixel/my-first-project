@@ -13,10 +13,21 @@ import { fileURLToPath } from 'node:url';
 
 const projectDir = join(dirname(fileURLToPath(import.meta.url)), '..');
 const html = readFileSync(join(projectDir, 'index.html'), 'utf8');
+const content = JSON.parse(readFileSync(join(projectDir, 'content.json'), 'utf8'));
 
 test('CMS rich text keeps approved formatting but strips executable markup', () => {
   const rendered = sanitizeRichText("Текст<br><span class='accent'>акцент</span><img src=x onerror=alert(1)>");
   assert.equal(rendered, 'Текст<br><span class="accent">акцент</span>&lt;img src=x onerror=alert(1)&gt;');
+});
+
+test('hero title keeps its safe no-wrap span without showing HTML source', () => {
+  const rendered = sanitizeRichText(content.texts.hero_title);
+  assert.equal(
+    rendered,
+    '<span class="nowrap">Снять боль</span><br>и найти <span class="accent">причину</span><br>её возникновения',
+  );
+  assert.doesNotMatch(rendered, /&lt;span|style=/);
+  assert.match(sanitizeRichText('<span style="color:red">опасный стиль</span>'), /&lt;span style=/);
 });
 
 test('CMS price and location cards escape content and unsafe media URLs', () => {
