@@ -1559,7 +1559,7 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
         </div>
 
         <div class="reviews-telegram">
-            <a href="https://t.me/httpstmeinnayusmola433" class="btn-tg" data-contact="telegram">
+            <a href="https://t.me/ladanieInna" class="btn-tg" data-contact="telegram_channel">
                 <span class="btn-tg-left"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg>Больше отзывов в Telegram</span>
                 <span class="btn-tg-circle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
             </a>
@@ -1865,6 +1865,7 @@ fetch('content.json?v=' + Date.now())
     document.querySelectorAll('[data-contact]').forEach(el => {
       const key = el.getAttribute('data-contact');
       if (key === 'telegram' && c.telegram) el.href = c.telegram;
+      if (key === 'telegram_channel' && c.telegram_channel) el.href = c.telegram_channel;
       if (key === 'max' && c.max) el.href = c.max;
       if (key === 'prepay' && c.prepay_link) el.href = c.prepay_link;
     });
