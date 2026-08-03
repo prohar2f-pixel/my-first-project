@@ -115,6 +115,11 @@ test('ships the supplied review photos and playable audio files', () => {
   }
 });
 
+test('frames every review avatar with a four-pixel plaque-colored border', () => {
+  assert.match(html, /\.review-avatar\s*\{[^}]*border:\s*4px solid #FFD6E7;/s);
+  assert.doesNotMatch(html, /\.audio-review-person \.review-avatar\s*\{[^}]*border-width:/s);
+});
+
 test('ships two accessible scroll-snap carousels without the fake voice player', () => {
   assert.equal((html.match(/data-review-carousel/g) ?? []).length, 2);
   assert.match(html, /id="text-reviews"[^>]*data-carousel-track/);
