@@ -38,6 +38,17 @@ test('keeps text and audio reviews in independent complete collections', () => {
   }
 });
 
+test('includes the three newly supplied text reviews', () => {
+  assert.equal(content.reviews.length, 5);
+  assert.match(content.reviews[2].text, /Ум стал светлым, а в душе - свободно и легко/);
+  assert.match(content.reviews[3].text, /ушёл весь негатив/);
+  assert.match(content.reviews[4].text, /Колени не болят уже пять дней/);
+  for (const review of content.reviews.slice(2)) {
+    assert.equal(review.author, 'Клиентка');
+    assert.equal(review.photo, '');
+  }
+});
+
 test('renders initials when a client photo is missing', () => {
   const api = loadCarouselApi();
   assert.ok(api, 'reviews-carousel.js must export its rendering API');
@@ -102,7 +113,9 @@ test('renders text and audio collections into different tracks', () => {
 });
 
 test('ships the supplied review photos and playable audio files', () => {
-  for (const review of content.reviews) {
+  const reviewsWithPhotos = content.reviews.filter(({ photo }) => photo);
+  assert.equal(reviewsWithPhotos.length, 2);
+  for (const review of reviewsWithPhotos) {
     assert.match(review.photo, /^\/images\/reviews\/client-\d+\.webp$/);
     assert.ok(readFileSync(join(projectDir, review.photo.slice(1))).length > 0);
   }
