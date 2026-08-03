@@ -1,8 +1,13 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 
 import authHandler from '../api/auth.js';
 import callbackHandler from '../api/callback.js';
+
+const projectDir = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 function responseMock() {
   return {
@@ -121,4 +126,17 @@ test('OAuth callback reports token exchange failure without a fake success', asy
   }
   assert.equal(res.statusCode, 502);
   assert.doesNotMatch(res.body, /authorization:github:success|undefined/);
+});
+
+test('static pages ship security headers and a pinned CMS version', () => {
+  const vercel = JSON.parse(readFileSync(join(projectDir, 'vercel.json'), 'utf8'));
+  const serializedHeaders = JSON.stringify(vercel.headers);
+  assert.match(serializedHeaders, /Content-Security-Policy/);
+  assert.match(serializedHeaders, /frame-ancestors 'none'/);
+  assert.match(serializedHeaders, /X-Content-Type-Options/);
+  assert.match(serializedHeaders, /Permissions-Policy/);
+
+  const admin = readFileSync(join(projectDir, 'admin/index.html'), 'utf8');
+  assert.match(admin, /@sveltia\/cms@0\.174\.0\/dist\/sveltia-cms\.js/);
+  assert.doesNotMatch(admin, /@sveltia\/cms\/dist\/sveltia-cms\.js/);
 });
