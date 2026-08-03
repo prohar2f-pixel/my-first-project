@@ -20,7 +20,7 @@ function loadCarouselApi() {
 }
 
 test('keeps text and audio reviews in independent complete collections', () => {
-  assert.ok(content.reviews.length >= 3);
+  assert.ok(content.reviews.length >= 2);
   for (const review of content.reviews) {
     assert.equal(typeof review.text, 'string');
     assert.equal(typeof review.author, 'string');
@@ -79,7 +79,10 @@ test('moves carousel indexes without crossing collection boundaries', () => {
 
 test('renders text and audio collections into different tracks', () => {
   const api = loadCarouselApi();
-  const tracks = { 'text-reviews': { innerHTML: '' }, 'audio-reviews': { innerHTML: '' } };
+  const tracks = {
+    'text-reviews': { innerHTML: '', dataset: {} },
+    'audio-reviews': { innerHTML: '', dataset: {} },
+  };
   const documentStub = {
     getElementById(id) { return tracks[id] ?? null; },
     querySelectorAll() { return []; },
@@ -94,6 +97,22 @@ test('renders text and audio collections into different tracks', () => {
   assert.doesNotMatch(tracks['text-reviews'].innerHTML, /Аудио скоро появится/);
   assert.match(tracks['audio-reviews'].innerHTML, /Аудио скоро появится/);
   assert.doesNotMatch(tracks['audio-reviews'].innerHTML, /Текстовый отзыв/);
+  assert.equal(tracks['text-reviews'].dataset.slideCount, '1');
+  assert.equal(tracks['audio-reviews'].dataset.slideCount, '1');
+});
+
+test('ships the supplied review photos and playable audio files', () => {
+  for (const review of content.reviews) {
+    assert.match(review.photo, /^\/images\/reviews\/client-\d+\.webp$/);
+    assert.ok(readFileSync(join(projectDir, review.photo.slice(1))).length > 0);
+  }
+  for (const review of content.audio_reviews) {
+    assert.match(review.photo, /^\/images\/reviews\/client-\d+\.webp$/);
+    assert.match(review.audio, /^\/audio\/review-\d+\.mp3$/);
+    assert.match(review.duration, /^\d+:\d{2}$/);
+    assert.ok(readFileSync(join(projectDir, review.photo.slice(1))).length > 0);
+    assert.ok(readFileSync(join(projectDir, review.audio.slice(1))).length > 0);
+  }
 });
 
 test('ships two accessible scroll-snap carousels without the fake voice player', () => {

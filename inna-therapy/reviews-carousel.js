@@ -126,9 +126,11 @@
     const audioTrack = documentRef.getElementById('audio-reviews');
     if (textTrack && Array.isArray(data.reviews)) {
       textTrack.innerHTML = data.reviews.map(renderTextReviewCard).join('');
+      textTrack.dataset.slideCount = String(data.reviews.length);
     }
     if (audioTrack && Array.isArray(data.audio_reviews)) {
       audioTrack.innerHTML = data.audio_reviews.map(renderAudioReviewCard).join('');
+      audioTrack.dataset.slideCount = String(data.audio_reviews.length);
     }
     documentRef.querySelectorAll('[data-review-carousel]').forEach(initReviewCarousel);
   }

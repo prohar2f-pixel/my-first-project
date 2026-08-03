@@ -576,6 +576,8 @@ nav {
     padding: 42px 2px 12px;
 }
 .reviews-track::-webkit-scrollbar { display: none; }
+.reviews-track[data-slide-count="1"] { grid-auto-columns: 100%; }
+.reviews-track[data-slide-count="2"] { grid-auto-columns: calc((100% - 14px) / 2); }
 .review-slide { scroll-snap-align: start; min-width: 0; }
 .review-card,
 .audio-review-card {
@@ -1286,8 +1288,7 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
     .hero-img img { object-position: center; -webkit-mask-image: none; mask-image: none; }
     .about-grid { grid-template-columns: 1fr; }
     .steps-grid { grid-template-columns: 1fr 1fr; }
-    .reviews-track,
-    .audio-reviews-track { grid-auto-columns: calc((100% - 14px) / 2); }
+    .reviews-track[data-slide-count] { grid-auto-columns: calc((100% - 14px) / 2); }
     .prices-grid { grid-template-columns: repeat(3, 1fr); }
     .offers-inner { grid-template-columns: 1fr; }
     .location-grid { grid-template-columns: 1fr; }
@@ -1301,8 +1302,7 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
     .prices-grid { grid-template-columns: 1fr 1fr; }
     .offer-variants { grid-template-columns: 1fr; }
 
-    .reviews-track,
-    .audio-reviews-track { grid-auto-columns: 100%; }
+    .reviews-track[data-slide-count] { grid-auto-columns: 100%; }
     .review-carousel-heading { align-items: flex-end; }
     .carousel-thread { display: none; }
     .carousel-arrow { width: 38px; height: 38px; }
@@ -1515,21 +1515,16 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
                 </div>
             </div>
             <div class="reviews-carousel">
-                <div class="reviews-track" id="text-reviews" data-carousel-track>
+                <div class="reviews-track" id="text-reviews" data-carousel-track data-slide-count="2">
                     <article class="review-card review-slide">
-                        <div class="review-portrait-row"><span class="review-avatar review-avatar-fallback">М</span><span class="review-quote-mark" aria-hidden="true">“</span></div>
-                        <blockquote>Была ужасная боль в спине и постоянные скандалы с мужем. После 3 сеансов боль ушла, и я поняла, откуда вообще всё взялось.</blockquote>
-                        <div class="review-meta"><strong>Мария, 38 лет</strong><span>Клиентка</span></div>
+                        <div class="review-portrait-row"><span class="review-avatar"><img src="/images/reviews/client-1.webp" alt="Фото: Настя" loading="lazy"></span><span class="review-quote-mark" aria-hidden="true">“</span></div>
+                        <blockquote>Два часа пролетели незаметно. Моё тело пищало, иногда похрустывало от удовольствия. С твоей помощью пришло такое облегчение и лёгкость во всём теле. Твои руки творят чудеса - ты проводник к здоровью и прекрасному самочувствию.</blockquote>
+                        <div class="review-meta"><strong>Настя</strong><span>Личный опыт клиентки</span></div>
                     </article>
                     <article class="review-card review-slide">
-                        <div class="review-portrait-row"><span class="review-avatar review-avatar-fallback">Е</span><span class="review-quote-mark" aria-hidden="true">“</span></div>
-                        <blockquote>Мучила тревога и панические атаки. После терапии появились спокойствие и уверенность в себе.</blockquote>
-                        <div class="review-meta"><strong>Елена, 45 лет</strong><span>Клиентка</span></div>
-                    </article>
-                    <article class="review-card review-slide">
-                        <div class="review-portrait-row"><span class="review-avatar review-avatar-fallback">А</span><span class="review-quote-mark" aria-hidden="true">“</span></div>
-                        <blockquote>Благодаря работе с телом и родовыми программами всё наладилось. Спасибо за новую меня!</blockquote>
-                        <div class="review-meta"><strong>Анастасия, 32 года</strong><span>Клиентка</span></div>
+                        <div class="review-portrait-row"><span class="review-avatar"><img src="/images/reviews/client-2.webp" alt="Фото: Клиентка" loading="lazy"></span><span class="review-quote-mark" aria-hidden="true">“</span></div>
+                        <blockquote>После первого сеанса боль в позвоночнике прошла на 2–3-й день. После второго сеанса сразу прошла боль в крестце, а шелушений на лице больше не наблюдаю.</blockquote>
+                        <div class="review-meta"><strong>Клиентка</strong><span>Личный опыт после двух сеансов</span></div>
                     </article>
                 </div>
             </div>
@@ -1546,18 +1541,18 @@ footer { background: #FFFFFF; padding: 20px 0; border-top: 1px solid #FFD6E7; }
                 </div>
             </div>
             <div class="reviews-carousel">
-                <div class="reviews-track audio-reviews-track" id="audio-reviews" data-carousel-track>
+                <div class="reviews-track audio-reviews-track" id="audio-reviews" data-carousel-track data-slide-count="3">
                     <article class="audio-review-card review-slide">
-                        <div class="audio-review-person"><span class="review-avatar review-avatar-fallback">А</span><div><strong>Аудиоотзыв № 1</strong><span>Материал готовится</span></div></div>
-                        <div class="audio-placeholder" role="status"><span aria-hidden="true">♪</span>Аудио скоро появится</div>
+                        <div class="audio-review-person"><span class="review-avatar"><img src="/images/reviews/client-3.webp" alt="Фото: клиентка" loading="lazy"></span><div><strong>Аудиоотзыв № 1</strong><span>Реальный отзыв клиентки</span></div></div>
+                        <div class="audio-review-player"><audio class="review-audio" controls preload="none" src="/audio/review-1.mp3">Ваш браузер не поддерживает аудио.</audio><span class="audio-duration">0:53</span></div>
                     </article>
                     <article class="audio-review-card review-slide">
-                        <div class="audio-review-person"><span class="review-avatar review-avatar-fallback">А</span><div><strong>Аудиоотзыв № 2</strong><span>Материал готовится</span></div></div>
-                        <div class="audio-placeholder" role="status"><span aria-hidden="true">♪</span>Аудио скоро появится</div>
+                        <div class="audio-review-person"><span class="review-avatar"><img src="/images/reviews/client-4.webp" alt="Фото: клиентка" loading="lazy"></span><div><strong>Аудиоотзыв № 2</strong><span>Реальный отзыв клиентки</span></div></div>
+                        <div class="audio-review-player"><audio class="review-audio" controls preload="none" src="/audio/review-2.mp3">Ваш браузер не поддерживает аудио.</audio><span class="audio-duration">0:54</span></div>
                     </article>
                     <article class="audio-review-card review-slide">
-                        <div class="audio-review-person"><span class="review-avatar review-avatar-fallback">А</span><div><strong>Аудиоотзыв № 3</strong><span>Материал готовится</span></div></div>
-                        <div class="audio-placeholder" role="status"><span aria-hidden="true">♪</span>Аудио скоро появится</div>
+                        <div class="audio-review-person"><span class="review-avatar"><img src="/images/reviews/client-5.webp" alt="Фото: клиентка" loading="lazy"></span><div><strong>Аудиоотзыв № 3</strong><span>Реальный отзыв клиентки</span></div></div>
+                        <div class="audio-review-player"><audio class="review-audio" controls preload="none" src="/audio/review-3.mp3">Ваш браузер не поддерживает аудио.</audio><span class="audio-duration">0:23</span></div>
                     </article>
                 </div>
             </div>
