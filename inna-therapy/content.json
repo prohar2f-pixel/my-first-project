@@ -181,19 +181,19 @@
       "name": "Салон",
       "sub": "М. Кунцевская, М. Молодежная",
       "address": "г. Москва, ул. Истринская 8/3",
-      "photo": "/images/inna-process-abdomen.png"
+      "photo": "/images/inna-process-abdomen.webp"
     },
     {
       "name": "Салон",
       "sub": "М. Кунцевская, М. Молодежная",
       "address": "г. Москва, ул. Беловежская 79",
-      "photo": "/images/inna-process-neck.png"
+      "photo": "/images/inna-process-neck.webp"
     },
     {
       "name": "Кабинет",
       "sub": "ориентир Ашан Марфино",
       "address": "г. Москва, ул. Можайское шоссе 52/54",
-      "photo": "/images/inna-process-posture.png"
+      "photo": "/images/inna-process-posture.webp"
     }
   ]
 }
