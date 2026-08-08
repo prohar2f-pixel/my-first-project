@@ -1,7 +1,6 @@
 import unittest
 
-from parsers.tg_channels import parse_channel_html
-from selection import round_robin
+from parsers.tg_channels import orders_from_post, parse_channel_html, split_vacancies
 
 
 class TelegramParserTests(unittest.TestCase):
@@ -17,19 +16,65 @@ class TelegramParserTests(unittest.TestCase):
           <div class="tgme_widget_message_text js-message_text">Third vacancy</div>
         </div>
         """
+        self.assertEqual(parse_channel_html(html), [("101", "First vacancy"), ("103", "Third vacancy")])
 
-        posts = parse_channel_html(html)
+    def test_preserves_line_breaks_from_telegram_html(self):
+        html = """
+        <div class="tgme_widget_message" data-post="frilans/357">
+          <div class="tgme_widget_message_text js-message_text">
+            #Дизайнер<br>Нарисовать логотип<br>➡️ @first<br>#SMM<br>Вести канал<br>➡️ @second
+          </div>
+        </div>
+        """
+        self.assertEqual(
+            parse_channel_html(html),
+            [("357", "#Дизайнер
+Нарисовать логотип
+➡️ @first
+#SMM
+Вести канал
+➡️ @second")],
+        )
 
-        self.assertEqual(posts, [("101", "First vacancy"), ("103", "Third vacancy")])
+    def test_splits_digest_after_contact_before_next_role(self):
+        text = (
+            "#Дизайнер
+Нарисовать логотип и фирменный стиль
+➡️ @first
+"
+            "#SMM
+Вести Telegram канал и готовить контент
+➡️ @second"
+        )
+        self.assertEqual(
+            split_vacancies(text),
+            [
+                "#Дизайнер
+Нарисовать логотип и фирменный стиль
+➡️ @first",
+                "#SMM
+Вести Telegram канал и готовить контент
+➡️ @second",
+            ],
+        )
 
+    def test_keeps_consecutive_role_hashtags_in_one_vacancy(self):
+        text = "#Сценарист
+#контентменеджер
+Ищем специалиста в мебельную нишу
+➡️ @contact"
+        self.assertEqual(split_vacancies(text), [text])
 
-class SourceSelectionTests(unittest.TestCase):
-    def test_round_robin_does_not_starve_later_sources(self):
-        sources = [["fl-1", "fl-2", "fl-3"], ["kwork-1", "kwork-2"], ["tg-1", "tg-2"]]
-
-        selected = list(round_robin(sources))[:5]
-
-        self.assertEqual(selected, ["fl-1", "kwork-1", "tg-1", "fl-2", "kwork-2"])
+    def test_digest_parts_get_stable_unique_ids(self):
+        text = "#Дизайнер
+Задача первая
+➡️ @first
+#SMM
+Задача вторая
+➡️ @second"
+        orders = orders_from_post("frilans", "357", text)
+        self.assertEqual([order.id for order in orders], ["tg_frilans_357_1", "tg_frilans_357_2"])
+        self.assertEqual([order.url for order in orders], ["https://t.me/frilans/357"] * 2)
 
 
 if __name__ == "__main__":
