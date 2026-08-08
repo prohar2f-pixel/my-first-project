@@ -28,11 +28,56 @@ def parse_channel_html(page_html: str) -> list[tuple[str, str]]:
         )
         if not match:
             continue
-        text = re.sub(r"<[^>]+>", "", match.group(1))
-        text = re.sub(r"\s+", " ", unescape(text)).strip()
+        text = re.sub(r"<br\s*/?>", "\n", match.group(1), flags=re.IGNORECASE)
+        text = re.sub(r"</p\s*>", "\n", text, flags=re.IGNORECASE)
+        text = re.sub(r"<[^>]+>", "", text)
+        text = unescape(text).replace("\xa0", " ")
+        text = re.sub(r"[ \t]+", " ", text)
+        text = re.sub(r" *\n *", "\n", text)
+        text = re.sub(r"\n{3,}", "\n\n", text).strip()
         if text:
             posts.append((start.group(1), text))
     return posts
+
+
+def split_vacancies(text: str) -> list[str]:
+    """Split TG digest posts without breaking consecutive role hashtags."""
+    parts: list[str] = []
+    current: list[str] = []
+    has_contact = False
+
+    for line in text.splitlines():
+        stripped = line.strip()
+        starts_role = bool(re.match(r"^#\s*[\wА-Яа-яЁё]", stripped))
+        if starts_role and current and has_contact:
+            part = "\n".join(current).strip()
+            if part:
+                parts.append(part)
+            current = []
+            has_contact = False
+        current.append(stripped)
+        if "➡️" in stripped or "->" in stripped or "→" in stripped:
+            has_contact = True
+
+    tail = "\n".join(current).strip()
+    if tail:
+        parts.append(tail)
+    return parts
+
+
+def orders_from_post(channel_name: str, msg_id: str, text: str) -> list[Order]:
+    url = f"https://t.me/{channel_name}/{msg_id}"
+    parts = split_vacancies(text)
+    return [
+        Order(
+            id=f"tg_{channel_name}_{msg_id}_{index}",
+            title=part.splitlines()[0][:80],
+            description=part[:2000],
+            url=url,
+            source=f"TG @{channel_name}",
+        )
+        for index, part in enumerate(parts, start=1)
+    ]
 
 
 async def fetch(channels: list[str]) -> list[Order]:
@@ -50,14 +95,7 @@ async def fetch(channels: list[str]) -> list[Order]:
                     continue
 
                 for msg_id, text in parse_channel_html(resp.text):
-                    url = f"https://t.me/{channel_name}/{msg_id}"
-                    orders.append(Order(
-                        id=f"tg_{channel_name}_{msg_id}",
-                        title=text[:80].replace("\n", " "),
-                        description=text[:500],
-                        url=url,
-                        source=f"TG @{channel_name}",
-                    ))
+                    orders.extend(orders_from_post(channel_name, msg_id, text))
 
             except Exception as e:
                 log.error(f"[TG] Ошибка чтения {channel_name}: {e}")
