@@ -5,6 +5,57 @@ from pathlib import Path
 _data_dir = Path(os.getenv("DATA_DIR", Path(__file__).parent))
 DB_PATH = _data_dir / "seen_orders.db"
 
+PROFILE_SCHEMA_VERSION = 2
+LEGACY_PROFILE_SKILLS = (
+    "HTML/CSS/JS верстка (без фреймворков), адаптивный дизайн, "
+    "WordPress, Tilda, GitHub Pages, Cloudflare Workers. "
+    "Python (Telegram-боты: aiogram, python-telegram-bot, Telethon). "
+    "Anthropic Claude API, OpenAI API \u2014 ИИ-интеграции и автоматизация. "
+    "Figma \u2014 работа по макетам."
+)
+LEGACY_PROFILE_PORTFOLIO = "https://prohar2f-pixel.github.io/my-first-project/"
+SAFE_PROFILE_SKILLS = (
+    "Адаптивные сайты собственным кодом: HTML, CSS и JavaScript. "
+    "Работа по макетам Figma. Telegram-боты и AI-интеграции."
+)
+SAFE_PROFILE_PORTFOLIO = "https://aiprohar.ru/"
+
+
+def migrate_profile(conn: sqlite3.Connection) -> None:
+    """Apply the safe profile migration atomically and preserve custom values."""
+    savepoint = "profile_schema_migration"
+    conn.execute(f"SAVEPOINT {savepoint}")
+    try:
+        conn.execute(
+            "CREATE TABLE IF NOT EXISTS app_meta ("
+            "key TEXT PRIMARY KEY, value TEXT NOT NULL)"
+        )
+        row = conn.execute(
+            "SELECT value FROM app_meta WHERE key = 'profile_schema_version'"
+        ).fetchone()
+        current_version = int(row[0]) if row else 0
+
+        if current_version < PROFILE_SCHEMA_VERSION:
+            conn.execute(
+                "UPDATE profile SET value = ? WHERE key = 'skills' AND value = ?",
+                (SAFE_PROFILE_SKILLS, LEGACY_PROFILE_SKILLS),
+            )
+            conn.execute(
+                "UPDATE profile SET value = ? WHERE key = 'portfolio' AND value = ?",
+                (SAFE_PROFILE_PORTFOLIO, LEGACY_PROFILE_PORTFOLIO),
+            )
+            conn.execute(
+                "INSERT INTO app_meta (key, value) VALUES (?, ?) "
+                "ON CONFLICT(key) DO UPDATE SET value = excluded.value",
+                ("profile_schema_version", str(PROFILE_SCHEMA_VERSION)),
+            )
+
+        conn.execute(f"RELEASE SAVEPOINT {savepoint}")
+    except Exception:
+        conn.execute(f"ROLLBACK TO SAVEPOINT {savepoint}")
+        conn.execute(f"RELEASE SAVEPOINT {savepoint}")
+        raise
+
 
 def init_db():
     with sqlite3.connect(DB_PATH) as conn:
@@ -39,7 +90,7 @@ def init_db():
         """)
         conn.commit()
 
-        # Засеять из config.py при первом запуске — дальше список живёт только в БД
+        # Засеять из config.py при первом запуске - дальше список живёт только в БД
         if conn.execute("SELECT COUNT(*) FROM channels").fetchone()[0] == 0:
             from config import TG_CHANNELS
             conn.executemany("INSERT OR IGNORE INTO channels (name) VALUES (?)", [(c,) for c in TG_CHANNELS])
@@ -52,24 +103,18 @@ def init_db():
                 ("location",  "Латвия"),
                 ("contact",   "@alex_prohar"),
                 ("tzbot",     "@prohar_tz_bot"),
-                ("portfolio", "https://prohar2f-pixel.github.io/my-first-project/"),
+                ("portfolio", SAFE_PROFILE_PORTFOLIO),
                 ("services",  (
-                    "Сайт-визитка — от 30 000 ₽, 5-7 дней (1-3 страницы, уникальный дизайн, адаптив). "
-                    "Лендинг — от 50 000 ₽, 7-14 дней (продающая страница, акцент на конверсию). "
-                    "Корпоративный сайт — от 90 000 ₽, 14-30 дней (несколько разделов, каталог, SEO). "
-                    "Интернет-магазин — от 150 000 ₽, от 30 дней (каталог, корзина, оплата). "
-                    "Telegram-бот — от 25 000 ₽ (автоматизация продаж, поддержки, сбора заявок). "
-                    "ИИ-интеграция — от 20 000 ₽ (ИИ-чат, автогенерация контента, анализ данных). "
-                    "AEO-оптимизация — от 5 000 ₽, 1-2 дня (настройка сайта для ИИ-поисковиков: ChatGPT, Perplexity, Claude)."
+                    "Сайт-визитка - от 30 000 ₽, 5-7 дней (1-3 страницы, уникальный дизайн, адаптив). "
+                    "Лендинг - от 50 000 ₽, 7-14 дней (продающая страница, акцент на конверсию). "
+                    "Корпоративный сайт - от 90 000 ₽, 14-30 дней (несколько разделов, каталог, SEO). "
+                    "Интернет-магазин - от 150 000 ₽, от 30 дней (каталог, корзина, оплата). "
+                    "Telegram-бот - от 25 000 ₽ (автоматизация продаж, поддержки, сбора заявок). "
+                    "ИИ-интеграция - от 20 000 ₽ (ИИ-чат, автогенерация контента, анализ данных). "
+                    "AEO-оптимизация - от 5 000 ₽, 1-2 дня (настройка сайта для ИИ-поисковиков: ChatGPT, Perplexity, Claude)."
                 )),
                 ("title",     "Веб-разработчик и специалист по нейросетям"),
-                ("skills",    (
-                    "HTML/CSS/JS верстка (без фреймворков), адаптивный дизайн, "
-                    "WordPress, Tilda, GitHub Pages, Cloudflare Workers. "
-                    "Python (Telegram-боты: aiogram, python-telegram-bot, Telethon). "
-                    "Anthropic Claude API, OpenAI API — ИИ-интеграции и автоматизация. "
-                    "Figma — работа по макетам."
-                )),
+                ("skills", SAFE_PROFILE_SKILLS),
                 ("style",     (
                     "Коротко, по делу, без воды и шаблонных фраз типа 'готов рассмотреть'. "
                     "Сразу показываю что понял задачу и что конкретно могу сделать. "
@@ -77,6 +122,7 @@ def init_db():
                 )),
             ]
             conn.executemany("INSERT OR IGNORE INTO profile (key, value) VALUES (?, ?)", defaults)
+        migrate_profile(conn)
         conn.commit()
 
 
@@ -123,7 +169,7 @@ import hashlib as _hashlib
 
 
 def _make_fingerprint(text: str) -> str:
-    """MD5 hash of full normalized text — catches exact duplicates across channels."""
+    """MD5 hash of full normalized text - catches exact duplicates across channels."""
     clean = _re.sub(r'[^а-яёa-z0-9\s]', '', text.lower())
     clean = _re.sub(r'\s+', ' ', clean).strip()
     return _hashlib.md5(clean.encode()).hexdigest()

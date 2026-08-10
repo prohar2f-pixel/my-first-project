@@ -81,6 +81,7 @@ class RiskAssessmentTests(unittest.TestCase):
         )
 
         self.assertIn("missing_scope:layouts", risks)
+        self.assertIn("missing_scope:unique_pages", risks)
         self.assertIn("missing_scope:integrations", risks)
         self.assertIn("exact_estimate:unsafe", risks)
 
@@ -97,6 +98,9 @@ class RiskAssessmentTests(unittest.TestCase):
         )
 
         self.assertFalse(any(risk.startswith("unverified_platform:") for risk in risks))
+        self.assertNotIn("missing_scope:unique_pages", risks)
+        self.assertNotIn("missing_scope:layouts", risks)
+        self.assertNotIn("missing_scope:integrations", risks)
         self.assertNotIn("exact_estimate:unsafe", risks)
 
 
@@ -146,6 +150,26 @@ class GeneratedResponseValidationTests(unittest.TestCase):
 
         violations = policy.validate_generated_response(
             "Примеры моих работ: https://example-fake-portfolio.test/cases",
+            risks=(),
+        )
+
+        self.assertIn("unsupported_claim:unknown_link", violations)
+
+    def test_blocks_unconfirmed_path_on_known_domain(self):
+        policy = load_policy()
+
+        violations = policy.validate_generated_response(
+            "Кейс: https://aiprohar.ru/cases/not-confirmed/",
+            risks=(),
+        )
+
+        self.assertIn("unsupported_claim:unknown_link", violations)
+
+    def test_malformed_url_fails_closed_without_crashing(self):
+        policy = load_policy()
+
+        violations = policy.validate_generated_response(
+            "Кейс: https://aiprohar.ru:not-a-port/",
             risks=(),
         )
 
