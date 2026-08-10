@@ -1,4 +1,5 @@
 from openai import AsyncOpenAI
+import config
 from config import OPENROUTER_API_KEY
 from database import get_profile_fields
 from response_policy import (
@@ -10,6 +11,12 @@ from response_policy import (
     assess_job_risks,
     build_safe_fallback,
     validate_generated_response,
+)
+
+OPENROUTER_MODEL = getattr(
+    config,
+    "OPENROUTER_MODEL",
+    "anthropic/claude-haiku-4-5",
 )
 
 
@@ -85,7 +92,7 @@ async def generate_draft(
         api_key=OPENROUTER_API_KEY,
     )
     first_completion = await client.chat.completions.create(
-        model="anthropic/claude-haiku-4-5",
+        model=OPENROUTER_MODEL,
         max_tokens=500,
         messages=[
             {"role": "system", "content": profile},
@@ -103,7 +110,7 @@ async def generate_draft(
         "Удали неподтверждённые утверждения, точные обещания и неизвестные ссылки."
     )
     second_completion = await client.chat.completions.create(
-        model="anthropic/claude-haiku-4-5",
+        model=OPENROUTER_MODEL,
         max_tokens=500,
         messages=[
             {"role": "system", "content": profile},

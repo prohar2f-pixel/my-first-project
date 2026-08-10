@@ -62,6 +62,25 @@ class GenerateResponseTests(unittest.IsolatedAsyncioTestCase):
         })
         self.assertEqual(request["messages"][1]["role"], "user")
 
+    async def test_uses_configured_openrouter_model(self):
+        completion = SimpleNamespace(
+            choices=[SimpleNamespace(message=SimpleNamespace(content="Готовый отклик"))]
+        )
+        create = AsyncMock(return_value=completion)
+        client = SimpleNamespace(
+            chat=SimpleNamespace(completions=SimpleNamespace(create=create))
+        )
+
+        with (
+            patch.object(responder, "OPENROUTER_API_KEY", "test-key"),
+            patch.object(responder, "OPENROUTER_MODEL", "openai/gpt-4o-mini"),
+            patch.object(responder, "build_profile_text", return_value="Профиль"),
+            patch.object(responder, "AsyncOpenAI", return_value=client),
+        ):
+            await responder.generate_response("Заголовок", "Описание", "Источник")
+
+        self.assertEqual(create.await_args.kwargs["model"], "openai/gpt-4o-mini")
+
     async def test_generate_draft_regenerates_one_invalid_response(self):
         invalid = SimpleNamespace(
             choices=[SimpleNamespace(message=SimpleNamespace(
