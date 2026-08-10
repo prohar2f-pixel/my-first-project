@@ -11,6 +11,25 @@ import responder
 
 
 class GenerateResponseTests(unittest.IsolatedAsyncioTestCase):
+    def test_profile_does_not_present_legacy_platforms_as_verified_skills(self):
+        unsafe_legacy_profile = {
+            "name": "Александр Прохоров",
+            "title": "Веб-разработчик",
+            "skills": "HTML/CSS/JS, WordPress, Tilda, Figma",
+            "portfolio": "https://prohar2f-pixel.github.io/my-first-project/",
+            "contact": "@alex_prohar",
+        }
+
+        with patch.object(
+            responder, "get_profile_fields", return_value=unsafe_legacy_profile
+        ):
+            profile = responder.build_profile_text()
+
+        self.assertIn("https://aiprohar.ru/", profile)
+        self.assertIn("собственным кодом", profile.lower())
+        self.assertIn("не подтвержд", profile.lower())
+        self.assertNotIn("HTML/CSS/JS, WordPress, Tilda, Figma", profile)
+
     async def test_sends_profile_as_system_message(self):
         completion = SimpleNamespace(
             choices=[SimpleNamespace(message=SimpleNamespace(content="Готовый отклик"))]
