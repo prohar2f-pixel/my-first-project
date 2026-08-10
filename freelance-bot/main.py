@@ -20,7 +20,8 @@ MIN_TEXT_LEN  = 100
 
 from filters import matches
 from notifier import send_order
-from responder import generate_response
+from draft_formatting import format_generation_error, generate_formatted_draft
+from responder import generate_draft
 from selection import round_robin
 import parsers.flru as flru
 import parsers.kwork as kwork
@@ -271,10 +272,16 @@ async def cb_reply(callback: CallbackQuery):
         return
     msg = await callback.message.answer("✍️ Генерирую отклик через Claude...")
     try:
-        response = await generate_response(order["title"], order["description"], order["source"])
-        await msg.edit_text(f"✍️ <b>Отклик готов:</b>\n\n{response}", parse_mode="HTML")
+        response = await generate_formatted_draft(
+            order["title"],
+            order["description"],
+            order["source"],
+            generator=generate_draft,
+        )
+        await msg.edit_text(response, parse_mode="HTML")
     except Exception as e:
-        await msg.edit_text(f"❌ Ошибка генерации:\n<code>{e}</code>", parse_mode="HTML")
+        log.exception("Ошибка генерации отклика на найденный заказ")
+        await msg.edit_text(format_generation_error(e), parse_mode="HTML")
 
 
 @dp.callback_query(F.data.startswith("delch:"))
@@ -453,10 +460,16 @@ async def handle_text(message: Message):
             return
         msg = await message.answer("✍️ Генерирую отклик...")
         try:
-            response = await generate_response("Вакансия", text, "Ручной ввод")
-            await msg.edit_text(f"✍️ <b>Отклик готов:</b>\n\n{response}", parse_mode="HTML")
+            response = await generate_formatted_draft(
+                "Вакансия",
+                text,
+                "Ручной ввод",
+                generator=generate_draft,
+            )
+            await msg.edit_text(response, parse_mode="HTML")
         except Exception as e:
-            await msg.edit_text(f"❌ Ошибка:\n<code>{e}</code>", parse_mode="HTML")
+            log.exception("Ошибка генерации отклика для ручного ввода")
+            await msg.edit_text(format_generation_error(e), parse_mode="HTML")
 
     else:
         # Неизвестное сообщение — показываем главное меню
