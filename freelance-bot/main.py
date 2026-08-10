@@ -22,13 +22,7 @@ from filters import matches
 from notifier import send_order
 from draft_formatting import format_generation_error, generate_formatted_draft
 from responder import generate_draft
-from selection import round_robin
-import parsers.flru as flru
-import parsers.kwork as kwork
 import parsers.tg_channels as tg
-import parsers.freelanceru as freelanceru
-import parsers.weblancer as weblancer
-import parsers.freelancehunt as freelancehunt
 
 logging.basicConfig(
     level=logging.INFO,
@@ -111,7 +105,7 @@ async def cmd_start(message: Message):
     api_status = "✅" if OPENROUTER_API_KEY else "❌ OPENROUTER_API_KEY не задан"
     await message.answer(
         f"🤖 <b>Freelance Monitor Bot</b>\n\n"
-        f"Мониторю: FL.ru, Kwork, Freelance.ru, Weblancer, Freelancehunt, TG-каналы\n"
+        f"Мониторю только Telegram-каналы и чаты\n"
         f"Интервал: каждые {interval_min} мин\n"
         f"Ключевых слов: {len(get_keywords())}\n"
         f"Claude API: {api_status}",
@@ -152,6 +146,17 @@ async def cmd_check(message: Message):
         reply_markup=main_keyboard(),
         parse_mode="HTML",
     )
+
+
+@dp.message(Command("reply"))
+async def cmd_reply(message: Message):
+    if message.from_user.id != USER_ID:
+        return
+    if not OPENROUTER_API_KEY:
+        await message.answer("❌ OPENROUTER_API_KEY не задан - отклики не работают.")
+        return
+    pending[message.from_user.id] = "vacancy"
+    await message.answer("Отправь текст вакансии следующим сообщением - напишу отклик.")
 
 
 # ─── Callback-кнопки ───────────────────────────────────────────────────────────
@@ -240,7 +245,8 @@ async def cb_status(callback: CallbackQuery):
 
     await callback.message.edit_text(
         f"📊 <b>Статус бота</b>\n\n"
-        f"<b>Платформы:</b>\n{platform_lines}\n{tg_line}\n\n"
+        f"📡 Сейчас: <b>только Telegram</b>\n\n"
+        f"<b>История обработанных источников:</b>\n{platform_lines}\n{tg_line}\n\n"
         f"📦 Всего обработано заказов: <b>{total}</b>\n"
         f"📢 TG-каналов: <b>{len(get_channels())}</b>\n"
         f"🔑 Ключевых слов: <b>{len(get_keywords())}</b>\n"
@@ -365,7 +371,7 @@ async def cb_back(callback: CallbackQuery):
     interval_min = CHECK_INTERVAL // 60
     await callback.message.edit_text(
         f"🤖 <b>Freelance Monitor Bot</b>\n\n"
-        f"Мониторю: FL.ru, Kwork, Freelance.ru, Weblancer, Freelancehunt, TG-каналы\n"
+        f"Мониторю только Telegram-каналы и чаты\n"
         f"Интервал: каждые {interval_min} мин\n"
         f"Ключевых слов: {len(get_keywords())}",
         reply_markup=main_keyboard(),
@@ -481,20 +487,11 @@ async def handle_text(message: Message):
 async def check_all() -> int:
     log.info("Запускаю проверку всех источников...")
 
+    # Платные фриланс-площадки временно отключены: мониторим только Telegram.
     results = await asyncio.gather(
-        flru.fetch(),
-        kwork.fetch(),
         tg.fetch(get_channels()),
-        freelanceru.fetch(),
-        weblancer.fetch(),
-        freelancehunt.fetch(),
         return_exceptions=True,
     )
-
-    # Keep the global notification cap, but give every source a fair turn.
-    errors = [result for result in results if isinstance(result, Exception)]
-    sources = [result for result in results if not isinstance(result, Exception)]
-    results = [*errors, round_robin(sources)]
 
     total_new = 0
     for orders in results:
@@ -509,7 +506,7 @@ async def check_all() -> int:
                 continue
             if is_seen(order.id):
                 continue
-            if order.url and is_seen_url(order.url):
+            if order.url and not order.source.startswith("TG ") and is_seen_url(order.url):
                 mark_seen(order.id, order.source, order.title, order.description, order.url)
                 continue
             fp = _make_fingerprint(full_text)
@@ -541,6 +538,7 @@ async def main():
     await bot.set_my_commands([
         BotCommand(command="start",    description="🏠 Главное меню"),
         BotCommand(command="check",    description="🔍 Проверить сейчас"),
+        BotCommand(command="reply",    description="✍️ Написать отклик"),
         BotCommand(command="keywords", description="🔑 Ключевые слова"),
         BotCommand(command="channels", description="📢 Каналы"),
         BotCommand(command="profile",  description="👤 Мой профиль"),
