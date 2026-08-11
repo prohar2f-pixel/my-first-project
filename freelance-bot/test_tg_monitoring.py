@@ -28,50 +28,28 @@ class TelegramParserTests(unittest.TestCase):
         """
         self.assertEqual(
             parse_channel_html(html),
-            [("357", "#Дизайнер
-Нарисовать логотип
-➡️ @first
-#SMM
-Вести канал
-➡️ @second")],
+            [("357", "#Дизайнер\nНарисовать логотип\n➡️ @first\n#SMM\nВести канал\n➡️ @second")],
         )
 
     def test_splits_digest_after_contact_before_next_role(self):
         text = (
-            "#Дизайнер
-Нарисовать логотип и фирменный стиль
-➡️ @first
-"
-            "#SMM
-Вести Telegram канал и готовить контент
-➡️ @second"
+            "#Дизайнер\nНарисовать логотип и фирменный стиль\n➡️ @first\n"
+            "#SMM\nВести Telegram канал и готовить контент\n➡️ @second"
         )
         self.assertEqual(
             split_vacancies(text),
             [
-                "#Дизайнер
-Нарисовать логотип и фирменный стиль
-➡️ @first",
-                "#SMM
-Вести Telegram канал и готовить контент
-➡️ @second",
+                "#Дизайнер\nНарисовать логотип и фирменный стиль\n➡️ @first",
+                "#SMM\nВести Telegram канал и готовить контент\n➡️ @second",
             ],
         )
 
     def test_keeps_consecutive_role_hashtags_in_one_vacancy(self):
-        text = "#Сценарист
-#контентменеджер
-Ищем специалиста в мебельную нишу
-➡️ @contact"
+        text = "#Сценарист\n#контентменеджер\nИщем специалиста в мебельную нишу\n➡️ @contact"
         self.assertEqual(split_vacancies(text), [text])
 
     def test_digest_parts_get_stable_unique_ids(self):
-        text = "#Дизайнер
-Задача первая
-➡️ @first
-#SMM
-Задача вторая
-➡️ @second"
+        text = "#Дизайнер\nЗадача первая\n➡️ @first\n#SMM\nЗадача вторая\n➡️ @second"
         orders = orders_from_post("frilans", "357", text)
         self.assertEqual([order.id for order in orders], ["tg_frilans_357_1", "tg_frilans_357_2"])
         self.assertEqual([order.url for order in orders], ["https://t.me/frilans/357"] * 2)
