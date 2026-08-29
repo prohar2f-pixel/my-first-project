@@ -15,10 +15,11 @@ from telegram.ext import (
     Application, CommandHandler, MessageHandler,
     CallbackQueryHandler, filters, ContextTypes
 )
-from openai import OpenAI
 import asr
+from openrouter_client import create_openai
+from safe_logging import configure_safe_logging
 
-logging.basicConfig(level=logging.INFO)
+configure_safe_logging()
 logger = logging.getLogger(__name__)
 
 TELEGRAM_TOKEN     = os.environ["TELEGRAM_TOKEN"]
@@ -27,7 +28,7 @@ ALEXANDER_CHAT_ID  = int(os.environ["ALEXANDER_CHAT_ID"])
 
 # OpenRouter (OpenAI-совместимый шлюз). Модель меняется одной переменной LLM_MODEL.
 LLM_MODEL = os.environ.get("LLM_MODEL", "anthropic/claude-haiku-4.5")
-llm = OpenAI(base_url="https://openrouter.ai/api/v1", api_key=OPENROUTER_API_KEY)
+llm = create_openai()
 
 URL_RE   = re.compile(r'https?://[^\s]+')
 TOPIC_RE = re.compile(r'\[ТЕМА:(\d+)\]')

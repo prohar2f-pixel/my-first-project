@@ -7,6 +7,7 @@ import httpx
 
 from calculator import to_decimal
 from config import SERPER_API_KEY, SERPER_API_URL, OPENROUTER_API_KEY, OPENROUTER_API_URL
+from openrouter_client import create_async_client
 
 logger = logging.getLogger(__name__)
 
@@ -96,7 +97,7 @@ Return ONLY JSON, no markdown."""
         "temperature": 0.2,
     }
 
-    async with httpx.AsyncClient() as client:
+    async with create_async_client() as client:
         try:
             response = await client.post(OPENROUTER_API_URL, json=payload, headers=headers, timeout=10.0)
             response.raise_for_status()

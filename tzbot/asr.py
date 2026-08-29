@@ -5,6 +5,7 @@ import logging
 from io import BytesIO
 
 from openai import OpenAI, RateLimitError
+from openrouter_client import create_openai
 
 logger = logging.getLogger(__name__)
 
@@ -37,10 +38,7 @@ _client: OpenAI | None = None
 def _get_client() -> OpenAI:
     global _client
     if _client is None:
-        _client = OpenAI(
-            base_url="https://openrouter.ai/api/v1",
-            api_key=os.environ["OPENROUTER_API_KEY"],
-        )
+        _client = create_openai()
     return _client
 
 

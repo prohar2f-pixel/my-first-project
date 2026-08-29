@@ -6,6 +6,8 @@ import logging
 import httpx
 import pdfplumber
 import openpyxl
+import openrouter_transport
+import safe_logging
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from datetime import datetime
 
@@ -13,13 +15,14 @@ from telegram import Update, BotCommand
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 
 logging.basicConfig(level=logging.INFO)
+safe_logging.configure()
 logger = logging.getLogger(__name__)
 
 TELEGRAM_TOKEN = os.environ["TELEGRAM_TOKEN"]
 OPENROUTER_API_KEY = os.environ["OPENROUTER_API_KEY"]
 SERPER_API_KEY = os.environ["SERPER_API_KEY"]
 
-logger.info(f"OpenRouter API Key loaded: {OPENROUTER_API_KEY[:20]}... (length: {len(OPENROUTER_API_KEY)})")
+logger.info("OpenRouter API key loaded")
 
 OPENROUTER_HEADERS = {
     "Authorization": f"Bearer {OPENROUTER_API_KEY}",
@@ -86,7 +89,7 @@ def extract_materials_from_pdf(pdf_bytes: bytes) -> list[str]:
 
     logger.info("Calling OpenRouter API for material extraction...")
     try:
-        resp = httpx.post(
+        resp = openrouter_transport.post(
             "https://openrouter.ai/api/v1/chat/completions",
             headers=OPENROUTER_HEADERS,
             json={
@@ -133,7 +136,7 @@ def analyze_suppliers(material: str, search_results: list[dict], region: str) ->
         for r in search_results
     ])
 
-    resp = httpx.post(
+    resp = openrouter_transport.post(
         "https://openrouter.ai/api/v1/chat/completions",
         headers=OPENROUTER_HEADERS,
         json={
@@ -312,7 +315,7 @@ async def test_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         logger.info(f"Payload: {payload}")
 
         resp = await asyncio.to_thread(
-            lambda: httpx.post(url, headers=OPENROUTER_HEADERS, json=payload, timeout=10)
+            lambda: openrouter_transport.post(url, headers=OPENROUTER_HEADERS, json=payload, timeout=10)
         )
         logger.info(f"OpenRouter response status: {resp.status_code}")
         logger.info(f"OpenRouter response headers: {dict(resp.headers)}")

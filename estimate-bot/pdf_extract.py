@@ -10,6 +10,7 @@ import httpx
 
 from calculator import LineInput, to_decimal
 from config import OPENROUTER_API_KEY, OPENROUTER_API_URL
+from openrouter_client import create_async_client
 
 logger = logging.getLogger(__name__)
 
@@ -74,7 +75,7 @@ async def _llm_extract_positions(text: str) -> list[dict]:
         "temperature": 0.3,
     }
 
-    async with httpx.AsyncClient() as client:
+    async with create_async_client() as client:
         try:
             response = await client.post(OPENROUTER_API_URL, json=payload, headers=headers, timeout=30.0)
             response.raise_for_status()

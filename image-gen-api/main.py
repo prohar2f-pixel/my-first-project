@@ -35,6 +35,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
 def get_current_user(authorization: str = Header(...), db: Session = Depends(get_db)) -> User:
     try:
         token = authorization.replace("Bearer ", "")
